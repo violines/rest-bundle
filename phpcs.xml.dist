@@ -2,8 +2,8 @@
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="TerryApi" xsi:noNamespaceSchemaLocation="phpcs.xsd">
     <description></description>
 
-    <file>src</file>
-    <file>tests</file>
+    <file></file>
+    <file>Tests</file>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>
