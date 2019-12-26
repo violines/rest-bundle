@@ -1,9 +1,11 @@
 {
     "name": "simon-schubert/terry-api",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": "7.4.*"
+        "php": "7.4.*",
+        "symfony/dependency-injection": "^5.0",
+        "symfony/http-kernel": "^5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5.0",
@@ -13,12 +15,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TerryApi\\": "src/"
+            "TerryApiBundle\\": ""
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TerryApi\\Tests\\": "tests/"
+            "TerryApiBundle\\Tests\\": "Tests/"
         }
     }
 }
