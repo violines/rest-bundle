@@ -19,12 +19,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TerryApiBundle\\": ""
+            "TerryApiBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TerryApiBundle\\Tests\\": "Tests/"
+            "TerryApiBundle\\Tests\\": "tests/"
         }
     }
 }

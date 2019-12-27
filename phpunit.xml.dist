@@ -3,11 +3,11 @@
          bootstrap="./vendor/autoload.php"
          verbose="true">
  <testsuite name="PHPUnit Skeleton Generator">
-  <directory suffix="Test.php">./Tests</directory>
+  <directory suffix="Test.php">./tests</directory>
  </testsuite>
  <filter>
   <whitelist addUncoveredFilesFromWhitelist="true">
-   <directory suffix=".php">./</directory>
+   <directory suffix=".php">../src</directory>
   </whitelist>
  </filter>
 </phpunit>
