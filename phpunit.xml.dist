@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         bootstrap="./vendor/autoload.php"
-         verbose="true">
- <testsuite name="PHPUnit Skeleton Generator">
-  <directory suffix="Test.php">./tests</directory>
- </testsuite>
- <filter>
-  <whitelist addUncoveredFilesFromWhitelist="true">
-   <directory suffix=".php">../src</directory>
-  </whitelist>
- </filter>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd"
+    backupGlobals="false" 
+    verbose="true" 
+    resolveDependencies="true" 
+    stopOnFailure="true" 
+    colors="false" 
+    cacheResult="false" 
+    stderr="false"
+>
+  <testsuite name="PHPUnit Skeleton Generator">
+    <directory suffix="Test.php">tests</directory>
+  </testsuite>
+  <filter>
+    <whitelist processUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">src</directory>
+    </whitelist>
+  </filter>
+  <php>
+    <ini name="serialize_precision" value="14"/>
+  </php>
+  <logging>
+    <log type="coverage-xml" target="/tmp/infection/coverage-xml"/>
+    <log type="junit" target="/tmp/infection/junit.xml"/>
+  </logging>
 </phpunit>

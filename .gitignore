@@ -1,5 +1,6 @@
-/docker/.env
+/docker/php-fpm/.env
 /vendor/
 .vscode
 .phpunit.result.cache
 .DS_Store
+infection.log
