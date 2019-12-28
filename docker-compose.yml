@@ -4,8 +4,10 @@ services:
       build: docker/php-fpm
       container_name: terry_api
       working_dir: /app
+      env_file:
+        - ./docker/.env
       volumes:
         - ./vendor:/app/vendor:cached
         - .:/app
-        - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+        - ./docker/php-fpm/php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini
 
