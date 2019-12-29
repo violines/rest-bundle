@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
+use TerryApiBundle\Exception\AnnotationNotFoundException;
 
 class RequestStructResolver implements ArgumentValueResolverInterface
 {
@@ -26,20 +27,19 @@ class RequestStructResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        /** @var null|class-string $className */
         $className = $argument->getType();
 
-        if (null === $className) {
+        if (null === $className || !class_exists($className)) {
             return false;
         }
 
         try {
-            $struct = $this->structReader->read($className);
-        } catch (\Throwable $e) {
+            $structAnnotation = $this->structReader->read($className);
+        } catch (AnnotationNotFoundException $e) {
             return false;
         }
 
-        return $struct->supports;
+        return $structAnnotation->supports;
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument)

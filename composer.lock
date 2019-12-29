@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7028704205b87558cfaa1a3930246f3",
+    "content-hash": "61c5b479eaa14e4817f2433f62a79618",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2532,6 +2532,64 @@
                 "xml conversion"
             ],
             "time": "2019-03-29T20:06:56+00:00"
+        },
+        {
+            "name": "phake/phake",
+            "version": "v3.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mlively/Phake.git",
+                "reference": "3b7a6db62dfe7015a480fa966967df28b3cb239d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mlively/Phake/zipball/3b7a6db62dfe7015a480fa966967df28b3cb239d",
+                "reference": "3b7a6db62dfe7015a480fa966967df28b3cb239d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7",
+                "sebastian/comparator": "^1.1|^2.0|^3.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master",
+                "doctrine/common": "2.3.*",
+                "ext-soap": "*",
+                "hamcrest/hamcrest-php": "1.1.*",
+                "phpunit/phpunit": "^7.0"
+            },
+            "suggest": {
+                "doctrine/common": "Allows mock annotations to use import statements for classes.",
+                "hamcrest/hamcrest-php": "Use Hamcrest matchers."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Phake": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Mike Lively",
+                    "email": "m@digitalsandwich.com"
+                }
+            ],
+            "description": "The Phake mock testing library",
+            "homepage": "https://github.com/mlively/Phake",
+            "keywords": [
+                "mock",
+                "testing"
+            ],
+            "time": "2019-12-06T04:16:00+00:00"
         },
         {
             "name": "phar-io/manifest",

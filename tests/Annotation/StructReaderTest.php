@@ -1,6 +1,8 @@
 <?php
 
-namespace TerryApi\Tests;
+declare(strict_types=1);
+
+namespace TerryApi\Tests\Annotation;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;

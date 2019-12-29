@@ -7,7 +7,7 @@ namespace TerryApiBundle\Tests\Stubs;
 /**
  * @Annotation
  */
-final class FakeAnnotation
+class FakeAnnotation
 {
     public bool $fakeBool = false;
 }

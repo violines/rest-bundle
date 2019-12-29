@@ -7,7 +7,7 @@ namespace TerryApiBundle\Annotation;
 /**
  * @Annotation
  */
-final class Struct
+class Struct
 {
     public bool $supports = false;
 }
