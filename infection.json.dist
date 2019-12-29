@@ -3,6 +3,10 @@
     "source": {
         "directories": [
             "src"
+        ],
+        "excludes": [
+            "DependencyInjection",
+            "Resources"
         ]
     },
     "logs": {

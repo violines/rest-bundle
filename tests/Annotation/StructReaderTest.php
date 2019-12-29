@@ -7,6 +7,8 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Annotation\Struct;
 use TerryApiBundle\Annotation\StructReader;
+use TerryApiBundle\Exception\AnnotationNotFoundException;
+use TerryApiBundle\Tests\Stubs\BrownieModelStub;
 use TerryApiBundle\Tests\Stubs\CandyStructStub;
 
 class StructReaderTest extends TestCase
@@ -29,5 +31,12 @@ class StructReaderTest extends TestCase
         $struct = $this->structReader->read(CandyStructStub::class);
 
         $this->assertInstanceOf(Struct::class, $struct);
+    }
+
+    public function testShouldThrowAnnotationNotFoundException(): void
+    {
+        $this->expectException(AnnotationNotFoundException::class);
+
+        $this->structReader->read(BrownieModelStub::class);
     }
 }

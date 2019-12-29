@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TerryApiBundle\Annotation;
 
 use Doctrine\Common\Annotations\Reader;
+use TerryApiBundle\Exception\AnnotationNotFoundException;
 
 class StructReader
 {
@@ -28,6 +29,6 @@ class StructReader
             }
         }
 
-        throw new \Exception();
+        throw new AnnotationNotFoundException();
     }
 }
