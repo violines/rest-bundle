@@ -19,20 +19,16 @@ class ResponseTransformListener
 
     public function transform(ViewEvent $viewEvent): void
     {
-        $viewEvent->setResponse(
-            new Response(
-                $this->serialize(
-                    $viewEvent->getControllerResult()
-                )
-            )
-        );
-    }
+        $controllerResult = $viewEvent->getControllerResult();
 
-    /**
-     * @param mixed $controllerResult
-     */
-    private function serialize($controllerResult): string
-    {
-        return $this->serializer->serialize($controllerResult, 'json');
+        if (null !== $controllerResult) {
+            $response = new Response(
+                $this->serializer->serialize($controllerResult, 'json')
+            );
+        } else {
+            $response = new Response();
+        }
+
+        $viewEvent->setResponse($response);
     }
 }

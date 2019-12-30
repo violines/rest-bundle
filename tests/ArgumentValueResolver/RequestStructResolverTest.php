@@ -7,7 +7,7 @@ namespace TerryApi\Tests\ArgumentValueResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\Struct;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\ArgumentValueResolver\RequestStructResolver;
@@ -18,7 +18,7 @@ class RequestStructResolverTest extends TestCase
 {
     /**
      * @Mock
-     * @var Serializer
+     * @var SerializerInterface
      */
     private \Phake_IMock $serializer;
 
