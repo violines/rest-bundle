@@ -18,15 +18,15 @@ class CandyStructStub
      * @Serializer\Annotation\SerializedName("weight")
      * @Assert\Positive
      */
-    public int $weight;
+    public int $weight = 100;
 
     /**
      * @Serializer\Annotation\SerializedName("name")
      */
-    public string $name;
+    public string $name = 'Bonbon';
 
     /**
      * @Serializer\Annotation\SerializedName("tastes_good")
      */
-    public bool $tastesGood;
+    public bool $tastesGood = true;
 }

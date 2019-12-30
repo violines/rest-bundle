@@ -10,6 +10,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
+use TerryApiBundle\ValueObject\RequestHeaders;
 
 class RequestStructResolver implements ArgumentValueResolverInterface
 {
@@ -29,7 +30,7 @@ class RequestStructResolver implements ArgumentValueResolverInterface
     {
         $className = $argument->getType();
 
-        if (null === $className || !class_exists($className)) {
+        if (null === $className || !class_exists($className) || !is_string($request->getContent())) {
             return false;
         }
 
@@ -45,26 +46,27 @@ class RequestStructResolver implements ArgumentValueResolverInterface
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
         $className = $argument->getType();
-        $contentType = $request->getContentType() ?? 'json';
+        $headers = RequestHeaders::fromRequest($request);
+        $content = $request->getContent();
+        $isVariadic = $argument->isVariadic();
 
-        if (null === $className) {
-            throw new \Exception('Class could not be determined.');
+        if (null === $className || !class_exists($className) || !is_string($content)) {
+            throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
         }
 
-        $type = $argument->isVariadic() ? $className . '[]' : $className;
-
-        $content = $this->serializer->deserialize(
-            $request->getContent(),
-            $type,
-            $contentType
+        $serializedContent = $this->serializer->deserialize(
+            $content,
+            $isVariadic ? $className . '[]' : $className,
+            $headers->getSerializerType()
         );
 
-        if ($argument->isVariadic()) {
-            foreach ($content as $item) {
-                yield $item;
-            }
-        } else {
-            yield $content;
+        if (!$isVariadic) {
+            yield $serializedContent;
+            return;
+        }
+
+        foreach ($serializedContent as $instanceOfClassName) {
+            yield $instanceOfClassName;
         }
     }
 }
