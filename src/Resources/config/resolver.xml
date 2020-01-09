@@ -11,9 +11,6 @@
                 <argument type="service" id="serializer" />
                 <argument type="service" id="terry_api.annotation.struct_reader" />
             </service>
-        </services>
-        <services>
-            <defaults public="false" />
             <service id="terry_api.argument_value_resolver.request_array_of_structs_resolver" class="TerryApiBundle\ArgumentValueResolver\RequestArrayOfStructsResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
                 <argument type="service" id="serializer" />
