@@ -18,9 +18,9 @@ composer require simon-schubert/terry-api
 Example:
 ```php
 /**
- * @Route("/candy", methods={"POST"}, name="candy")
+ * @Route("/candy/save", methods={"POST"}, name="candy_save")
  */
-public function candy(Candy $candy)
+public function candySave(CandyStruct $candy)
 {
     // do something
 

@@ -9,5 +9,4 @@ namespace TerryApiBundle\Annotation;
  */
 class Struct
 {
-    public bool $supports = false;
 }

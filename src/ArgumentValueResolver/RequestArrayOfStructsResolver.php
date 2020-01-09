@@ -12,7 +12,7 @@ use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\ValueObject\RequestHeaders;
 
-class RequestStructResolver implements ArgumentValueResolverInterface
+class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
 {
     private SerializerInterface $serializer;
 
@@ -30,43 +30,43 @@ class RequestStructResolver implements ArgumentValueResolverInterface
     {
         $className = $argument->getType();
 
-        if (null === $className || !class_exists($className) || !is_string($request->getContent())) {
+        if (
+            false === $argument->isVariadic() || null === $className
+            || !class_exists($className) || !is_string($request->getContent())
+        ) {
             return false;
         }
 
         try {
-            $structAnnotation = $this->structReader->read($className);
+            $this->structReader->read($className);
         } catch (AnnotationNotFoundException $e) {
             return false;
         }
 
-        return $structAnnotation->supports;
+        return true;
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
         $className = $argument->getType();
-        $headers = RequestHeaders::fromRequest($request);
         $content = $request->getContent();
-        $isVariadic = $argument->isVariadic();
+        $headers = RequestHeaders::fromRequest($request);
 
-        if (null === $className || !class_exists($className) || !is_string($content)) {
+        if (
+            false === $argument->isVariadic() || null === $className
+            || !class_exists($className) || !is_string($content)
+        ) {
             throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
         }
 
         $serializedContent = $this->serializer->deserialize(
             $content,
-            $isVariadic ? $className . '[]' : $className,
+            $className . '[]',
             $headers->getSerializerType()
         );
 
-        if (!$isVariadic) {
-            yield $serializedContent;
-            return;
-        }
-
-        foreach ($serializedContent as $instanceOfClassName) {
-            yield $instanceOfClassName;
+        foreach ($serializedContent as $struct) {
+            yield $struct;
         }
     }
 }

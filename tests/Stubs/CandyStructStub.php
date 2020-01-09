@@ -9,7 +9,7 @@ use Symfony\Component\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Struct(supports=true)
+ * @Struct
  * @FakeAnnotation(fakeBool=true)
  */
 class CandyStructStub
