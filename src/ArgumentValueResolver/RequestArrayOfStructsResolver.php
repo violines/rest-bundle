@@ -8,8 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
+use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\ValueObject\RequestHeaders;
 
 class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
@@ -18,12 +20,16 @@ class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
 
     private StructReader $structReader;
 
+    private ValidatorInterface $validator;
+
     public function __construct(
         SerializerInterface $serializer,
-        StructReader $structReader
+        StructReader $structReader,
+        ValidatorInterface $validator
     ) {
         $this->serializer = $serializer;
         $this->structReader =  $structReader;
+        $this->validator = $validator;
     }
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
@@ -59,13 +65,19 @@ class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
             throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
         }
 
-        $serializedContent = $this->serializer->deserialize(
+        $arrayOfStructs = $this->serializer->deserialize(
             $content,
             $className . '[]',
-            $headers->getSerializerType()
+            $headers->serializerType()
         );
 
-        foreach ($serializedContent as $struct) {
+        $violations = $this->validator->validate($arrayOfStructs);
+
+        if (0 < count($violations)) {
+            throw new ValidationException($violations);
+        }
+
+        foreach ($arrayOfStructs as $struct) {
             yield $struct;
         }
     }

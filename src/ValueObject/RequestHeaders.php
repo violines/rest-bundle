@@ -26,7 +26,7 @@ class RequestHeaders
         return new self($contentType);
     }
 
-    public function getSerializerType(): string
+    public function serializerType(): string
     {
         return array_key_exists($this->contentType, self::CONTENT_TYPE_SERIALIZER_MAP)
             ? self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType]

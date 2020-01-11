@@ -8,8 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
+use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\ValueObject\RequestHeaders;
 
 class RequestSingleStructResolver implements ArgumentValueResolverInterface
@@ -18,12 +20,16 @@ class RequestSingleStructResolver implements ArgumentValueResolverInterface
 
     private StructReader $structReader;
 
+    private ValidatorInterface $validator;
+
     public function __construct(
         SerializerInterface $serializer,
-        StructReader $structReader
+        StructReader $structReader,
+        ValidatorInterface $validator
     ) {
         $this->serializer = $serializer;
         $this->structReader =  $structReader;
+        $this->validator = $validator;
     }
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
@@ -62,8 +68,14 @@ class RequestSingleStructResolver implements ArgumentValueResolverInterface
         $struct = $this->serializer->deserialize(
             $content,
             $className,
-            $headers->getSerializerType()
+            $headers->serializerType()
         );
+
+        $violations = $this->validator->validate($struct);
+
+        if (0 < count($violations)) {
+            throw new ValidationException($violations);
+        }
 
         yield $struct;
     }
