@@ -5,31 +5,58 @@ declare(strict_types=1);
 namespace TerryApiBundle\ValueObject;
 
 use Symfony\Component\HttpFoundation\Request;
+use TerryApiBundle\Exception\RequestHeaderException;
 
 class RequestHeaders
 {
+    private const HEADER_PROPERTY_MAP = [
+        'Content-Type' => 'contentType',
+    ];
+
     private const CONTENT_TYPE_SERIALIZER_MAP = [
         'application/json' => 'json'
     ];
 
     private string $contentType;
 
-    private function __construct(string $contentType)
+    private function __construct()
     {
-        $this->contentType = $contentType;
     }
 
     public static function fromRequest(Request $request): self
     {
-        $contentType = $request->getContentType() ?? 'application/json';
+        $requestHeaders = new self();
 
-        return new self($contentType);
+        foreach (self::HEADER_PROPERTY_MAP as $hKey => $property) {
+            $header = $request->headers->get($hKey);
+
+            if (null === $header) {
+                throw new RequestHeaderException(
+                    sprintf('The %s Header is missing in the request.', $hKey)
+                );
+            }
+
+            $requestHeaders->$property = $header;
+        }
+
+        return $requestHeaders;
     }
 
     public function serializerType(): string
     {
-        return array_key_exists($this->contentType, self::CONTENT_TYPE_SERIALIZER_MAP)
-            ? self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType]
-            : 'json';
+        if (!isset(self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType])) {
+            throw new RequestHeaderException(
+                sprintf('Content-Type Header value %s cannot be processed.', $this->contentType)
+            );
+        }
+
+        return self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType];
+    }
+
+    public function responseHeaders(): array
+    {
+        return [
+            'Content-Type' => $this->contentType
+        ];
     }
 }

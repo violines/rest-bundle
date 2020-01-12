@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TerryApi\Tests\ArgumentValueResolver;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -118,7 +119,9 @@ class RequestArrayOfStructsResolverTest extends TestCase
      */
     public function testResolveShouldThrowException(?string $type, ?string $content)
     {
+        $this->request->headers = \Phake::mock(ParameterBag::class);
         \Phake::when($this->request)->getContent->thenReturn($content);
+        \Phake::when($this->request->headers)->get->thenReturn('application/json');
         \Phake::when($this->argument)->getType->thenReturn($type);
 
         $this->expectException(\LogicException::class);
@@ -148,7 +151,9 @@ class RequestArrayOfStructsResolverTest extends TestCase
 
         $candies = [new CandyStructStub(), new CandyStructStub()];
 
+        $this->request->headers = \Phake::mock(ParameterBag::class);
         \Phake::when($this->request)->getContent->thenReturn(json_encode($candies));
+        \Phake::when($this->request->headers)->get->thenReturn('application/json');
         \Phake::when($this->argument)->isVariadic->thenReturn(true);
         \Phake::when($this->argument)->getType->thenReturn(CandyStructStub::class);
         \Phake::when($this->serializer)->deserialize->thenReturn($candies);
@@ -168,7 +173,9 @@ class RequestArrayOfStructsResolverTest extends TestCase
      */
     public function testResolveShouldYield($expected, $expectedClassName)
     {
+        $this->request->headers = \Phake::mock(ParameterBag::class);
         \Phake::when($this->request)->getContent->thenReturn(json_encode($expected));
+        \Phake::when($this->request->headers)->get->thenReturn('application/json');
         \Phake::when($this->argument)->isVariadic->thenReturn(true);
         \Phake::when($this->argument)->getType->thenReturn($expectedClassName);
         \Phake::when($this->serializer)->deserialize->thenReturn($expected);
