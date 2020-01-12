@@ -14,7 +14,8 @@ class RequestHeaders
     ];
 
     private const CONTENT_TYPE_SERIALIZER_MAP = [
-        'application/json' => 'json'
+        'application/json' => 'json',
+        'text/html' => 'xml'
     ];
 
     private string $contentType;

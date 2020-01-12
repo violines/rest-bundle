@@ -57,7 +57,7 @@ class ResponseTransformListener
         $headers = RequestHeaders::fromRequest($request);
 
         return new Response(
-            $this->serializer->serialize($controllerResult, 'json'),
+            $this->serializer->serialize($controllerResult, $headers->serializerType()),
             Response::HTTP_OK,
             $headers->responseHeaders()
         );
