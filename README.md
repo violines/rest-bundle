@@ -1,7 +1,7 @@
 ## About
 TerryApiBundle is a Symfony Bundle to create REST APIs embedding the symfony/serializer and symfony/validator and takes care of HTTP related things like e.g. Headers.
 
-![php](https://github.com/simon-schubert/terry-api/workflows/php/badge.svg)
+![build](https://github.com/simon-schubert/terry-api/workflows/build/badge.svg)
 
 ### Who should use TerryApi?
 Symfony Developers who want to have full controll over what happens inside the controller: after the Arguments of the Controller are resolved and before the Controller returns.
