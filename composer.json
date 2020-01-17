@@ -29,5 +29,13 @@
         "psr-4": {
             "TerryApiBundle\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": [
+            "phpcs",
+            "phpunit",
+            "psalm",
+            "infection"
+        ]
     }
 }
