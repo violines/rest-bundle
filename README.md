@@ -1,8 +1,7 @@
 ## About
 TerryApiBundle is a Symfony Bundle to create REST APIs embedding the symfony/serializer and symfony/validator and takes care of HTTP related things like e.g. Headers.
 
-[![build](https://github.com/simon-schubert/terry-api/workflows/build/badge.svg)]
-(https://github.com/simon-schubert/terry-api)
+[![build](https://github.com/simon-schubert/terry-api/workflows/build/badge.svg)](https://github.com/simon-schubert/terry-api)
 [![Code Coverage](https://codecov.io/gh/simon-schubert/terry-api/branch/master/graph/badge.svg)](https://codecov.io/gh/simon-schubert/terry-api)
 
 ### Who should use TerryApi?
