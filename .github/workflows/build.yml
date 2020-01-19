@@ -18,3 +18,11 @@ jobs:
 
     - name: Run tests 
       run: composer run-script test
+
+    - name: Collect code coverage
+      run: vendor/bin/phpunit --configuration=phpunit.xml.dist --coverage-clover=coverage.xml
+
+    - name: Send code coverage report to Codecov.io
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOVIO_TOKEN }}
+      run: bash <(curl -s https://codecov.io/bash)
