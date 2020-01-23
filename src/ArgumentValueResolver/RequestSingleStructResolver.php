@@ -68,7 +68,7 @@ class RequestSingleStructResolver implements ArgumentValueResolverInterface
         $struct = $this->serializer->deserialize(
             $content,
             $className,
-            $headers->serializerType()
+            $headers->deserializerType()
         );
 
         $violations = $this->validator->validate($struct);

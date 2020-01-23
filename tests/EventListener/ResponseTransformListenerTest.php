@@ -51,6 +51,7 @@ class ResponseTransformListenerTest extends TestCase
         \Phake::initAnnotations($this);
 
         $this->request->headers = new HeaderBag([
+            'Accept' => 'application/pdf, application/json, application/xml',
             'Content-Type' => 'application/json'
         ]);
 

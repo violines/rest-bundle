@@ -10,6 +10,7 @@ use TerryApiBundle\Exception\RequestHeaderException;
 
 class RequestHeaders
 {
+    public const ACCEPT = 'Accept';
     public const CONTENT_TYPE = 'Content-Type';
 
     private const CONTENT_TYPE_SERIALIZER_MAP = [
@@ -17,10 +18,13 @@ class RequestHeaders
         'text/html' => 'xml'
     ];
 
+    private string $accept;
+
     private string $contentType;
 
     private function __construct(HeaderBag $headers)
     {
+        $this->accept = (string) $headers->get(self::ACCEPT, '');
         $this->contentType = (string) $headers->get(self::CONTENT_TYPE, '');
     }
 
@@ -31,10 +35,13 @@ class RequestHeaders
 
     public function serializerType(): string
     {
+        return self::CONTENT_TYPE_SERIALIZER_MAP[$this->negotiateContentType()];
+    }
+
+    public function deserializerType(): string
+    {
         if (!isset(self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType])) {
-            throw new RequestHeaderException(
-                sprintf('Content-Type Header value %s cannot be processed.', $this->contentType)
-            );
+            RequestHeaderException::cannotProcess(self::CONTENT_TYPE, $this->contentType);
         }
 
         return self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType];
@@ -43,7 +50,21 @@ class RequestHeaders
     public function responseHeaders(): array
     {
         return [
-            self::CONTENT_TYPE => $this->contentType
+            self::CONTENT_TYPE => $this->negotiateContentType()
         ];
+    }
+
+    private function negotiateContentType(): string
+    {
+        $accepts = explode(',', $this->accept);
+
+        foreach ($accepts as $accept) {
+            $type = trim($accept, ' ');
+            if (isset(self::CONTENT_TYPE_SERIALIZER_MAP[$type])) {
+                return $type;
+            }
+        }
+
+        RequestHeaderException::cannotProcess(self::ACCEPT, $this->accept);
     }
 }
