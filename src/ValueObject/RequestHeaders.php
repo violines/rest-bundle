@@ -4,51 +4,44 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\ValueObject;
 
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use TerryApiBundle\Exception\RequestHeaderException;
 
 class RequestHeaders
 {
-    private const HEADER_PROPERTY_MAP = [
-        'Content-Type' => 'contentType',
-    ];
+    public const ACCEPT = 'Accept';
+    public const CONTENT_TYPE = 'Content-Type';
 
     private const CONTENT_TYPE_SERIALIZER_MAP = [
         'application/json' => 'json',
         'text/html' => 'xml'
     ];
 
+    private string $accept;
+
     private string $contentType;
 
-    private function __construct()
+    private function __construct(HeaderBag $headers)
     {
+        $this->accept = (string) $headers->get(self::ACCEPT, '');
+        $this->contentType = (string) $headers->get(self::CONTENT_TYPE, '');
     }
 
     public static function fromRequest(Request $request): self
     {
-        $requestHeaders = new self();
-
-        foreach (self::HEADER_PROPERTY_MAP as $hKey => $property) {
-            $header = $request->headers->get($hKey);
-
-            if (null === $header) {
-                throw new RequestHeaderException(
-                    sprintf('The %s Header is missing in the request.', $hKey)
-                );
-            }
-
-            $requestHeaders->$property = $header;
-        }
-
-        return $requestHeaders;
+        return new self($request->headers);
     }
 
     public function serializerType(): string
     {
+        return self::CONTENT_TYPE_SERIALIZER_MAP[$this->negotiateContentType()];
+    }
+
+    public function deserializerType(): string
+    {
         if (!isset(self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType])) {
-            throw new RequestHeaderException(
-                sprintf('Content-Type Header value %s cannot be processed.', $this->contentType)
-            );
+            throw RequestHeaderException::cannotProcess(self::CONTENT_TYPE, $this->contentType);
         }
 
         return self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType];
@@ -57,7 +50,22 @@ class RequestHeaders
     public function responseHeaders(): array
     {
         return [
-            'Content-Type' => $this->contentType
+            self::CONTENT_TYPE => $this->negotiateContentType()
         ];
+    }
+
+    private function negotiateContentType(): string
+    {
+        $accepts = explode(',', $this->accept);
+
+        /** string $accept */
+        foreach ($accepts as $accept) {
+            $type = trim($accept, ' ');
+            if (isset(self::CONTENT_TYPE_SERIALIZER_MAP[$type])) {
+                return $type;
+            }
+        }
+
+        throw RequestHeaderException::cannotProcess(self::ACCEPT, $this->accept);
     }
 }

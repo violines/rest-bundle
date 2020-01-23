@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TerryApi\Tests\ResponseTransformListener;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -49,6 +50,11 @@ class ResponseTransformListenerTest extends TestCase
 
         \Phake::initAnnotations($this);
 
+        $this->request->headers = new HeaderBag([
+            'Accept' => 'application/pdf, application/json, application/xml',
+            'Content-Type' => 'application/json'
+        ]);
+
         $this->responseTransformListener = new ResponseTransformListener(
             $this->serializer,
             $this->structReader
@@ -60,8 +66,6 @@ class ResponseTransformListenerTest extends TestCase
      */
     public function testShouldPassControllerResultToSerializer($given, string $expected)
     {
-        $this->request->headers = \Phake::mock(ParameterBag::class);
-        \Phake::when($this->request->headers)->get->thenReturn('application/json');
         \Phake::when($this->serializer)->serialize->thenReturn($expected);
 
         $viewEvent = new ViewEvent(
@@ -85,9 +89,6 @@ class ResponseTransformListenerTest extends TestCase
 
     public function testShouldSkipListener()
     {
-        $this->request->headers = \Phake::mock(ParameterBag::class);
-        \Phake::when($this->request->headers)->get->thenReturn('application/json');
-
         $viewEvent = new ViewEvent(
             $this->httpKernel,
             $this->request,

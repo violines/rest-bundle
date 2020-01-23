@@ -68,7 +68,7 @@ class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
         $arrayOfStructs = $this->serializer->deserialize(
             $content,
             $className . '[]',
-            $headers->serializerType()
+            $headers->deserializerType()
         );
 
         $violations = $this->validator->validate($arrayOfStructs);
