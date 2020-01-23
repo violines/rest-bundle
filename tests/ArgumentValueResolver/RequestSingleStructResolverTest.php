@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TerryApi\Tests\ArgumentValueResolver;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -58,6 +59,10 @@ class RequestSingleStructResolverTest extends TestCase
         parent::setUp();
 
         \Phake::initAnnotations($this);
+
+        $this->request->headers = new HeaderBag([
+            'Content-Type' => 'application/json'
+        ]);
 
         $this->resolver = new RequestSingleStructResolver(
             $this->serializer,
@@ -118,9 +123,7 @@ class RequestSingleStructResolverTest extends TestCase
      */
     public function testResolveShouldThrowException(?string $type, ?string $content)
     {
-        $this->request->headers = \Phake::mock(ParameterBag::class);
         \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->request->headers)->get->thenReturn('application/json');
         \Phake::when($this->argument)->getType->thenReturn($type);
 
         $this->expectException(\LogicException::class);
@@ -149,9 +152,7 @@ class RequestSingleStructResolverTest extends TestCase
 
         $candy = new CandyStructStub();
 
-        $this->request->headers = \Phake::mock(ParameterBag::class);
         \Phake::when($this->request)->getContent->thenReturn(json_encode($candy));
-        \Phake::when($this->request->headers)->get->thenReturn('application/json');
         \Phake::when($this->argument)->isVariadic->thenReturn(false);
         \Phake::when($this->argument)->getType->thenReturn(CandyStructStub::class);
         \Phake::when($this->serializer)->deserialize->thenReturn($candy);
@@ -171,9 +172,7 @@ class RequestSingleStructResolverTest extends TestCase
      */
     public function testResolveShouldYield($isVariadic, $expected, $expectedClassName)
     {
-        $this->request->headers = \Phake::mock(ParameterBag::class);
         \Phake::when($this->request)->getContent->thenReturn(json_encode($expected));
-        \Phake::when($this->request->headers)->get->thenReturn('application/json');
         \Phake::when($this->argument)->isVariadic->thenReturn($isVariadic);
         \Phake::when($this->argument)->getType->thenReturn($expectedClassName);
         \Phake::when($this->serializer)->deserialize->thenReturn($expected);
