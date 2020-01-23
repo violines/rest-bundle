@@ -41,7 +41,7 @@ class RequestHeaders
     public function deserializerType(): string
     {
         if (!isset(self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType])) {
-            RequestHeaderException::cannotProcess(self::CONTENT_TYPE, $this->contentType);
+            throw RequestHeaderException::cannotProcess(self::CONTENT_TYPE, $this->contentType);
         }
 
         return self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType];
@@ -58,6 +58,7 @@ class RequestHeaders
     {
         $accepts = explode(',', $this->accept);
 
+        /** string $accept */
         foreach ($accepts as $accept) {
             $type = trim($accept, ' ');
             if (isset(self::CONTENT_TYPE_SERIALIZER_MAP[$type])) {
@@ -65,6 +66,6 @@ class RequestHeaders
             }
         }
 
-        RequestHeaderException::cannotProcess(self::ACCEPT, $this->accept);
+        throw RequestHeaderException::cannotProcess(self::ACCEPT, $this->accept);
     }
 }
