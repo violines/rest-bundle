@@ -15,7 +15,7 @@ class RequestHeaders
 
     private const CONTENT_TYPE_SERIALIZER_MAP = [
         'application/json' => 'json',
-        'text/html' => 'xml'
+        'application/xml' => 'xml'
     ];
 
     private string $accept;
