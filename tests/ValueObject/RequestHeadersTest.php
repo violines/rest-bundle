@@ -97,4 +97,35 @@ class RequestHeadersTest extends TestCase
 
         $this->assertEquals($expected, $headers->responseHeaders());
     }
+
+    /**
+     * @dataProvider providerThrowExceptionIfContentNotNegotiatable
+     */
+    public function testShouldThrowExceptionIfContentNotNegotiatable(array $requestHeaders)
+    {
+        $this->expectException(RequestHeaderException::class);
+
+        $this->request->headers = new HeaderBag($requestHeaders);
+
+        $headers = RequestHeaders::fromRequest($this->request);
+
+        $headers->responseHeaders();
+    }
+
+    public function providerThrowExceptionIfContentNotNegotiatable()
+    {
+        return [
+            [
+                [
+                    'Accept' => '*/*',
+                    'Content-Type' => 'application/json'
+                ]
+            ],
+            [
+                [
+                    'Content-Type' => 'application/json'
+                ]
+            ]
+        ];
+    }
 }

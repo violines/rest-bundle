@@ -29,6 +29,6 @@ class StructReader
             }
         }
 
-        throw new AnnotationNotFoundException();
+        throw AnnotationNotFoundException::struct($className);
     }
 }

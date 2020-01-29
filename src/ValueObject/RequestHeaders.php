@@ -41,7 +41,7 @@ class RequestHeaders
     public function deserializerType(): string
     {
         if (!isset(self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType])) {
-            throw RequestHeaderException::cannotProcess(self::CONTENT_TYPE, $this->contentType);
+            throw RequestHeaderException::valueNotAllowed(self::CONTENT_TYPE, $this->contentType);
         }
 
         return self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType];
@@ -56,6 +56,10 @@ class RequestHeaders
 
     private function negotiateContentType(): string
     {
+        if ('' === $this->accept) {
+            throw RequestHeaderException::expected(self::ACCEPT);
+        }
+
         $accepts = explode(',', $this->accept);
 
         /** string $accept */
@@ -66,6 +70,6 @@ class RequestHeaders
             }
         }
 
-        throw RequestHeaderException::cannotProcess(self::ACCEPT, $this->accept);
+        throw RequestHeaderException::valueNotAllowed(self::ACCEPT, $this->accept);
     }
 }
