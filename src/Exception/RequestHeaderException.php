@@ -6,10 +6,22 @@ namespace TerryApiBundle\Exception;
 
 class RequestHeaderException extends \RuntimeException implements \Throwable
 {
-    public static function cannotProcess(string $key, string $value): self
+    private function __construct(string $message)
+    {
+        $this->message = $message;
+    }
+
+    public static function expected(string $key)
     {
         return new self(
-            sprintf('Value %s of Header %s cannot be processed.', $key, $value)
+            sprintf('The Header: %s is expected.', $key)
+        );
+    }
+
+    public static function valueNotAllowed(string $key, string $value): self
+    {
+        return new self(
+            sprintf('Value: %s of Header: %s is not allowed.', $value, $key)
         );
     }
 }

@@ -85,7 +85,7 @@ class RequestSingleStructResolverTest extends TestCase
         \Phake::when($this->argument)->isVariadic->thenReturn($isVariadic);
 
         if ($throwException) {
-            \Phake::when($this->structReader)->read->thenThrow(new AnnotationNotFoundException());
+            \Phake::when($this->structReader)->read->thenThrow(AnnotationNotFoundException::struct('test'));
         }
 
         $supports = $this->resolver->supports($this->request, $this->argument);
