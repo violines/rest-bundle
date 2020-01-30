@@ -6,6 +6,13 @@
 
         <services>
             <defaults public="false" />
+            <service id="terry_api.event_listener.owned_exception_listener" class="TerryApiBundle\EventListener\OwnedExceptionListener">
+                <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
+                <argument type="service" id="serializer" />
+            </service>
+        </services>
+        <services>
+            <defaults public="false" />
             <service id="terry_api.event_listener.response_transform_listener" class="TerryApiBundle\EventListener\ResponseTransformListener">
                 <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="10" />
                 <argument type="service" id="serializer" />
