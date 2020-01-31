@@ -8,11 +8,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Serializer\SerializerInterface;
+use TerryApiBundle\Exception\RequestHeaderException;
 use TerryApiBundle\Struct\Error;
 use TerryApiBundle\ValueObject\RequestHeaders;
 
 class OwnedExceptionListener
 {
+    private const EXCEPTION_FILTER = [
+        RequestHeaderException::class,
+    ];
+
     private SerializerInterface $serializer;
 
     public function __construct(SerializerInterface $serializer)
@@ -20,9 +25,15 @@ class OwnedExceptionListener
         $this->serializer = $serializer;
     }
 
-    public function handle(ExceptionEvent $event)
+    public function handle(ExceptionEvent $event): void
     {
-        $struct = Error::fromException($event->getThrowable());
+        $exception = $event->getThrowable();
+
+        if (!in_array(get_class($exception), self::EXCEPTION_FILTER)) {
+            return;
+        }
+
+        $struct = Error::fromException($exception);
 
         $response = $this->createResponse(
             $event->getRequest(),
