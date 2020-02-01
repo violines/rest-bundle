@@ -82,20 +82,58 @@ class RequestHeadersTest extends TestCase
         $this->assertEquals('json', $headers->deserializerType());
     }
 
-    public function testShouldReturnResponseHeaders()
+    /**
+     * @dataProvider providerShouldReturnResponseHeaders
+     */
+    public function testShouldReturnResponseHeaders(array $requestHeaders, array $expected)
     {
-        $this->request->headers = new HeaderBag([
-            'Accept' => 'application/pdf, application/xml',
-            'Content-Type' => 'application/json'
-        ]);
+        $this->request->headers = new HeaderBag($requestHeaders);
 
         $headers = RequestHeaders::fromRequest($this->request);
 
-        $expected = [
-            'Content-Type' => 'application/xml',
-        ];
-
         $this->assertEquals($expected, $headers->responseHeaders());
+    }
+
+    public function providerShouldReturnResponseHeaders()
+    {
+        return [
+            [
+                [
+                    'Accept' => 'application/pdf, application/xml',
+                    'Content-Type' => 'application/json'
+                ],
+                [
+                    'Content-Type' => 'application/xml',
+                ]
+            ],
+            [
+                [
+                    'Accept' => '*/*',
+                    'Content-Type' => 'application/xml'
+                ],
+                [
+                    'Content-Type' => 'application/json',
+                ],
+            ],
+            [
+                [
+                    'Accept' => 'random/random, */*',
+                    'Content-Type' => 'application/xml'
+                ],
+                [
+                    'Content-Type' => 'application/json',
+                ],
+            ],
+            [
+                [
+                    'Accept' => 'application/*, random/random',
+                    'Content-Type' => 'application/xml'
+                ],
+                [
+                    'Content-Type' => 'application/json',
+                ],
+            ]
+        ];
     }
 
     /**
@@ -117,12 +155,19 @@ class RequestHeadersTest extends TestCase
         return [
             [
                 [
-                    'Accept' => '*/*',
+                    'Accept' => '',
+                    'Content-Type' => 'application/xml'
+                ],
+            ],
+            [
+                [
+                    'Accept' => 'randomstringButNotEmpty',
                     'Content-Type' => 'application/json'
                 ]
             ],
             [
                 [
+                    'Accept' => 'application/random',
                     'Content-Type' => 'application/json'
                 ]
             ]
