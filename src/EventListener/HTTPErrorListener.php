@@ -30,7 +30,7 @@ class HTTPErrorListener
     {
         $exception = $event->getThrowable();
 
-        if (!$exception instanceof HTTPErrorInterface) { #
+        if (!$exception instanceof HTTPErrorInterface) {
             return;
         }
 
