@@ -23,7 +23,7 @@ class ResponseTransformListener
         StructReader $structReader
     ) {
         $this->serializer = $serializer;
-        $this->structReader =  $structReader;
+        $this->structReader = $structReader;
     }
 
     public function transform(ViewEvent $viewEvent): void

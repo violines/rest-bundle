@@ -61,9 +61,7 @@ class RequestHeaders
 
     private function negotiateContentType(): string
     {
-        $accept = strtr($this->accept, self::CONTENT_TYPE_DEFAULTS_MAP);
-
-        $accepts = explode(',', $accept);
+        $accepts = explode(',', strtr($this->accept, self::CONTENT_TYPE_DEFAULTS_MAP));
 
         /** string $accept */
         foreach ($accepts as $accept) {

@@ -18,8 +18,8 @@ class Error
         $this->message = $message;
     }
 
-    public static function fromException(\Throwable $e): self
+    public static function fromMessage(string $message): self
     {
-        return new self($e->getMessage());
+        return new self($message);
     }
 }

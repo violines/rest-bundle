@@ -8,48 +8,51 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Serializer\SerializerInterface;
-use TerryApiBundle\Exception\RequestHeaderException;
-use TerryApiBundle\Struct\Error;
+use TerryApiBundle\Annotation\StructReader;
+use TerryApiBundle\Exception\HTTPErrorInterface;
 use TerryApiBundle\ValueObject\RequestHeaders;
 
-class OwnedExceptionListener
+class HTTPErrorListener
 {
-    private const EXCEPTION_FILTER = [
-        RequestHeaderException::class,
-    ];
-
     private SerializerInterface $serializer;
 
-    public function __construct(SerializerInterface $serializer)
-    {
+    private StructReader $structReader;
+
+    public function __construct(
+        SerializerInterface $serializer,
+        StructReader $structReader
+    ) {
         $this->serializer = $serializer;
+        $this->structReader = $structReader;
     }
 
     public function handle(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
 
-        if (!in_array(get_class($exception), self::EXCEPTION_FILTER)) {
+        if (!$exception instanceof HTTPErrorInterface) { #
             return;
         }
 
-        $struct = Error::fromException($exception);
-
         $response = $this->createResponse(
             $event->getRequest(),
-            $struct
+            $exception
         );
 
         $event->setResponse($response);
     }
 
-    private function createResponse(Request $request, object $struct): Response
+    private function createResponse(Request $request, HTTPErrorInterface $exception): Response
     {
         $headers = RequestHeaders::fromRequest($request);
 
+        $struct = $exception->getStruct();
+
+        $this->structReader->read(get_class($struct));
+
         return new Response(
             $this->serializer->serialize($struct, $headers->serializerType()),
-            Response::HTTP_BAD_REQUEST,
+            $exception->getHTTPStatusCode(),
             $headers->responseHeaders()
         );
     }
