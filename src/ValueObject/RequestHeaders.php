@@ -13,6 +13,11 @@ class RequestHeaders
     public const ACCEPT = 'Accept';
     public const CONTENT_TYPE = 'Content-Type';
 
+    private const CONTENT_TYPE_DEFAULTS_MAP = [
+        '*/*' => 'application/json',
+        'application/*' => 'application/json'
+    ];
+
     private const CONTENT_TYPE_SERIALIZER_MAP = [
         'application/json' => 'json',
         'application/xml' => 'xml'
@@ -56,11 +61,7 @@ class RequestHeaders
 
     private function negotiateContentType(): string
     {
-        if ('' === $this->accept) {
-            throw RequestHeaderException::expected(self::ACCEPT);
-        }
-
-        $accepts = explode(',', $this->accept);
+        $accepts = explode(',', strtr($this->accept, self::CONTENT_TYPE_DEFAULTS_MAP));
 
         /** string $accept */
         foreach ($accepts as $accept) {

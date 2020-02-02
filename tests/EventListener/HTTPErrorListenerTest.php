@@ -7,15 +7,15 @@ namespace TerryApi\Tests\EventListener;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
-use Symfony\Component\HttpKernel\Event\ViewEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
-use TerryApiBundle\EventListener\ResponseTransformListener;
-use TerryApiBundle\Tests\Stubs\CandyStructStub;
+use TerryApiBundle\EventListener\HTTPErrorListener;
+use TerryApiBundle\Tests\Stubs\HTTPErrorExceptionStub;
 
-class ResponseTransformListenerTest extends TestCase
+class HTTPErrorListenerTest extends TestCase
 {
     /**
      * @Mock
@@ -41,7 +41,7 @@ class ResponseTransformListenerTest extends TestCase
      */
     private \Phake_IMock $structReader;
 
-    private ResponseTransformListener $responseTransformListener;
+    private HTTPErrorListener $httpErrorListener;
 
     public function setUp(): void
     {
@@ -54,49 +54,49 @@ class ResponseTransformListenerTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $this->responseTransformListener = new ResponseTransformListener(
+        $this->httpErrorListener = new HTTPErrorListener(
             $this->serializer,
             $this->structReader
         );
     }
 
-    /**
-     * @dataProvider providerShouldPassControllerResultToSerializer
-     */
-    public function testShouldPassControllerResultToSerializer($given, string $expected)
+    public function testShouldCreateCandyStructStubJson()
     {
-        \Phake::when($this->serializer)->serialize->thenReturn($expected);
+        $expectedJson = '{"weight": 100,"name": "Bonbon","tastesGood": true}';
+        $exception = new HTTPErrorExceptionStub();
 
-        $viewEvent = new ViewEvent(
+        \Phake::when($this->serializer)
+            ->serialize($exception->getStruct(), 'json')
+            ->thenReturn($expectedJson);
+
+        $exceptionEvent = new ExceptionEvent(
             $this->httpKernel,
             $this->request,
             HttpKernelInterface::MASTER_REQUEST,
-            $given
+            $exception
         );
 
-        $this->responseTransformListener->transform($viewEvent);
+        $this->httpErrorListener->handle($exceptionEvent);
 
-        $this->assertEquals($expected, $viewEvent->getResponse()->getContent());
-    }
+        $response = $exceptionEvent->getResponse();
 
-    public function providerShouldPassControllerResultToSerializer()
-    {
-        return [
-            [[new CandyStructStub()], '[]']
-        ];
+        $this->assertJsonStringEqualsJsonString($expectedJson, $response->getContent());
+        $this->assertEquals($exception->getHTTPStatusCode(), $response->getStatusCode());
     }
 
     public function testShouldSkipListener()
     {
-        $viewEvent = new ViewEvent(
+        $exception = new \Exception();
+
+        $exceptionEvent = new ExceptionEvent(
             $this->httpKernel,
             $this->request,
             HttpKernelInterface::MASTER_REQUEST,
-            null
+            $exception
         );
 
-        $this->responseTransformListener->transform($viewEvent);
+        $this->httpErrorListener->handle($exceptionEvent);
 
-        $this->assertNull($viewEvent->getResponse());
+        $this->assertNull($exceptionEvent->getResponse());
     }
 }

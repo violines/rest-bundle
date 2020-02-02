@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Exception;
 
-class RequestHeaderException extends \RuntimeException implements \Throwable
+use Symfony\Component\HttpFoundation\Response;
+use TerryApiBundle\Struct\Error;
+
+class RequestHeaderException extends \RuntimeException implements \Throwable, HTTPErrorInterface
 {
     private function __construct(string $message)
     {
@@ -23,5 +26,15 @@ class RequestHeaderException extends \RuntimeException implements \Throwable
         return new self(
             sprintf('Value: %s of Header: %s is not allowed.', $value, $key)
         );
+    }
+
+    public function getStruct(): Error
+    {
+        return Error::fromMessage($this->message);
+    }
+
+    public function getHTTPStatusCode(): int
+    {
+        return Response::HTTP_BAD_REQUEST;
     }
 }
