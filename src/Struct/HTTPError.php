@@ -9,7 +9,7 @@ use TerryApiBundle\Annotation\Struct;
 /**
  * @Struct
  */
-class Error
+class HTTPError
 {
     public string $message;
 
