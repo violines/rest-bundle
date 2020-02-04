@@ -19,7 +19,7 @@ class ValidationErrorViolation
     private function __construct(ConstraintViolationInterface $violation)
     {
         $this->property = $violation->getPropertyPath();
-        // can be removed after https://github.com/symfony/symfony/pull/34298 was merged:
+        // can be removed after https://github.com/symfony/symfony/pull/34298 was released:
         /** @psalm-suppress PossiblyInvalidPropertyAssignmentValue */
         $this->message = $violation->getMessage();
     }

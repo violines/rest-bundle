@@ -74,7 +74,7 @@ class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
         $violations = $this->validator->validate($arrayOfStructs);
 
         if (0 < count($violations)) {
-            throw new ValidationException($violations);
+            throw ValidationException::create($violations);
         }
 
         foreach ($arrayOfStructs as $struct) {

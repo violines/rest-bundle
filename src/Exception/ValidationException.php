@@ -12,9 +12,14 @@ class ValidationException extends \RuntimeException implements \Throwable, HTTPE
 {
     private ConstraintViolationListInterface $violations;
 
-    public function __construct(ConstraintViolationListInterface $violations)
+    private function __construct(ConstraintViolationListInterface $violations)
     {
         $this->violations = $violations;
+    }
+
+    public static function create(ConstraintViolationListInterface $violations): self
+    {
+        return new self($violations);
     }
 
     public function violations(): ConstraintViolationListInterface
@@ -22,7 +27,7 @@ class ValidationException extends \RuntimeException implements \Throwable, HTTPE
         return $this->violations;
     }
 
-    public function getStruct(): object
+    public function getStruct(): ValidationError
     {
         return ValidationError::fromViolations($this->violations);
     }

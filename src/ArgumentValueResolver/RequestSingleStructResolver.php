@@ -74,7 +74,7 @@ class RequestSingleStructResolver implements ArgumentValueResolverInterface
         $violations = $this->validator->validate($struct);
 
         if (0 < count($violations)) {
-            throw new ValidationException($violations);
+            throw ValidationException::create($violations);
         }
 
         yield $struct;
