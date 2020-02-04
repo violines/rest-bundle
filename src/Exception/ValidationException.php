@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Exception;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use TerryApiBundle\Struct\ValidationError;
 
-class ValidationException extends \RuntimeException implements \Throwable
+class ValidationException extends \RuntimeException implements \Throwable, HTTPErrorInterface
 {
     private ConstraintViolationListInterface $violations;
 
@@ -18,5 +20,15 @@ class ValidationException extends \RuntimeException implements \Throwable
     public function violations(): ConstraintViolationListInterface
     {
         return $this->violations;
+    }
+
+    public function getStruct(): object
+    {
+        return ValidationError::fromViolations($this->violations);
+    }
+
+    public function getHTTPStatusCode(): int
+    {
+        return Response::HTTP_BAD_REQUEST;
     }
 }

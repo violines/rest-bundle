@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TerryApiBundle\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
-use TerryApiBundle\Struct\Error;
+use TerryApiBundle\Struct\HTTPError;
 
 class RequestHeaderException extends \RuntimeException implements \Throwable, HTTPErrorInterface
 {
@@ -28,9 +28,9 @@ class RequestHeaderException extends \RuntimeException implements \Throwable, HT
         );
     }
 
-    public function getStruct(): Error
+    public function getStruct(): HTTPError
     {
-        return Error::fromMessage($this->message);
+        return HTTPError::fromMessage($this->message);
     }
 
     public function getHTTPStatusCode(): int
