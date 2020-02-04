@@ -9,44 +9,26 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class ConstraintViolationListStub implements \Iterator, ConstraintViolationListInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function add(ConstraintViolationInterface $violation)
     {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function addAll($otherList)
     {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function get(int $offset)
     {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function has(int $offset)
     {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function set(int $offset, ConstraintViolationInterface $violation)
     {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function remove(int $offset)
     {
     }
