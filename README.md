@@ -4,6 +4,7 @@ TerryApiBundle is a Symfony Bundle to create REST APIs embedding the symfony/ser
 [![build](https://github.com/simon-schubert/terry-api/workflows/build/badge.svg)](https://github.com/simon-schubert/terry-api)
 [![Code Coverage](https://codecov.io/gh/simon-schubert/terry-api/branch/master/graph/badge.svg)](https://codecov.io/gh/simon-schubert/terry-api)
 [![Software License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Wiki Docs](https://img.shields.io/badge/wiki-docs-B29700)](https://github.com/simon-schubert/terry-api/wiki)
 
 ### Who should use TerryApi?
 Symfony Developers who want to have full controll over what happens inside the controller: after the Arguments of the Controller are resolved and before the Controller returns.
