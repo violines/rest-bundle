@@ -19,6 +19,7 @@ composer require simon-schubert/terry-api
 1. Declare a Struct as type of a controller argument 
 1. Return an instance of a Struct in the controller
 
+### Example of a Controller in your project
 
 ```php
 <?php
@@ -94,6 +95,9 @@ class TerryApiController extends AbstractController
     }
 }
 ```
+
+### Wiki
+For more details please check [TerryApiBundle Wiki](https://github.com/simon-schubert/terry-api/wiki).
 
 ## For development setup
 1. copy docker/php-fpm/.env.dist to docker/php-fpm/.env and adjust to your needs
