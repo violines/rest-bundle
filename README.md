@@ -1,5 +1,5 @@
 ## About
-TerryApiBundle is a Symfony Bundle to create REST APIs embedding the symfony/serializer and symfony/validator and takes care of HTTP related things like e.g. Headers.
+TerryApiBundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, TerryApiBundle handles serialization, validation and HTTP things like headers or status codes.
 
 [![build](https://github.com/simon-schubert/terry-api/workflows/build/badge.svg)](https://github.com/simon-schubert/terry-api)
 [![Code Coverage](https://codecov.io/gh/simon-schubert/terry-api/branch/master/graph/badge.svg)](https://codecov.io/gh/simon-schubert/terry-api)
@@ -15,10 +15,10 @@ composer require simon-schubert/terry-api
 ```
 
 ### How does it work?
-1. Create a PHP Class and add the `@TerryApiBundle\Annotation\Struct` annotation
-1. Use any property annotations from symfony/serializer or symfony/validator inside your Structs
-1. Declare a Struct as type of a controller argument 
-1. Return an instance of a Struct in the controller
+1. Create a PHP class and add the `@TerryApiBundle\Annotation\Struct` annotation
+1. Use any property annotations from symfony/serializer or symfony/validator inside your struct
+1. Declare a struct as type of a controller argument 
+1. Return an instance of a struct in the controller
 
 ### Example of a Controller in your project
 
@@ -100,7 +100,7 @@ class TerryApiController extends AbstractController
 ### Wiki
 For more details please check [TerryApiBundle Wiki](https://github.com/simon-schubert/terry-api/wiki).
 
-## For development setup
+## Development setup
 1. copy docker/php-fpm/.env.dist to docker/php-fpm/.env and adjust to your needs
 1. pull latest image(s): docker-compose pull
 1. build the image(s): docker-compose build
