@@ -132,6 +132,33 @@ class RequestHeadersTest extends TestCase
                 [
                     'Content-Type' => 'application/json',
                 ],
+            ],
+            [
+                [
+                    'Accept' => 'application/xml;q=0.9,application/json;q=1.0,*/*;q=0.8',
+                    'Content-Type' => 'application/xml'
+                ],
+                [
+                    'Content-Type' => 'application/json',
+                ],
+            ],
+            [
+                [
+                    'Accept' => 'application/xml;q=0.9,application/json,*/*;q=0.8',
+                    'Content-Type' => 'application/xml'
+                ],
+                [
+                    'Content-Type' => 'application/json',
+                ],
+            ],
+            [
+                [
+                    'Accept' => 'application/xml;q=0.9,text/html;q=0.8,*/*',
+                    'Content-Type' => 'application/xml'
+                ],
+                [
+                    'Content-Type' => 'application/json',
+                ],
             ]
         ];
     }
