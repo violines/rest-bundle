@@ -61,14 +61,31 @@ class RequestHeaders
 
     private function negotiateContentType(): string
     {
-        $accepts = explode(',', strtr($this->accept, self::CONTENT_TYPE_DEFAULTS_MAP));
+        $accepts = explode(
+            ',',
+            strtr(
+                preg_replace("@[ 　]@u", '', $this->accept),
+                self::CONTENT_TYPE_DEFAULTS_MAP
+            )
+        );
 
-        /** string $accept */
+        $_accepts = [];
         foreach ($accepts as $accept) {
-            $type = trim($accept, ' ');
-            if (isset(self::CONTENT_TYPE_SERIALIZER_MAP[$type])) {
-                return $type;
+            $splited = explode(';', $accept);
+            $key = $splited[1] ?? 'q=1.0';
+            if (
+                array_key_exists($splited[0], self::CONTENT_TYPE_SERIALIZER_MAP)
+                && !array_key_exists($key, $_accepts)
+            ) {
+                $_accepts[$key] = $splited[0];
             }
+        }
+
+        krsort($_accepts);
+
+        /** string $_accept */
+        foreach ($_accepts as $_accept) {
+            return $_accept;
         }
 
         throw RequestHeaderException::valueNotAllowed(self::ACCEPT, $this->accept);
