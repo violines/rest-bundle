@@ -36,38 +36,41 @@ use App\Struct\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TerryApiController extends AbstractController
+class CandyController extends AbstractController
 {
     /**
-     * @Route("", methods={"GET"}, name="terry_api_index")
+     * @Route("/candies", methods={"GET"}, name="candy_list")
      */
-    public function index()
+    public function candyList(): array
     {
         $_candies = [];
 
-        for ($i = 0; $i < 5; ++$i) {
-            $candy = new Candy();
-            $candy->weight = 100;
-            $candy->name = 'No.' . $i . 'Candy';
-            $_candies[] = $candy;
+        foreach ($this->candyRepository->findAll() as $entity) {
+            $_candies[] = $entity->toStruct();
         }
 
         return $_candies;
     }
 
     /**
-     * @Route("/candy/{id}", methods={"GET"}, name="candy")
+     * @Route("/candy/{id}", methods={"GET"}, name="candy_detail")
      */
-    public function candyDetail(int $id)
+    public function candyDetail(int $id): Candy
     {
-        return new Candy();
+        $entity = $this->candyRepository->findOneBy(['id' => $id]);
+
+        if($entity === null){
+            throw NotFoundException::create();
+        }
+
+        return $entity->toStruct();
     }
 
 
     /**
-     * @Route("/candy", methods={"POST"}, name="terry_api_candy_save")
+     * @Route("/candy", methods={"POST"}, name="candy_save")
      */
-    public function candySave(Candy $candy)
+    public function candySave(Candy $candy): Ok
     {
         // do business logic with Candy
 
@@ -75,9 +78,9 @@ class TerryApiController extends AbstractController
     }
 
     /**
-     * @Route("/candies", methods={"POST"}, name="terry_api_candies_save")
+     * @Route("/candies", methods={"POST"}, name="candies_save")
      */
-    public function candiesSave(Candy ...$candies)
+    public function candiesSave(Candy ...$candies): Ok
     {
         // do business logic with Candy[]
 
@@ -86,13 +89,13 @@ class TerryApiController extends AbstractController
 
 
     /**
-     * @Route("/admin", methods={"POST"}, name="terry_api_admin")
+     * @Route("/admin", methods={"POST"}, name="admin")
      */
     public function admin(User $user)
     {
         // verify user
 
-        throw new AuthenticationFailedException();
+        throw AuthenticationFailedException::create();
     }
 }
 ```
