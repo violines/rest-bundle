@@ -20,6 +20,9 @@ composer require simon-schubert/terry-api
 1. Declare a struct as type of a controller argument 
 1. Return an instance of a struct in the controller
 
+### Show Case
+You can find a sample of usage under: https://github.com/simon-schubert/terry-api-show.
+
 ### Example of a Controller in your project
 
 ```php
@@ -59,7 +62,7 @@ class CandyController extends AbstractController
     {
         $entity = $this->candyRepository->findOneBy(['id' => $id]);
 
-        if($entity === null){
+        if (null === $candy) {
             throw NotFoundException::create();
         }
 
