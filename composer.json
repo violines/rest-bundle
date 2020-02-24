@@ -1,7 +1,7 @@
 {
     "name": "simon-schubert/terry-api",
     "type": "symfony-bundle",
-    "description": "TerryApiBundle is a Symfony Bundle to create REST APIs embedding the symfony/serializer and symfony/validator and takes care of HTTP related things like e.g. Headers.",
+    "description": "TerryApiBundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, TerryApiBundle handles serialization, validation and HTTP things like headers or status codes.",
     "license": "MIT",
     "require": {
         "php": "7.4.*",
