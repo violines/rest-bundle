@@ -36,10 +36,9 @@ use App\Exception\AuthenticationFailedException;
 use App\Struct\Candy;
 use App\Struct\Ok;
 use App\Struct\User;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CandyController extends AbstractController
+class CandyController
 {
     /**
      * @Route("/candies", methods={"GET"}, name="candy_list")
