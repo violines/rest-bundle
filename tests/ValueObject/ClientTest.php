@@ -8,9 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use TerryApiBundle\Exception\RequestHeaderException;
-use TerryApiBundle\ValueObject\RequestHeaders;
+use TerryApiBundle\ValueObject\Client;
 
-class RequestHeadersTest extends TestCase
+class ClientTest extends TestCase
 {
     /**
      * @Mock
@@ -32,7 +32,7 @@ class RequestHeadersTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $headers = RequestHeaders::fromRequest($this->request);
+        $headers = Client::fromRequest($this->request);
 
         $this->assertEquals('xml', $headers->serializerType());
     }
@@ -46,7 +46,7 @@ class RequestHeadersTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = RequestHeaders::fromRequest($this->request);
+        $headers = Client::fromRequest($this->request);
 
         $headers->deserializerType();
     }
@@ -77,7 +77,7 @@ class RequestHeadersTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $headers = RequestHeaders::fromRequest($this->request);
+        $headers = Client::fromRequest($this->request);
 
         $this->assertEquals('json', $headers->deserializerType());
     }
@@ -89,7 +89,7 @@ class RequestHeadersTest extends TestCase
     {
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = RequestHeaders::fromRequest($this->request);
+        $headers = Client::fromRequest($this->request);
 
         $this->assertEquals($expected, $headers->responseHeaders());
     }
@@ -172,7 +172,7 @@ class RequestHeadersTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = RequestHeaders::fromRequest($this->request);
+        $headers = Client::fromRequest($this->request);
 
         $headers->responseHeaders();
     }

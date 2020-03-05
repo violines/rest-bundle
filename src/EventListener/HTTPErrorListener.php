@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\HTTPErrorInterface;
-use TerryApiBundle\ValueObject\RequestHeaders;
+use TerryApiBundle\ValueObject\Client;
 
 class HTTPErrorListener
 {
@@ -44,16 +44,16 @@ class HTTPErrorListener
 
     private function createResponse(Request $request, HTTPErrorInterface $exception): Response
     {
-        $headers = RequestHeaders::fromRequest($request);
+        $client = Client::fromRequest($request);
 
         $struct = $exception->getStruct();
 
         $this->structReader->read(get_class($struct));
 
         return new Response(
-            $this->serializer->serialize($struct, $headers->serializerType()),
+            $this->serializer->serialize($struct, $client->serializerType()),
             $exception->getHTTPStatusCode(),
-            $headers->responseHeaders()
+            $client->responseHeaders()
         );
     }
 }
