@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
-use TerryApiBundle\ValueObject\RequestHeaders;
+use TerryApiBundle\ValueObject\Client;
 
 class ResponseTransformListener
 {
@@ -54,12 +54,12 @@ class ResponseTransformListener
 
     private function createResponse(Request $request, $controllerResult): Response
     {
-        $headers = RequestHeaders::fromRequest($request);
+        $client = Client::fromRequest($request);
 
         return new Response(
-            $this->serializer->serialize($controllerResult, $headers->serializerType()),
+            $this->serializer->serialize($controllerResult, $client->serializerType()),
             Response::HTTP_OK,
-            $headers->responseHeaders()
+            $client->responseHeaders()
         );
     }
 }

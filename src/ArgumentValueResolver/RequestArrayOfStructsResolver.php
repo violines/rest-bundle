@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
-use TerryApiBundle\ValueObject\RequestHeaders;
+use TerryApiBundle\ValueObject\Client;
 
 class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
 {
@@ -56,7 +56,7 @@ class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
     {
         $className = $argument->getType();
         $content = $request->getContent();
-        $headers = RequestHeaders::fromRequest($request);
+        $client = Client::fromRequest($request);
 
         if (
             false === $argument->isVariadic() || null === $className
@@ -68,7 +68,7 @@ class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
         $arrayOfStructs = $this->serializer->deserialize(
             $content,
             $className . '[]',
-            $headers->deserializerType()
+            $client->deserializerType()
         );
 
         $violations = $this->validator->validate($arrayOfStructs);
