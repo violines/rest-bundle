@@ -7,7 +7,7 @@ namespace TerryApiBundle\Tests\Stubs;
 use Symfony\Component\HttpFoundation\Request;
 use TerryApiBundle\ValueObject\AbstractClient;
 
-class Client extends AbstractClient
+class ClientStub extends AbstractClient
 {
     public static function fromRequest(Request $request): self
     {
