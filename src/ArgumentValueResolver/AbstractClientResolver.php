@@ -8,9 +8,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use TerryApiBundle\ValueObject\AbstractClient;
+use TerryApiBundle\ValueObject\HTTPServerDefaults;
 
 class AbstractClientResolver implements ArgumentValueResolverInterface
 {
+    private HTTPServerDefaults $httpServerDefaults;
+
+    public function __construct(
+        HTTPServerDefaults $httpServerDefaults
+    ) {
+        $this->httpServerDefaults = $httpServerDefaults;
+    }
+
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         $className = $argument->getType();
@@ -32,6 +41,6 @@ class AbstractClientResolver implements ArgumentValueResolverInterface
             throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
         }
 
-        yield $className::fromRequest($request);
+        yield $className::fromRequest($request, $this->httpServerDefaults);
     }
 }

@@ -13,9 +13,12 @@ use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\ValueObject\Client;
+use TerryApiBundle\ValueObject\HTTPServerDefaults;
 
 class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
 {
+    private HTTPServerDefaults $httpServerDefaults;
+
     private SerializerInterface $serializer;
 
     private StructReader $structReader;
@@ -23,10 +26,12 @@ class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
     private ValidatorInterface $validator;
 
     public function __construct(
+        HTTPServerDefaults $httpServerDefaults,
         SerializerInterface $serializer,
         StructReader $structReader,
         ValidatorInterface $validator
     ) {
+        $this->httpServerDefaults = $httpServerDefaults;
         $this->serializer = $serializer;
         $this->structReader =  $structReader;
         $this->validator = $validator;
@@ -56,7 +61,7 @@ class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
     {
         $className = $argument->getType();
         $content = $request->getContent();
-        $client = Client::fromRequest($request);
+        $client = Client::fromRequest($request, $this->httpServerDefaults);
 
         if (
             false === $argument->isVariadic() || null === $className

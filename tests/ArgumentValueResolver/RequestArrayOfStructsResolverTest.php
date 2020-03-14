@@ -6,7 +6,6 @@ namespace TerryApi\Tests\ArgumentValueResolver;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -19,6 +18,7 @@ use TerryApiBundle\ArgumentValueResolver\RequestArrayOfStructsResolver;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\Tests\Stubs\CandyStructStub;
+use TerryApiBundle\ValueObject\HTTPServerDefaults;
 
 class RequestArrayOfStructsResolverTest extends TestCase
 {
@@ -65,6 +65,7 @@ class RequestArrayOfStructsResolverTest extends TestCase
         ]);
 
         $this->resolver = new RequestArrayOfStructsResolver(
+            new HTTPServerDefaults(),
             $this->serializer,
             $this->structReader,
             $this->validator

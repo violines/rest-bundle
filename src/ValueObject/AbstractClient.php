@@ -37,7 +37,10 @@ abstract class AbstractClient
         $this->contentType = (string) $headers->get(self::CONTENT_TYPE, '');
     }
 
-    abstract public static function fromRequest(Request $request): self;
+    abstract public static function fromRequest(
+        Request $request,
+        HTTPServerDefaults $httpServerDefaults
+    ): self;
 
     protected function negotiate(
         string $subject,

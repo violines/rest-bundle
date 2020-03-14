@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use TerryApiBundle\ArgumentValueResolver\AbstractClientResolver;
 use TerryApiBundle\Tests\Stubs\ClientStub;
+use TerryApiBundle\ValueObject\HTTPServerDefaults;
 
 class AbstractClientResolverTest extends TestCase
 {
@@ -31,7 +32,7 @@ class AbstractClientResolverTest extends TestCase
 
         \Phake::initAnnotations($this);
 
-        $this->resolver = new AbstractClientResolver();
+        $this->resolver = new AbstractClientResolver(new HTTPServerDefaults());
     }
 
     /**

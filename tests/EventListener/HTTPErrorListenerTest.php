@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\EventListener\HTTPErrorListener;
 use TerryApiBundle\Tests\Stubs\HTTPErrorExceptionStub;
+use TerryApiBundle\ValueObject\HTTPServerDefaults;
 
 class HTTPErrorListenerTest extends TestCase
 {
@@ -55,6 +56,7 @@ class HTTPErrorListenerTest extends TestCase
         ]);
 
         $this->httpErrorListener = new HTTPErrorListener(
+            new HTTPServerDefaults(),
             $this->serializer,
             $this->structReader
         );

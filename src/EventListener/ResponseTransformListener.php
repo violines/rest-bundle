@@ -11,17 +11,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\ValueObject\Client;
+use TerryApiBundle\ValueObject\HTTPServerDefaults;
 
 class ResponseTransformListener
 {
+    private HTTPServerDefaults $httpServerDefaults;
+
     private SerializerInterface $serializer;
 
     private StructReader $structReader;
 
     public function __construct(
+        HTTPServerDefaults $httpServerDefaults,
         SerializerInterface $serializer,
         StructReader $structReader
     ) {
+        $this->httpServerDefaults = $httpServerDefaults;
         $this->serializer = $serializer;
         $this->structReader = $structReader;
     }
@@ -54,7 +59,7 @@ class ResponseTransformListener
 
     private function createResponse(Request $request, $controllerResult): Response
     {
-        $client = Client::fromRequest($request);
+        $client = Client::fromRequest($request, $this->httpServerDefaults);
 
         return new Response(
             $this->serializer->serialize($controllerResult, $client->serializerType()),

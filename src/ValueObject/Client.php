@@ -9,33 +9,39 @@ use TerryApiBundle\Exception\RequestHeaderException;
 
 class Client extends AbstractClient
 {
-    private const CONTENT_TYPE_DEFAULTS_MAP = [
-        '*/*' => 'application/json',
-        'application/*' => 'application/json'
-    ];
+    private const CONTENT_TYPE_DEFAULT_KEYS = ['*/*', 'application/*'];
 
-    private const CONTENT_TYPE_SERIALIZER_MAP = [
-        'application/json' => 'json',
-        'application/xml' => 'xml'
-    ];
+    private array $contentTypeDefaultsMap = [];
 
-    public static function fromRequest(Request $request): self
-    {
-        return new self($request->headers);
+    private array $contentTypeSerializerMap = [];
+
+    public static function fromRequest(
+        Request $request,
+        HTTPServerDefaults $httpServerDefaults
+    ): self {
+        $client = new self($request->headers);
+
+        foreach (self::CONTENT_TYPE_DEFAULT_KEYS as $key) {
+            $client->contentTypeDefaultsMap[$key] = $httpServerDefaults->getContentTypeDefault();
+        }
+
+        $client->contentTypeSerializerMap += $httpServerDefaults->getContentTypeSerializerMap();
+
+        return $client;
     }
 
     public function serializerType(): string
     {
-        return self::CONTENT_TYPE_SERIALIZER_MAP[$this->negotiateContentType()];
+        return $this->contentTypeSerializerMap[$this->negotiateContentType()];
     }
 
     public function deserializerType(): string
     {
-        if (!isset(self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType])) {
+        if (!isset($this->contentTypeSerializerMap[$this->contentType])) {
             throw RequestHeaderException::valueNotAllowed(self::CONTENT_TYPE, $this->contentType);
         }
 
-        return self::CONTENT_TYPE_SERIALIZER_MAP[$this->contentType];
+        return $this->contentTypeSerializerMap[$this->contentType];
     }
 
     public function responseHeaders(): array
@@ -50,8 +56,8 @@ class Client extends AbstractClient
         return $this->negotiate(
             $this->accept,
             self::ACCEPT,
-            self::CONTENT_TYPE_DEFAULTS_MAP,
-            array_keys(self::CONTENT_TYPE_SERIALIZER_MAP)
+            $this->contentTypeDefaultsMap,
+            array_keys($this->contentTypeSerializerMap)
         );
     }
 }
