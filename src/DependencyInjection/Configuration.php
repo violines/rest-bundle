@@ -61,8 +61,30 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
+                ->end()
+                // http_server_defaults
+                ->arrayNode('http_server_defaults')
+                ->addDefaultsIfNotSet()
+                    ->children()
+                        // format
+                        ->arrayNode('format')
+                            ->children()
+                                // json
+                                ->arrayNode('json')
+                                    ->scalarPrototype()->end()
+                                ->end()
+                                // xml
+                                ->arrayNode('xml')
+                                    ->scalarPrototype()->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->scalarNode('format_default')->defaultNull()
+                        ->end()
+                    ->end()
                 ->end();
 
+                
             return $treeBuilder;
     }
 }

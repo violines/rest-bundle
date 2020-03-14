@@ -6,35 +6,35 @@ namespace TerryApiBundle\ValueObject;
 
 class HTTPServerDefaults
 {
-    private const CONTENT_TYPE_DEFAULT_DEFAULT = 'application/json';
+    private const FORMAT_DEFAULT_DEFAULT = 'application/json';
 
-    private const CONTENT_TYPE_SERIALIZER_MAP_DEFAULT = [
+    private const FORMAT_SERIALIZER_MAP_DEFAULT = [
         'application/json' => 'json',
         'application/xml' => 'xml'
     ];
 
-    private string $contentTypeDefault;
+    private string $formatDefault;
 
-    private array $contentTypeSerializerMap;
+    private array $formatSerializerMap;
 
     public function __construct(
-        ?string $contentTypeDefault = null,
-        ?array $contentTypeSerializerMap = null
+        ?string $formatDefault = null,
+        ?array $formatSerializerMap = null
     ) {
-        $this->contentTypeDefault = $contentTypeDefault ?? self::CONTENT_TYPE_DEFAULT_DEFAULT;
-        $this->contentTypeSerializerMap = array_replace(
-            self::CONTENT_TYPE_SERIALIZER_MAP_DEFAULT,
-            (array) $contentTypeSerializerMap
+        $this->formatDefault = $formatDefault ?? self::FORMAT_DEFAULT_DEFAULT;
+        $this->formatSerializerMap = array_replace(
+            self::FORMAT_SERIALIZER_MAP_DEFAULT,
+            (array) $formatSerializerMap
         );
     }
 
-    public function getContentTypeDefault(): string
+    public function getFormatDefault(): string
     {
-        return $this->contentTypeDefault;
+        return $this->formatDefault;
     }
 
-    public function getContentTypeSerializerMap(): array
+    public function getFormatSerializerMap(): array
     {
-        return $this->contentTypeSerializerMap;
+        return $this->formatSerializerMap;
     }
 }
