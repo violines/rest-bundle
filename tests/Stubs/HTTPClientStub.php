@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace TerryApiBundle\Tests\Stubs;
 
 use Symfony\Component\HttpFoundation\Request;
-use TerryApiBundle\ValueObject\AbstractClient;
+use TerryApiBundle\ValueObject\AbstractHTTPClient;
+use TerryApiBundle\ValueObject\HTTPServer;
 
-class ClientStub extends AbstractClient
+class HTTPClientStub extends AbstractHTTPClient
 {
-    public static function fromRequest(Request $request): self
+    public static function fromRequest(Request $request, HTTPServer $httpServer): self
     {
-        return new self($request->headers);
+        return new self($request->headers, $httpServer);
     }
 
     public function get(string $property)

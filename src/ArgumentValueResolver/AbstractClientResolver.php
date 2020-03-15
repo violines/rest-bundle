@@ -7,10 +7,19 @@ namespace TerryApiBundle\ArgumentValueResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use TerryApiBundle\ValueObject\AbstractClient;
+use TerryApiBundle\ValueObject\AbstractHTTPClient;
+use TerryApiBundle\ValueObject\HTTPServer;
 
 class AbstractClientResolver implements ArgumentValueResolverInterface
 {
+    private HTTPServer $httpServer;
+
+    public function __construct(
+        HTTPServer $httpServer
+    ) {
+        $this->httpServer = $httpServer;
+    }
+
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         $className = $argument->getType();
@@ -21,7 +30,7 @@ class AbstractClientResolver implements ArgumentValueResolverInterface
 
         $reflection = new \ReflectionClass($className);
 
-        return $reflection->isSubclassOf(AbstractClient::class);
+        return $reflection->isSubclassOf(AbstractHTTPClient::class);
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument)
@@ -32,6 +41,6 @@ class AbstractClientResolver implements ArgumentValueResolverInterface
             throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
         }
 
-        yield $className::fromRequest($request);
+        yield $className::fromRequest($request, $this->httpServer);
     }
 }

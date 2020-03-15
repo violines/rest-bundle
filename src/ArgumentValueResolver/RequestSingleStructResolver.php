@@ -12,10 +12,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
-use TerryApiBundle\ValueObject\Client;
+use TerryApiBundle\ValueObject\HTTPClient;
+use TerryApiBundle\ValueObject\HTTPServer;
 
 class RequestSingleStructResolver implements ArgumentValueResolverInterface
 {
+    private HTTPServer $httpServer;
+
     private SerializerInterface $serializer;
 
     private StructReader $structReader;
@@ -23,10 +26,12 @@ class RequestSingleStructResolver implements ArgumentValueResolverInterface
     private ValidatorInterface $validator;
 
     public function __construct(
+        HTTPServer $httpServer,
         SerializerInterface $serializer,
         StructReader $structReader,
         ValidatorInterface $validator
     ) {
+        $this->httpServer = $httpServer;
         $this->serializer = $serializer;
         $this->structReader =  $structReader;
         $this->validator = $validator;
@@ -56,7 +61,7 @@ class RequestSingleStructResolver implements ArgumentValueResolverInterface
     {
         $className = $argument->getType();
         $content = $request->getContent();
-        $client = Client::fromRequest($request);
+        $client = HTTPClient::fromRequest($request, $this->httpServer);
 
         if (
             true === $argument->isVariadic() || null === $className

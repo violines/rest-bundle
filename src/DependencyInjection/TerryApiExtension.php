@@ -14,11 +14,14 @@ class TerryApiExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('factory.xml');
         $loader->load('annotation.xml');
         $loader->load('listener.xml');
         $loader->load('resolver.xml');
 
         $processedConfigs = $this->processConfiguration(new Configuration(), $configs);
+
+        $container->getDefinition('terry_api.factory.http_server_factory')->replaceArgument(0, $processedConfigs['http_server'] ?? []);
 
         if (false === $processedConfigs['event_listener']['http_error_listener']['enable']) {
             $container->removeDefinition('terry_api.event_listener.http_error_listener');

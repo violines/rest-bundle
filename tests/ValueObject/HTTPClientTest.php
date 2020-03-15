@@ -8,9 +8,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use TerryApiBundle\Exception\RequestHeaderException;
-use TerryApiBundle\ValueObject\Client;
+use TerryApiBundle\ValueObject\HTTPClient;
+use TerryApiBundle\ValueObject\HTTPServer;
 
-class ClientTest extends TestCase
+class HTTPClientTest extends TestCase
 {
     /**
      * @Mock
@@ -32,7 +33,7 @@ class ClientTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $headers = Client::fromRequest($this->request);
+        $headers = HTTPClient::fromRequest($this->request, new HTTPServer());
 
         $this->assertEquals('xml', $headers->serializerType());
     }
@@ -46,7 +47,7 @@ class ClientTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = Client::fromRequest($this->request);
+        $headers = HTTPClient::fromRequest($this->request, new HTTPServer());
 
         $headers->deserializerType();
     }
@@ -77,7 +78,7 @@ class ClientTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $headers = Client::fromRequest($this->request);
+        $headers = HTTPClient::fromRequest($this->request, new HTTPServer());
 
         $this->assertEquals('json', $headers->deserializerType());
     }
@@ -89,7 +90,7 @@ class ClientTest extends TestCase
     {
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = Client::fromRequest($this->request);
+        $headers = HTTPClient::fromRequest($this->request, new HTTPServer());
 
         $this->assertEquals($expected, $headers->responseHeaders());
     }
@@ -172,7 +173,7 @@ class ClientTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = Client::fromRequest($this->request);
+        $headers = HTTPClient::fromRequest($this->request, new HTTPServer());
 
         $headers->responseHeaders();
     }

@@ -8,8 +8,11 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use TerryApiBundle\Tests\Stubs\ClientStub;
+use TerryApiBundle\Tests\Stubs\HTTPClientStub;
+use TerryApiBundle\ValueObject\HTTPServer;
+use TerryApiBundle\ValueObject\HTTPServerDefaults;
 
-class AbstactClientTest extends TestCase
+class AbstactHTTPClientTest extends TestCase
 {
     /**
      * @Mock
@@ -28,7 +31,7 @@ class AbstactClientTest extends TestCase
     {
         $this->request->headers = new HeaderBag(self::HEADERS);
 
-        $clientMock = ClientStub::fromRequest($this->request);
+        $clientMock = HTTPClientStub::fromRequest($this->request, new HTTPServer());
 
         $this->assertEquals('application/pdf, application/xml', $clientMock->get('accept'));
         $this->assertEquals('ISO-8859-1,utf-8;q=0.7,*;q=0.7', $clientMock->get('acceptCharset'));
@@ -41,7 +44,7 @@ class AbstactClientTest extends TestCase
     {
         $this->request->headers = new HeaderBag(self::HEADERS);
 
-        $clientMock = ClientStub::fromRequest($this->request);
+        $clientMock = HTTPClientStub::fromRequest($this->request, new HTTPServer());
 
         $this->assertEquals('application/xml', $clientMock->negotiateProperty('application/pdf, application/xml', 'accept', [], ['application/xml']));
         $this->assertEquals('utf-8', $clientMock->negotiateProperty('ISO-8859-1;q=0.7,utf-8,*;q=0.7', 'acceptCharset', [], ['ISO-8859-1', 'utf-8']));
