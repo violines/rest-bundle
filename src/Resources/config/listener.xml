@@ -8,14 +8,13 @@
             <defaults public="false" />
             <service id="terry_api.event_listener.http_error_listener" class="TerryApiBundle\EventListener\HTTPErrorListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
-                <argument type="expression">service("terry_api.factory.http_server_defaults_factory").fromConfig()</argument>
+                <argument type="expression">service("terry_api.factory.http_server_factory").fromConfig()</argument>
                 <argument type="service" id="serializer" />
                 <argument type="service" id="terry_api.annotation.struct_reader" />
             </service>
-            <defaults public="false" />
             <service id="terry_api.event_listener.response_transform_listener" class="TerryApiBundle\EventListener\ResponseTransformListener">
                 <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="10" />
-                <argument type="expression">service("terry_api.factory.http_server_defaults_factory").fromConfig()</argument>
+                <argument type="expression">service("terry_api.factory.http_server_factory").fromConfig()</argument>
                 <argument type="service" id="serializer" />
                 <argument type="service" id="terry_api.annotation.struct_reader" />
             </service>
