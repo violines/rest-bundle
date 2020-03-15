@@ -7,7 +7,7 @@ namespace TerryApiBundle\ValueObject;
 use Symfony\Component\HttpFoundation\Request;
 use TerryApiBundle\Exception\RequestHeaderException;
 
-class Client extends AbstractClient
+class HTTPClient extends AbstractHTTPClient
 {
     private const CONTENT_TYPE_DEFAULT_KEYS = ['*/*', 'application/*'];
 
@@ -17,20 +17,20 @@ class Client extends AbstractClient
 
     public static function fromRequest(
         Request $request,
-        HTTPServerDefaults $httpServerDefaults
+        HTTPServer $httpServer
     ): self {
-        $client = new self($request->headers);
-        $client->setDefaults($httpServerDefaults);
+        $client = new self($request->headers, $httpServer);
+        $client->setHttpServerDefaults();
         return $client;
     }
 
-    public function setDefaults(HTTPServerDefaults $httpServerDefaults): void
+    public function setHttpServerDefaults(): void
     {
         foreach (self::CONTENT_TYPE_DEFAULT_KEYS as $key) {
-            $this->contentTypeDefaultsMap[$key] = $httpServerDefaults->getFormatDefault();
+            $this->contentTypeDefaultsMap[$key] = $this->httpServer->getFormatDefault();
         }
 
-        $this->formatSerializerMap += $httpServerDefaults->getFormatSerializerMap();
+        $this->formatSerializerMap += $this->httpServer->getFormatSerializerMap();
     }
 
     public function serializerType(): string

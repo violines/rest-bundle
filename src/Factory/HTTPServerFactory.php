@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Factory;
 
-use TerryApiBundle\ValueObject\HTTPServerDefaults;
+use TerryApiBundle\ValueObject\HTTPServer;
 
-class HTTPServerDefaultsFactory
+class HTTPServerFactory
 {
     private array $config;
 
@@ -15,9 +15,9 @@ class HTTPServerDefaultsFactory
         $this->config = $config;
     }
 
-    public function fromConfig(): HTTPServerDefaults
+    public function fromConfig(): HTTPServer
     {
-        $configformats = $this->config['format'] ?? null;
+        $configformats = $this->config['formats'] ?? null;
         $configformatDefault = $this->config['format_default'] ?? null;
 
         $_formatSerializerMap = [];
@@ -28,6 +28,6 @@ class HTTPServerDefaultsFactory
             }
         }
 
-        return new HTTPServerDefaults($configformatDefault, $_formatSerializerMap);
+        return new HTTPServer($configformatDefault, $_formatSerializerMap);
     }
 }

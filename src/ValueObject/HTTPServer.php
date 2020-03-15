@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\ValueObject;
 
-class HTTPServerDefaults
+class HTTPServer
 {
     private const FORMAT_DEFAULT_DEFAULT = 'application/json';
 

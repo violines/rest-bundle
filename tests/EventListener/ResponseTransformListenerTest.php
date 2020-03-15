@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\EventListener\ResponseTransformListener;
 use TerryApiBundle\Tests\Stubs\CandyStructStub;
-use TerryApiBundle\ValueObject\HTTPServerDefaults;
+use TerryApiBundle\ValueObject\HTTPServer;
 
 class ResponseTransformListenerTest extends TestCase
 {
@@ -56,7 +56,7 @@ class ResponseTransformListenerTest extends TestCase
         ]);
 
         $this->responseTransformListener = new ResponseTransformListener(
-            new HTTPServerDefaults(),
+            new HTTPServer(),
             $this->serializer,
             $this->structReader
         );

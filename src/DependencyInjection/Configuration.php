@@ -62,12 +62,12 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-                // http_server_defaults
-                ->arrayNode('http_server_defaults')
+                // http_server
+                ->arrayNode('http_server')
                 ->addDefaultsIfNotSet()
                     ->children()
-                        // format
-                        ->arrayNode('format')
+                        // formats
+                        ->arrayNode('formats')
                             ->children()
                                 // json
                                 ->arrayNode('json')
@@ -83,7 +83,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end();
-
                 
             return $treeBuilder;
     }

@@ -21,7 +21,7 @@ class TerryApiExtension extends Extension
 
         $processedConfigs = $this->processConfiguration(new Configuration(), $configs);
 
-        $container->getDefinition('terry_api.factory.http_server_defaults_factory')->replaceArgument(0, $processedConfigs['http_server_defaults'] ?? []);
+        $container->getDefinition('terry_api.factory.http_server_factory')->replaceArgument(0, $processedConfigs['http_server'] ?? []);
 
         if (false === $processedConfigs['event_listener']['http_error_listener']['enable']) {
             $container->removeDefinition('terry_api.event_listener.http_error_listener');

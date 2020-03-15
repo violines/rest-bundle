@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use TerryApiBundle\Exception\RequestHeaderException;
 
-abstract class AbstractClient
+abstract class AbstractHTTPClient
 {
     public const ACCEPT = 'Accept';
     public const ACCEPT_CHARSET = 'Accept-Charset';
@@ -28,18 +28,21 @@ abstract class AbstractClient
     protected string $acceptLanguage;
     protected string $contentType;
 
-    protected function __construct(HeaderBag $headers)
+    protected HTTPServer $httpServer;
+
+    protected function __construct(HeaderBag $headers, HTTPServer $httpServer)
     {
         $this->accept = (string) $headers->get(self::ACCEPT, '');
         $this->acceptCharset = (string) $headers->get(self::ACCEPT_CHARSET, '');
         $this->acceptEncoding = (string) $headers->get(self::ACCEPT_ENCODING, '');
         $this->acceptLanguage = (string) $headers->get(self::ACCEPT_LANGUAGE, '');
         $this->contentType = (string) $headers->get(self::CONTENT_TYPE, '');
+        $this->httpServer = $httpServer;
     }
 
     abstract public static function fromRequest(
         Request $request,
-        HTTPServerDefaults $httpServerDefaults
+        HTTPServer $httpServer
     ): self;
 
     protected function negotiate(

@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use TerryApiBundle\ArgumentValueResolver\AbstractClientResolver;
 use TerryApiBundle\Tests\Stubs\ClientStub;
-use TerryApiBundle\ValueObject\HTTPServerDefaults;
+use TerryApiBundle\Tests\Stubs\HTTPClientStub;
+use TerryApiBundle\ValueObject\HTTPServer;
 
 class AbstractClientResolverTest extends TestCase
 {
@@ -32,7 +33,7 @@ class AbstractClientResolverTest extends TestCase
 
         \Phake::initAnnotations($this);
 
-        $this->resolver = new AbstractClientResolver(new HTTPServerDefaults());
+        $this->resolver = new AbstractClientResolver(new HTTPServer());
     }
 
     /**
@@ -51,14 +52,14 @@ class AbstractClientResolverTest extends TestCase
         $result = $this->resolver->resolve($this->request, $this->argument);
 
         foreach ($result as $item) {
-            $this->assertTrue($item instanceof ClientStub);
+            $this->assertTrue($item instanceof HTTPClientStub);
         }
     }
 
     public function providerShouldYieldClient(): array
     {
         return [
-            [ClientStub::class],
+            [HTTPClientStub::class],
         ];
     }
 

@@ -18,7 +18,7 @@ use TerryApiBundle\ArgumentValueResolver\RequestArrayOfStructsResolver;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\Tests\Stubs\CandyStructStub;
-use TerryApiBundle\ValueObject\HTTPServerDefaults;
+use TerryApiBundle\ValueObject\HTTPServer;
 
 class RequestArrayOfStructsResolverTest extends TestCase
 {
@@ -65,7 +65,7 @@ class RequestArrayOfStructsResolverTest extends TestCase
         ]);
 
         $this->resolver = new RequestArrayOfStructsResolver(
-            new HTTPServerDefaults(),
+            new HTTPServer(),
             $this->serializer,
             $this->structReader,
             $this->validator

@@ -10,23 +10,23 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\HTTPErrorInterface;
-use TerryApiBundle\ValueObject\Client;
-use TerryApiBundle\ValueObject\HTTPServerDefaults;
+use TerryApiBundle\ValueObject\HTTPClient;
+use TerryApiBundle\ValueObject\HTTPServer;
 
 class HTTPErrorListener
 {
-    private HTTPServerDefaults $httpServerDefaults;
+    private HTTPServer $httpServer;
 
     private SerializerInterface $serializer;
 
     private StructReader $structReader;
 
     public function __construct(
-        HTTPServerDefaults $httpServerDefaults,
+        HTTPServer $httpServer,
         SerializerInterface $serializer,
         StructReader $structReader
     ) {
-        $this->httpServerDefaults = $httpServerDefaults;
+        $this->httpServer = $httpServer;
         $this->serializer = $serializer;
         $this->structReader = $structReader;
     }
@@ -49,7 +49,7 @@ class HTTPErrorListener
 
     private function createResponse(Request $request, HTTPErrorInterface $exception): Response
     {
-        $client = Client::fromRequest($request, $this->httpServerDefaults);
+        $client = HTTPClient::fromRequest($request, $this->httpServer);
 
         $struct = $exception->getStruct();
 
