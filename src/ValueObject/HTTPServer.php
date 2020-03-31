@@ -8,10 +8,7 @@ class HTTPServer
 {
     private const FORMAT_DEFAULT_DEFAULT = 'application/json';
 
-    private const FORMAT_SERIALIZER_MAP_DEFAULT = [
-        'application/json' => 'json',
-        'application/xml' => 'xml'
-    ];
+    private const FORMAT_SERIALIZER_MAP_DEFAULT = ['application/json' => 'json'];
 
     private string $formatDefault;
 
@@ -22,10 +19,7 @@ class HTTPServer
         ?array $formatSerializerMap = null
     ) {
         $this->formatDefault = $formatDefault ?? self::FORMAT_DEFAULT_DEFAULT;
-        $this->formatSerializerMap = array_replace(
-            self::FORMAT_SERIALIZER_MAP_DEFAULT,
-            (array) $formatSerializerMap
-        );
+        $this->formatSerializerMap = $formatSerializerMap ?? self::FORMAT_SERIALIZER_MAP_DEFAULT;
     }
 
     public function getFormatDefault(): string
