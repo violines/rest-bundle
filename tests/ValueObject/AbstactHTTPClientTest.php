@@ -7,10 +7,8 @@ namespace TerryApi\Tests\ValueObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
-use TerryApiBundle\Tests\Stubs\ClientStub;
 use TerryApiBundle\Tests\Stubs\HTTPClientStub;
 use TerryApiBundle\ValueObject\HTTPServer;
-use TerryApiBundle\ValueObject\HTTPServerDefaults;
 
 class AbstactHTTPClientTest extends TestCase
 {
