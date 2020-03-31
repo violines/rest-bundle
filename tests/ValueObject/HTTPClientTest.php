@@ -33,7 +33,12 @@ class HTTPClientTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $headers = HTTPClient::fromRequest($this->request, new HTTPServer());
+        $httpServer = new HTTPServer(null, [
+            'application/json' => 'json',
+            'application/xml' => 'xml'
+        ]);
+
+        $headers = HTTPClient::fromRequest($this->request, $httpServer);
 
         $this->assertEquals('xml', $headers->serializerType());
     }
@@ -47,7 +52,12 @@ class HTTPClientTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = HTTPClient::fromRequest($this->request, new HTTPServer());
+        $httpServer = new HTTPServer(null, [
+            'application/json' => 'json',
+            'application/xml' => 'xml'
+        ]);
+
+        $headers = HTTPClient::fromRequest($this->request, $httpServer);
 
         $headers->deserializerType();
     }
@@ -78,7 +88,12 @@ class HTTPClientTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $headers = HTTPClient::fromRequest($this->request, new HTTPServer());
+        $httpServer = new HTTPServer(null, [
+            'application/json' => 'json',
+            'application/xml' => 'xml'
+        ]);
+
+        $headers = HTTPClient::fromRequest($this->request, $httpServer);
 
         $this->assertEquals('json', $headers->deserializerType());
     }
@@ -90,7 +105,12 @@ class HTTPClientTest extends TestCase
     {
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = HTTPClient::fromRequest($this->request, new HTTPServer());
+        $httpServer = new HTTPServer(null, [
+            'application/json' => 'json',
+            'application/xml' => 'xml'
+        ]);
+
+        $headers = HTTPClient::fromRequest($this->request, $httpServer);
 
         $this->assertEquals($expected, $headers->responseHeaders());
     }
@@ -173,7 +193,12 @@ class HTTPClientTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = HTTPClient::fromRequest($this->request, new HTTPServer());
+        $httpServer = new HTTPServer(null, [
+            'application/json' => 'json',
+            'application/xml' => 'xml'
+        ]);
+
+        $headers = HTTPClient::fromRequest($this->request, $httpServer);
 
         $headers->responseHeaders();
     }
