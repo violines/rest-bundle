@@ -24,12 +24,9 @@ abstract class AbstractHTTPClient
 
     private HeaderBag $headers;
 
-    private HTTPServer $httpServer;
-
-    protected function __construct(HeaderBag $headers, HTTPServer $httpServer)
+    protected function __construct(HeaderBag $headers)
     {
         $this->headers = $headers;
-        $this->httpServer = $httpServer;
     }
 
     abstract public static function fromRequest(Request $request, HTTPServer $httpServer): self;
@@ -57,11 +54,6 @@ abstract class AbstractHTTPClient
     protected function contentType()
     {
         return (string) $this->headers->get(self::CONTENT_TYPE, '');
-    }
-
-    protected function httpServer(): HTTPServer
-    {
-        return $this->httpServer;
     }
 
     protected function negotiate(

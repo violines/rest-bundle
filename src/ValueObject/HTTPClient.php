@@ -19,18 +19,22 @@ class HTTPClient extends AbstractHTTPClient
         Request $request,
         HTTPServer $httpServer
     ): self {
-        $client = new self($request->headers, $httpServer);
-        $client->setHttpServerDefaults();
+        $client = new self($request->headers);
+        $client->setContentTypeDefaultsMap($httpServer->formatDefault());
+        $client->setFormatSerializerMap($httpServer->formatSerializerMap());
         return $client;
     }
 
-    public function setHttpServerDefaults(): void
+    public function setContentTypeDefaultsMap(string $formatDefault): void
     {
         foreach (self::CONTENT_TYPE_DEFAULT_KEYS as $key) {
-            $this->contentTypeDefaultsMap[$key] = $this->httpServer()->getFormatDefault();
+            $this->contentTypeDefaultsMap[$key] = $formatDefault;
         }
+    }
 
-        $this->formatSerializerMap += $this->httpServer()->getFormatSerializerMap();
+    public function setFormatSerializerMap(array $formatSerializerMap): void
+    {
+        $this->formatSerializerMap = $formatSerializerMap;
     }
 
     public function serializerType(): string

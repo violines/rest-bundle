@@ -22,12 +22,12 @@ class HTTPServer
         $this->formatSerializerMap = $formatSerializerMap ?? self::FORMAT_SERIALIZER_MAP_DEFAULT;
     }
 
-    public function getFormatDefault(): string
+    public function formatDefault(): string
     {
         return $this->formatDefault;
     }
 
-    public function getFormatSerializerMap(): array
+    public function formatSerializerMap(): array
     {
         return $this->formatSerializerMap;
     }
