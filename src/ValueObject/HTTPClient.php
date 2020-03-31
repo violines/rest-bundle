@@ -27,10 +27,10 @@ class HTTPClient extends AbstractHTTPClient
     public function setHttpServerDefaults(): void
     {
         foreach (self::CONTENT_TYPE_DEFAULT_KEYS as $key) {
-            $this->contentTypeDefaultsMap[$key] = $this->httpServer->getFormatDefault();
+            $this->contentTypeDefaultsMap[$key] = $this->httpServer()->getFormatDefault();
         }
 
-        $this->formatSerializerMap += $this->httpServer->getFormatSerializerMap();
+        $this->formatSerializerMap += $this->httpServer()->getFormatSerializerMap();
     }
 
     public function serializerType(): string
@@ -40,11 +40,11 @@ class HTTPClient extends AbstractHTTPClient
 
     public function deserializerType(): string
     {
-        if (!isset($this->formatSerializerMap[$this->contentType])) {
-            throw RequestHeaderException::valueNotAllowed(self::CONTENT_TYPE, $this->contentType);
+        if (!isset($this->formatSerializerMap[$this->contentType()])) {
+            throw RequestHeaderException::valueNotAllowed(self::CONTENT_TYPE, $this->contentType());
         }
 
-        return $this->formatSerializerMap[$this->contentType];
+        return $this->formatSerializerMap[$this->contentType()];
     }
 
     public function responseHeaders(): array
@@ -57,7 +57,7 @@ class HTTPClient extends AbstractHTTPClient
     private function negotiateContentType(): string
     {
         return $this->negotiate(
-            $this->accept,
+            $this->accept(),
             self::ACCEPT,
             $this->contentTypeDefaultsMap,
             array_keys($this->formatSerializerMap)

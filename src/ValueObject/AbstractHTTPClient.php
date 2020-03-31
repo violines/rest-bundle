@@ -22,28 +22,47 @@ abstract class AbstractHTTPClient
         'application/*' => ''
     ];
 
-    protected string $accept;
-    protected string $acceptCharset;
-    protected string $acceptEncoding;
-    protected string $acceptLanguage;
-    protected string $contentType;
+    private HeaderBag $headers;
 
-    protected HTTPServer $httpServer;
+    private HTTPServer $httpServer;
 
     protected function __construct(HeaderBag $headers, HTTPServer $httpServer)
     {
-        $this->accept = (string) $headers->get(self::ACCEPT, '');
-        $this->acceptCharset = (string) $headers->get(self::ACCEPT_CHARSET, '');
-        $this->acceptEncoding = (string) $headers->get(self::ACCEPT_ENCODING, '');
-        $this->acceptLanguage = (string) $headers->get(self::ACCEPT_LANGUAGE, '');
-        $this->contentType = (string) $headers->get(self::CONTENT_TYPE, '');
+        $this->headers = $headers;
         $this->httpServer = $httpServer;
     }
 
-    abstract public static function fromRequest(
-        Request $request,
-        HTTPServer $httpServer
-    ): self;
+    abstract public static function fromRequest(Request $request, HTTPServer $httpServer): self;
+
+    protected function accept(): string
+    {
+        return (string) $this->headers->get(self::ACCEPT, '');
+    }
+
+    protected function acceptCharset(): string
+    {
+        return (string) $this->headers->get(self::ACCEPT_CHARSET, '');
+    }
+
+    protected function acceptEncoding(): string
+    {
+        return (string) $this->headers->get(self::ACCEPT_ENCODING, '');
+    }
+
+    protected function acceptLanguage(): string
+    {
+        return (string) $this->headers->get(self::ACCEPT_LANGUAGE, '');
+    }
+
+    protected function contentType()
+    {
+        return (string) $this->headers->get(self::CONTENT_TYPE, '');
+    }
+
+    protected function httpServer(): HTTPServer
+    {
+        return $this->httpServer;
+    }
 
     protected function negotiate(
         string $subject,

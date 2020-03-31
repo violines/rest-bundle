@@ -15,9 +15,9 @@ class HTTPClientStub extends AbstractHTTPClient
         return new self($request->headers, $httpServer);
     }
 
-    public function get(string $property)
+    public function get(string $method)
     {
-        return $this->$property;
+        return $this->$method();
     }
 
     public function negotiateProperty(string $subject, string $property, $defaults = [], $availables = [])
