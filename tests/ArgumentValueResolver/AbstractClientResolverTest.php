@@ -32,6 +32,7 @@ class AbstractClientResolverTest extends TestCase
         parent::setUp();
 
         \Phake::initAnnotations($this);
+        \Phake::when($this->request)->getLocale->thenReturn('en_GB');
 
         $this->resolver = new AbstractClientResolver(new HTTPServer());
     }

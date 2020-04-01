@@ -24,9 +24,12 @@ abstract class AbstractHTTPClient
 
     private HeaderBag $headers;
 
-    protected function __construct(HeaderBag $headers)
+    private string $locale;
+
+    protected function __construct(HeaderBag $headers, string $locale)
     {
         $this->headers = $headers;
+        $this->locale = $locale;
     }
 
     abstract public static function fromRequest(Request $request, HTTPServer $httpServer): self;
@@ -51,9 +54,14 @@ abstract class AbstractHTTPClient
         return (string) $this->headers->get(self::ACCEPT_LANGUAGE, '');
     }
 
-    protected function contentType()
+    protected function contentType(): string
     {
         return (string) $this->headers->get(self::CONTENT_TYPE, '');
+    }
+
+    protected function locale(): string
+    {
+        return $this->locale;
     }
 
     protected function negotiate(
