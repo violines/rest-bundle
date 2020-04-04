@@ -19,7 +19,7 @@ class HTTPClient extends AbstractHTTPClient
         Request $request,
         HTTPServer $httpServer
     ): self {
-        $client = new self($request->headers, $request->getLocale());
+        $client = new self($request);
         $client->setContentTypeDefaultsMap($httpServer->formatDefault());
         $client->setFormatSerializerMap($httpServer->formatSerializerMap());
         return $client;

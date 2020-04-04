@@ -10,10 +10,19 @@ use TerryApiBundle\Exception\RequestHeaderException;
 
 abstract class AbstractHTTPClient
 {
+    // ACCEPT = formats: application/json, application/xml
     public const ACCEPT = 'Accept';
+
+    // ACCEPT_CHARSET = character encoding: utf-8, iso-8859-1
     public const ACCEPT_CHARSET = 'Accept-Charset';
+
+    // ACCEPT_ENCODING = compression algoritm: br, deflate, gzip
     public const ACCEPT_ENCODING = 'Accept-Encoding';
+
+    // ACCEPT_LANGUAGE = natural language: en, de, en-GB, de-DE
     public const ACCEPT_LANGUAGE = 'Accept-Language';
+
+    // CONTENT_TYPE = format: application/json
     public const CONTENT_TYPE = 'Content-Type';
 
     private const NEGOTIATE_DEFAULTS = [
@@ -26,10 +35,10 @@ abstract class AbstractHTTPClient
 
     private string $locale;
 
-    protected function __construct(HeaderBag $headers, string $locale)
+    protected function __construct(Request $request)
     {
-        $this->headers = $headers;
-        $this->locale = $locale;
+        $this->headers = $request->headers;
+        $this->locale = $request->getLocale();
     }
 
     abstract public static function fromRequest(Request $request, HTTPServer $httpServer): self;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApi\Tests\EventListener;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
@@ -13,7 +14,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\EventListener\ResponseTransformListener;
-use TerryApiBundle\Tests\Stubs\CandyStructStub;
+use TerryApiBundle\Tests\Stubs\GumModelStub;
+use TerryApiBundle\Tests\Stubs\OkStructStub;
 use TerryApiBundle\ValueObject\HTTPServer;
 
 class ResponseTransformListenerTest extends TestCase
@@ -36,11 +38,7 @@ class ResponseTransformListenerTest extends TestCase
      */
     private \Phake_IMock $serializer;
 
-    /**
-     * @Mock
-     * @var StructReader
-     */
-    private \Phake_IMock $structReader;
+    private StructReader $structReader;
 
     private ResponseTransformListener $responseTransformListener;
 
@@ -55,6 +53,8 @@ class ResponseTransformListenerTest extends TestCase
             'Accept' => 'application/pdf, application/json, application/xml',
             'Content-Type' => 'application/json'
         ]);
+
+        $this->structReader = new StructReader(new AnnotationReader());
 
         $this->responseTransformListener = new ResponseTransformListener(
             new HTTPServer(),
@@ -85,21 +85,32 @@ class ResponseTransformListenerTest extends TestCase
     public function providerShouldPassControllerResultToSerializer()
     {
         return [
-            [[new CandyStructStub()], '[]']
+            [[new OkStructStub()], '[{"message": "Everything is fine."}]']
         ];
     }
 
-    public function testShouldSkipListener()
+    /**
+     * @dataProvider providerShouldSkipListener
+     */
+    public function testShouldSkipListener($controllerResult)
     {
         $viewEvent = new ViewEvent(
             $this->httpKernel,
             $this->request,
             HttpKernelInterface::MASTER_REQUEST,
-            null
+            $controllerResult
         );
 
         $this->responseTransformListener->transform($viewEvent);
 
         $this->assertNull($viewEvent->getResponse());
+    }
+
+    public function providerShouldSkipListener()
+    {
+        return [
+            [null],
+            [new GumModelStub()]
+        ];
     }
 }

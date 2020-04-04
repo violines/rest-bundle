@@ -23,6 +23,7 @@ class AbstactHTTPClientTest extends TestCase
         parent::setUp();
 
         \Phake::initAnnotations($this);
+        \Phake::when($this->request)->getLocale->thenReturn('en_GB');
     }
 
     public function testShouldGetProperties()
