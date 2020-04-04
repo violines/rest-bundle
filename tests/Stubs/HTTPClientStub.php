@@ -12,7 +12,7 @@ class HTTPClientStub extends AbstractHTTPClient
 {
     public static function fromRequest(Request $request, HTTPServer $httpServer): self
     {
-        return new self($request->headers, 'en_GB');
+        return new self($request);
     }
 
     public function get(string $method)
