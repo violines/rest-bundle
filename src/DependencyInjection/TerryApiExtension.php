@@ -31,8 +31,8 @@ class TerryApiExtension extends Extension
             $container->removeDefinition('terry_api.event_listener.response_transform_listener');
         }
 
-        if (false === $processedConfigs['argument_value_resolver']['abstract_client_resolver']['enable']) {
-            $container->removeDefinition('terry_api.argument_value_resolver.abstract_client_resolver');
+        if (false === $processedConfigs['argument_value_resolver']['abstract_http_client_resolver']['enable']) {
+            $container->removeDefinition('terry_api.argument_value_resolver.abstract_http_client_resolver');
         }
 
         if (false === $processedConfigs['argument_value_resolver']['request_single_struct_resolver']['enable']) {

@@ -28,7 +28,7 @@ class AbstactHTTPClientTest extends TestCase
 
     public function testShouldGetProperties()
     {
-        $this->request->headers = new HeaderBag(self::HEADERS);
+        $this->request->headers = new HeaderBag(self::VALID_HEADERS);
 
         $clientMock = HTTPClientStub::fromRequest($this->request, new HTTPServer());
 
@@ -41,7 +41,7 @@ class AbstactHTTPClientTest extends TestCase
 
     public function testShouldNegotiate()
     {
-        $this->request->headers = new HeaderBag(self::HEADERS);
+        $this->request->headers = new HeaderBag(self::VALID_HEADERS);
 
         $clientMock = HTTPClientStub::fromRequest($this->request, new HTTPServer());
 
@@ -51,11 +51,32 @@ class AbstactHTTPClientTest extends TestCase
         $this->assertEquals('en-GB', $clientMock->negotiateProperty('en-GB', 'acceptLanguage', [], ['en-GB']));
     }
 
-    private const HEADERS = [
+    public function testShouldReturnEmptyHeaderValueStrings()
+    {
+        $this->request->headers = new HeaderBag(self::NULL_HEADERS);
+
+        $clientMock = HTTPClientStub::fromRequest($this->request, new HTTPServer());
+
+        $this->assertEquals('', $clientMock->get('accept'));
+        $this->assertEquals('', $clientMock->get('acceptCharset'));
+        $this->assertEquals('', $clientMock->get('acceptEncoding'));
+        $this->assertEquals('', $clientMock->get('acceptLanguage'));
+        $this->assertEquals('', $clientMock->get('contentType'));
+    }
+
+    private const VALID_HEADERS = [
         'Accept' => 'application/pdf, application/xml',
         'Accept-Charset' => 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
         'Accept-Encoding' => 'br, gzip;q=0.8',
         'Accept-Language' => 'en-GB',
         'Content-Type' => 'application/json'
+    ];
+
+    private const NULL_HEADERS = [
+        'Accept' => null,
+        'Accept-Charset' => null,
+        'Accept-Encoding' => null,
+        'Accept-Language' => null,
+        'Content-Type' => null
     ];
 }
