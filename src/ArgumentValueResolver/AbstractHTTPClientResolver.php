@@ -10,13 +10,12 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use TerryApiBundle\ValueObject\AbstractHTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class AbstractClientResolver implements ArgumentValueResolverInterface
+class AbstractHTTPClientResolver implements ArgumentValueResolverInterface
 {
     private HTTPServer $httpServer;
 
-    public function __construct(
-        HTTPServer $httpServer
-    ) {
+    public function __construct(HTTPServer $httpServer)
+    {
         $this->httpServer = $httpServer;
     }
 

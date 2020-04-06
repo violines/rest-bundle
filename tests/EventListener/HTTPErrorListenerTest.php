@@ -104,7 +104,7 @@ class HTTPErrorListenerTest extends TestCase
         $this->assertNull($exceptionEvent->getResponse());
     }
 
-    public function testShouldNThrowAnnotationNotFoundException()
+    public function testShouldThrowAnnotationNotFoundException()
     {
         $this->expectException(AnnotationNotFoundException::class);
 

@@ -8,12 +8,11 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use TerryApiBundle\ArgumentValueResolver\AbstractClientResolver;
-use TerryApiBundle\Tests\Stubs\ClientStub;
+use TerryApiBundle\ArgumentValueResolver\AbstractHTTPClientResolver;
 use TerryApiBundle\Tests\Stubs\HTTPClientStub;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class AbstractClientResolverTest extends TestCase
+class AbstractHTTPClientResolverTest extends TestCase
 {
     /**
      * @Mock
@@ -34,7 +33,7 @@ class AbstractClientResolverTest extends TestCase
         \Phake::initAnnotations($this);
         \Phake::when($this->request)->getLocale->thenReturn('en_GB');
 
-        $this->resolver = new AbstractClientResolver(new HTTPServer());
+        $this->resolver = new AbstractHTTPClientResolver(new HTTPServer());
     }
 
     /**
