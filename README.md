@@ -3,6 +3,7 @@ TerryApiBundle is a Symfony Bundle to create REST APIs. While you can focus on y
 
 [![build](https://github.com/simon-schubert/terry-api/workflows/build/badge.svg)](https://github.com/simon-schubert/terry-api)
 [![Code Coverage](https://codecov.io/gh/simon-schubert/terry-api/branch/master/graph/badge.svg)](https://codecov.io/gh/simon-schubert/terry-api)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fsimon-schubert%2Fterry-api%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/simon-schubert/terry-api/master)
 [![Software License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Wiki Docs](https://img.shields.io/badge/wiki-docs-B29700)](https://github.com/simon-schubert/terry-api/wiki)
 
