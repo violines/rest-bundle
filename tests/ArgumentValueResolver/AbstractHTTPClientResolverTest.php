@@ -42,18 +42,13 @@ class AbstractHTTPClientResolverTest extends TestCase
     public function testShouldYieldClient(string $type)
     {
         \Phake::when($this->argument)->getType->thenReturn($type);
-
         $this->request->headers = new HeaderBag(self::HEADERS);
 
         $supports = $this->resolver->supports($this->request, $this->argument);
-
         $this->assertTrue($supports);
 
         $result = $this->resolver->resolve($this->request, $this->argument);
-
-        foreach ($result as $item) {
-            $this->assertTrue($item instanceof HTTPClientStub);
-        }
+        $this->assertInstanceOf(HTTPClientStub::class, $result->current());
     }
 
     public function providerShouldYieldClient(): array
@@ -69,11 +64,9 @@ class AbstractHTTPClientResolverTest extends TestCase
     public function testShouldReturnSupportsFalse(?string $type)
     {
         \Phake::when($this->argument)->getType->thenReturn($type);
-
         $this->request->headers = new HeaderBag(self::HEADERS);
 
         $supports = $this->resolver->supports($this->request, $this->argument);
-
         $this->assertFalse($supports);
     }
 
@@ -91,13 +84,10 @@ class AbstractHTTPClientResolverTest extends TestCase
     public function testShouldThrowException(?string $type)
     {
         \Phake::when($this->argument)->getType->thenReturn($type);
-
         $this->request->headers = new HeaderBag(self::HEADERS);
 
         $this->expectException(\LogicException::class);
-
         $result = $this->resolver->resolve($this->request, $this->argument);
-
         $result->current();
     }
 
