@@ -129,9 +129,7 @@ class RequestArrayOfStructsResolverTest extends TestCase
         \Phake::when($this->argument)->getType->thenReturn($type);
 
         $this->expectException(\LogicException::class);
-
         $result = $this->resolver->resolve($this->request, $this->argument);
-
         $result->current();
     }
 
@@ -164,7 +162,6 @@ class RequestArrayOfStructsResolverTest extends TestCase
         \Phake::when($this->validator)->validate->thenReturn($violationList);
 
         $result = $this->resolver->resolve($this->request, $this->argument);
-
         $result->current();
     }
 
@@ -180,16 +177,7 @@ class RequestArrayOfStructsResolverTest extends TestCase
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
 
         $result = $this->resolver->resolve($this->request, $this->argument);
-
-        $count = 0;
-
-        foreach ($result as $generatorObject) {
-            ++$count;
-            $this->assertInstanceOf($expectedClassName, $generatorObject);
-        }
-
-        // makes sure, that generator does not yield nothing
-        $this->assertGreaterThan(0, $count);
+        $this->assertInstanceOf($expectedClassName, $result->current());
     }
 
     public function providerResolveShouldYield(): array
