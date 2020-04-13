@@ -13,6 +13,11 @@ use TerryApiBundle\ValueObject\HTTPServer;
 
 class HTTPClientTest extends TestCase
 {
+    private const FORMAT_SERIALIZER_MAP = [
+        'application/json' => 'json',
+        'application/xml' => 'xml'
+    ];
+
     /**
      * @Mock
      * @var HttpFoundationRequest
@@ -34,10 +39,7 @@ class HTTPClientTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $httpServer = new HTTPServer(null, [
-            'application/json' => 'json',
-            'application/xml' => 'xml'
-        ]);
+        $httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
 
         $headers = HTTPClient::fromRequest($this->request, $httpServer);
 
@@ -53,10 +55,7 @@ class HTTPClientTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $httpServer = new HTTPServer(null, [
-            'application/json' => 'json',
-            'application/xml' => 'xml'
-        ]);
+        $httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
 
         $headers = HTTPClient::fromRequest($this->request, $httpServer);
 
@@ -89,10 +88,7 @@ class HTTPClientTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $httpServer = new HTTPServer(null, [
-            'application/json' => 'json',
-            'application/xml' => 'xml'
-        ]);
+        $httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
 
         $headers = HTTPClient::fromRequest($this->request, $httpServer);
 
@@ -106,10 +102,7 @@ class HTTPClientTest extends TestCase
     {
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $httpServer = new HTTPServer(null, [
-            'application/json' => 'json',
-            'application/xml' => 'xml'
-        ]);
+        $httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
 
         $headers = HTTPClient::fromRequest($this->request, $httpServer);
 
@@ -194,10 +187,7 @@ class HTTPClientTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $httpServer = new HTTPServer(null, [
-            'application/json' => 'json',
-            'application/xml' => 'xml'
-        ]);
+        $httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
 
         $headers = HTTPClient::fromRequest($this->request, $httpServer);
 

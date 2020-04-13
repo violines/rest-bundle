@@ -132,8 +132,7 @@ class RequestSingleStructResolverTest extends TestCase
 
         $result = $this->resolver->resolve($this->request, $this->argument);
 
-        foreach ($result as $item) {
-        }
+        $result->current();
     }
 
     public function providerResolveShouldThrowException(): array
@@ -165,8 +164,7 @@ class RequestSingleStructResolverTest extends TestCase
 
         $result = $this->resolver->resolve($this->request, $this->argument);
 
-        foreach ($result as $item) {
-        }
+        $result->current();
     }
 
     /**
