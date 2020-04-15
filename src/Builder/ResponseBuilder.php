@@ -8,38 +8,32 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ResponseBuilder
 {
-    private const CONTENT = 'content';
-    private const STATUS = 'status';
-    private const HEADERS = 'headers';
-
-    private array $responseSet = [
-        self::CONTENT => '',
-        self::STATUS => Response::HTTP_OK,
-        self::HEADERS => []
-    ];
+    private string $content = '';
+    private int $status = Response::HTTP_OK;
+    private array $headers = [];
 
     public function getResponse(): Response
     {
-        return new Response(...array_values($this->responseSet));
+        return new Response($this->content, $this->status, $this->headers);
     }
 
     public function setContent(string $content): self
     {
-        $this->responseSet[self::CONTENT] = $content;
+        $this->content = $content;
 
         return $this;
     }
 
     public function setStatus(int $status): self
     {
-        $this->responseSet[self::STATUS] = $status;
+        $this->status = $status;
 
         return $this;
     }
 
     public function setHeaders(array $headers): self
     {
-        $this->responseSet[self::HEADERS] = $headers;
+        $this->headers = $headers;
 
         return $this;
     }
