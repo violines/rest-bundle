@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\EventListener\ResponseTransformListener;
+use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Tests\Stubs\GumModelStub;
 use TerryApiBundle\Tests\Stubs\OkStructStub;
 use TerryApiBundle\ValueObject\HTTPServer;
@@ -58,6 +59,7 @@ class ResponseTransformListenerTest extends TestCase
 
         $this->responseTransformListener = new ResponseTransformListener(
             new HTTPServer(),
+            new ResponseBuilder(),
             $this->serializer,
             $this->structReader
         );

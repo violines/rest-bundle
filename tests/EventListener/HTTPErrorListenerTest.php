@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
+use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\EventListener\HTTPErrorListener;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Tests\Stubs\HTTPErrorExceptionStub;
@@ -58,6 +59,7 @@ class HTTPErrorListenerTest extends TestCase
 
         $this->httpErrorListener = new HTTPErrorListener(
             new HTTPServer(),
+            new ResponseBuilder(),
             $this->serializer,
             $this->structReader
         );
