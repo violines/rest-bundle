@@ -16,6 +16,7 @@ class TerryApiExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('factory.xml');
         $loader->load('annotation.xml');
+        $loader->load('builderg.xml');
         $loader->load('listener.xml');
         $loader->load('resolver.xml');
 
