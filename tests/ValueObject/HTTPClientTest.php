@@ -18,6 +18,8 @@ class HTTPClientTest extends TestCase
         'application/xml' => 'xml'
     ];
 
+    private HTTPServer $httpServer;
+
     /**
      * @Mock
      * @var HttpFoundationRequest
@@ -30,6 +32,8 @@ class HTTPClientTest extends TestCase
 
         \Phake::initAnnotations($this);
         \Phake::when($this->request)->getLocale->thenReturn('en_GB');
+
+        $this->httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
     }
 
     public function testShouldReturnSerializerType()
@@ -39,9 +43,7 @@ class HTTPClientTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
-
-        $headers = HTTPClient::fromRequest($this->request, $httpServer);
+        $headers = HTTPClient::fromRequest($this->request, $this->httpServer);
 
         $this->assertEquals('xml', $headers->serializerType());
     }
@@ -55,9 +57,7 @@ class HTTPClientTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
-
-        $headers = HTTPClient::fromRequest($this->request, $httpServer);
+        $headers = HTTPClient::fromRequest($this->request, $this->httpServer);
 
         $headers->deserializerType();
     }
@@ -88,9 +88,7 @@ class HTTPClientTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
-
-        $headers = HTTPClient::fromRequest($this->request, $httpServer);
+        $headers = HTTPClient::fromRequest($this->request, $this->httpServer);
 
         $this->assertEquals('json', $headers->deserializerType());
     }
@@ -102,9 +100,7 @@ class HTTPClientTest extends TestCase
     {
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
-
-        $headers = HTTPClient::fromRequest($this->request, $httpServer);
+        $headers = HTTPClient::fromRequest($this->request, $this->httpServer);
 
         $this->assertEquals($expected, $headers->responseHeaders());
     }
@@ -187,9 +183,7 @@ class HTTPClientTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
-
-        $headers = HTTPClient::fromRequest($this->request, $httpServer);
+        $headers = HTTPClient::fromRequest($this->request, $this->httpServer);
 
         $headers->responseHeaders();
     }
