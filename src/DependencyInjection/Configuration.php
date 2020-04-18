@@ -68,14 +68,17 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         // formats
                         ->arrayNode('formats')
+                        ->addDefaultsIfNotSet()
                             ->children()
                                 // json
                                 ->arrayNode('json')
-                                    ->scalarPrototype()->end()
+                                    ->scalarPrototype()
+                                    ->end()
                                 ->end()
                                 // xml
                                 ->arrayNode('xml')
-                                    ->scalarPrototype()->end()
+                                    ->scalarPrototype()
+                                    ->end()
                                 ->end()
                             ->end()
                         ->end()
