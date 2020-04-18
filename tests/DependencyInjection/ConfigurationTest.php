@@ -51,7 +51,11 @@ class ConfigurationTest extends TestCase
                         ],
                     ],
                     'http_server' => [
-                        'format_default' => null,
+                        'formats' => [
+                            'json' => [],
+                            'xml' => []
+                        ],
+                        'format_default' => '',
                     ],
                 ],
             ],
@@ -149,7 +153,11 @@ class ConfigurationTest extends TestCase
                         ],
                     ],
                     'http_server' => [
-                        'format_default' => null,
+                        'formats' => [
+                            'json' => [],
+                            'xml' => []
+                        ],
+                        'format_default' => '',
                     ],
                 ],
             ],
