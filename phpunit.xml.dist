@@ -16,7 +16,7 @@
     <whitelist processUncoveredFilesFromWhitelist="true">
       <directory suffix=".php">src</directory>
       <exclude>
-        <directory suffix=".php">src/DependencyInjection</directory>
+        <file>src/DependencyInjection/TerryApiExtension.php</file>
       </exclude>
     </whitelist>
   </filter>
