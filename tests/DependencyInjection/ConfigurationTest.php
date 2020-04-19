@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\Builder;
+namespace TerryApi\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\DependencyInjection\Configuration;
