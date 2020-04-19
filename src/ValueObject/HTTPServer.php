@@ -15,11 +15,11 @@ class HTTPServer
     private array $formatSerializerMap;
 
     public function __construct(
-        ?string $formatDefault = null,
-        ?array $formatSerializerMap = null
+        string $formatDefault = '',
+        array $formatSerializerMap = []
     ) {
-        $this->formatDefault = $formatDefault ?? self::FORMAT_DEFAULT_DEFAULT;
-        $this->formatSerializerMap = $formatSerializerMap ?? self::FORMAT_SERIALIZER_MAP_DEFAULT;
+        $this->formatDefault = '' !== $formatDefault ? $formatDefault : self::FORMAT_DEFAULT_DEFAULT;
+        $this->formatSerializerMap = [] !== $formatSerializerMap ? $formatSerializerMap : self::FORMAT_SERIALIZER_MAP_DEFAULT;
     }
 
     public function formatDefault(): string
