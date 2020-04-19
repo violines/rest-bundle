@@ -17,12 +17,12 @@ class HTTPServerFactory
 
     public function fromConfig(): HTTPServer
     {
-        $configformats = $this->config['formats'] ?? null;
-        $configformatDefault = $this->config['format_default'] ?? null;
+        $configformats = $this->config['formats'] ?? [];
+        $configformatDefault = $this->config['format_default'] ?? '';
 
         $_formatSerializerMap = [];
 
-        foreach ((array) $configformats as $serializerFormat => $mimeTypes) {
+        foreach ($configformats as $serializerFormat => $mimeTypes) {
             foreach ($mimeTypes as $mimeType) {
                 $_formatSerializerMap[$mimeType] = $serializerFormat;
             }

@@ -33,7 +33,7 @@ class HTTPClientTest extends TestCase
         \Phake::initAnnotations($this);
         \Phake::when($this->request)->getLocale->thenReturn('en_GB');
 
-        $this->httpServer = new HTTPServer(null, self::FORMAT_SERIALIZER_MAP);
+        $this->httpServer = new HTTPServer('', self::FORMAT_SERIALIZER_MAP);
     }
 
     public function testShouldReturnSerializerType()
