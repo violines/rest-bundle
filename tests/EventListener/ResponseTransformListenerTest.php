@@ -12,15 +12,26 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\EventListener\ResponseTransformListener;
 use TerryApiBundle\Builder\ResponseBuilder;
+use TerryApiBundle\Event\SerializeContextEvent;
+use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\Tests\Stubs\GumModelStub;
 use TerryApiBundle\Tests\Stubs\OkStructStub;
+use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
 class ResponseTransformListenerTest extends TestCase
 {
+
+    /**
+     * @Mock
+     * @var EventDispatcherInterface
+     */
+    private \Phake_IMock $eventDispatcher;
+
     /**
      * @Mock
      * @var HttpKernel
@@ -57,10 +68,12 @@ class ResponseTransformListenerTest extends TestCase
 
         $this->structReader = new StructReader(new AnnotationReader());
 
+        $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
+
         $this->responseTransformListener = new ResponseTransformListener(
             new HTTPServer(),
             new ResponseBuilder(),
-            $this->serializer,
+            $serializerFacade,
             $this->structReader
         );
     }
@@ -68,15 +81,19 @@ class ResponseTransformListenerTest extends TestCase
     /**
      * @dataProvider providerShouldPassControllerResultToSerializer
      */
-    public function testShouldPassControllerResultToSerializer($given, string $expected)
+    public function testShouldPassControllerResultToSerializer($controllerResult, string $expected)
     {
         \Phake::when($this->serializer)->serialize->thenReturn($expected);
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeContextEvent(
+            $controllerResult,
+            HTTPClient::fromRequest($this->request, new HTTPServer())
+        ));
 
         $viewEvent = new ViewEvent(
             $this->httpKernel,
             $this->request,
             HttpKernelInterface::MASTER_REQUEST,
-            $given
+            $controllerResult
         );
 
         $this->responseTransformListener->transform($viewEvent);

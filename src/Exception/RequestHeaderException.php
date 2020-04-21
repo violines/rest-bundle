@@ -14,7 +14,7 @@ class RequestHeaderException extends \RuntimeException implements \Throwable, HT
         $this->message = $message;
     }
 
-    public static function expected(string $key)
+    public static function expected(string $key): self
     {
         return new self(
             sprintf('The Header: %s is expected.', $key)
