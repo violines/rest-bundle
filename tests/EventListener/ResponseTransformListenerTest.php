@@ -25,7 +25,6 @@ use TerryApiBundle\ValueObject\HTTPServer;
 
 class ResponseTransformListenerTest extends TestCase
 {
-
     /**
      * @Mock
      * @var EventDispatcherInterface
