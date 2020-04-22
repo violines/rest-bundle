@@ -10,7 +10,7 @@ use TerryApiBundle\Facade\SerializerFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\Event\SerializeContextEvent;
+use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
@@ -53,7 +53,7 @@ class SerializerFacadeTest extends TestCase
         $context = ['ctxkey' => 'ctxValue'];
         $client = HTTPClient::fromRequest($this->request, new HTTPServer());
 
-        $serializeContextEvent = new SerializeContextEvent($data, $client);
+        $serializeContextEvent = new SerializeEvent($data, $client);
         $serializeContextEvent->mergeToContext($context);
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn($serializeContextEvent);

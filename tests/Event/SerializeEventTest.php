@@ -7,11 +7,11 @@ namespace TerryApi\Tests\Event;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
-use TerryApiBundle\Event\SerializeContextEvent;
+use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class SerializeContextEventTest extends TestCase
+class SerializeEventTest extends TestCase
 {
     /**
      * @Mock
@@ -38,7 +38,7 @@ class SerializeContextEventTest extends TestCase
         $client = HTTPClient::fromRequest($this->request, new HTTPServer());
         $context = ['firstKey' => 'firstVal', 'secondkey' => 'secondVal'];
 
-        $serializeContextEvent = new SerializeContextEvent($data, $client);
+        $serializeContextEvent = new SerializeEvent($data, $client);
 
         $serializeContextEvent->mergeToContext(['firstKey' => 'firstVal']);
         $serializeContextEvent->mergeToContext(['secondkey' => 'secondVal']);

@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Builder\ResponseBuilder;
-use TerryApiBundle\Event\SerializeContextEvent;
+use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\EventListener\HTTPErrorListener;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Facade\SerializerFacade;
@@ -83,7 +83,7 @@ class HTTPErrorListenerTest extends TestCase
         $exception = new HTTPErrorExceptionStub();
         $exception->setStructToStruct();
 
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeContextEvent(
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $exception->getStruct(),
             HTTPClient::fromRequest($this->request, new HTTPServer())
         ));

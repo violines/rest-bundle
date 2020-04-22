@@ -6,9 +6,9 @@ namespace TerryApiBundle\Event;
 
 use TerryApiBundle\ValueObject\HTTPClient;
 
-final class SerializeContextEvent
+final class SerializeEvent
 {
-    public const NAME = 'terry_api.event.serialize_context_event';
+    public const NAME = 'terry_api.event.serialize';
 
     private array $context = [];
 

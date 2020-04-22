@@ -16,7 +16,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\EventListener\ResponseTransformListener;
 use TerryApiBundle\Builder\ResponseBuilder;
-use TerryApiBundle\Event\SerializeContextEvent;
+use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\Tests\Stubs\GumModelStub;
 use TerryApiBundle\Tests\Stubs\OkStructStub;
@@ -83,7 +83,7 @@ class ResponseTransformListenerTest extends TestCase
     public function testShouldPassControllerResultToSerializer($controllerResult, string $expected)
     {
         \Phake::when($this->serializer)->serialize->thenReturn($expected);
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeContextEvent(
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $controllerResult,
             HTTPClient::fromRequest($this->request, new HTTPServer())
         ));

@@ -6,7 +6,7 @@ namespace TerryApiBundle\Facade;
 
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\Event\SerializeContextEvent;
+use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\ValueObject\HTTPClient;
 
 class SerializerFacade
@@ -29,8 +29,8 @@ class SerializerFacade
     public function serialize($data, HTTPClient $httpClient): string
     {
         $serializeContextEvent = $this->eventDispatcher->dispatch(
-            new SerializeContextEvent($data, $httpClient),
-            SerializeContextEvent::NAME
+            new SerializeEvent($data, $httpClient),
+            SerializeEvent::NAME
         );
 
         return $this->serializer->serialize(
