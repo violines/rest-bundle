@@ -12,15 +12,25 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Builder\ResponseBuilder;
+use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\EventListener\HTTPErrorListener;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
+use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\Tests\Stubs\HTTPErrorExceptionStub;
+use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
 class HTTPErrorListenerTest extends TestCase
 {
+    /**
+     * @Mock
+     * @var EventDispatcherInterface
+     */
+    private \Phake_IMock $eventDispatcher;
+
     /**
      * @Mock
      * @var HttpKernel
@@ -57,10 +67,12 @@ class HTTPErrorListenerTest extends TestCase
 
         $this->structReader = new StructReader(new AnnotationReader());
 
+        $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
+
         $this->httpErrorListener = new HTTPErrorListener(
             new HTTPServer(),
             new ResponseBuilder(),
-            $this->serializer,
+            $serializerFacade,
             $this->structReader
         );
     }
@@ -71,8 +83,13 @@ class HTTPErrorListenerTest extends TestCase
         $exception = new HTTPErrorExceptionStub();
         $exception->setStructToStruct();
 
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
+            $exception->getStruct(),
+            HTTPClient::fromRequest($this->request, new HTTPServer())
+        ));
+
         \Phake::when($this->serializer)
-            ->serialize($exception->getStruct(), 'json')
+            ->serialize($exception->getStruct(), 'json', [])
             ->thenReturn($expectedJson);
 
         $exceptionEvent = new ExceptionEvent(

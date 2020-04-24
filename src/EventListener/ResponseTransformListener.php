@@ -7,10 +7,10 @@ namespace TerryApiBundle\EventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
-use Symfony\Component\Serializer\SerializerInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Builder\ResponseBuilder;
+use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
@@ -20,19 +20,19 @@ class ResponseTransformListener
 
     private ResponseBuilder $responseBuilder;
 
-    private SerializerInterface $serializer;
+    private SerializerFacade $serializerFacade;
 
     private StructReader $structReader;
 
     public function __construct(
         HTTPServer $httpServer,
         ResponseBuilder $responseBuilder,
-        SerializerInterface $serializer,
+        SerializerFacade $serializerFacade,
         StructReader $structReader
     ) {
         $this->httpServer = $httpServer;
         $this->responseBuilder = $responseBuilder;
-        $this->serializer = $serializer;
+        $this->serializerFacade = $serializerFacade;
         $this->structReader = $structReader;
     }
 
@@ -56,18 +56,21 @@ class ResponseTransformListener
 
         $viewEvent->setResponse(
             $this->createResponse(
-                $viewEvent->getRequest(),
-                $controllerResult
+                $controllerResult,
+                $viewEvent->getRequest()
             )
         );
     }
 
-    private function createResponse(Request $request, $controllerResult): Response
+    /**
+     * @param object[]|object|array $data
+     */
+    private function createResponse($data, Request $request): Response
     {
         $client = HTTPClient::fromRequest($request, $this->httpServer);
 
         return $this->responseBuilder
-            ->setContent($this->serializer->serialize($controllerResult, $client->serializerType()))
+            ->setContent($this->serializerFacade->serialize($data, $client))
             ->setHeaders($client->responseHeaders())
             ->getResponse();
     }

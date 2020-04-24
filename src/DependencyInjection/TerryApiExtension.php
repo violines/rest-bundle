@@ -19,6 +19,7 @@ class TerryApiExtension extends Extension
         $loader->load('builder.xml');
         $loader->load('listener.xml');
         $loader->load('resolver.xml');
+        $loader->load('service.xml');
 
         $processedConfigs = $this->processConfiguration(new Configuration(), $configs);
 
