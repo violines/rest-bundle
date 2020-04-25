@@ -13,14 +13,14 @@
             <service id="terry_api.argument_value_resolver.request_single_struct_resolver" class="TerryApiBundle\ArgumentValueResolver\RequestSingleStructResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
                 <argument type="expression">service("terry_api.factory.http_server_factory").fromConfig()</argument>
-                <argument type="service" id="serializer" />
+                <argument type="service" id="terry_api.facade.serializer_facade" />
                 <argument type="service" id="terry_api.annotation.struct_reader" />
                 <argument type="service" id="validator" />
             </service>
             <service id="terry_api.argument_value_resolver.request_array_of_structs_resolver" class="TerryApiBundle\ArgumentValueResolver\RequestArrayOfStructsResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
                 <argument type="expression">service("terry_api.factory.http_server_factory").fromConfig()</argument>
-                <argument type="service" id="serializer" />
+                <argument type="service" id="terry_api.facade.serializer_facade" />
                 <argument type="service" id="terry_api.annotation.struct_reader" />
                 <argument type="service" id="validator" />
             </service>
