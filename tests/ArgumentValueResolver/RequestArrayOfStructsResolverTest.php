@@ -12,16 +12,26 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Annotation\Struct;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\ArgumentValueResolver\RequestArrayOfStructsResolver;
+use TerryApiBundle\Event\DeserializeEvent;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
+use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\Tests\Stubs\CandyStructStub;
+use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
 class RequestArrayOfStructsResolverTest extends TestCase
 {
+    /**
+     * @Mock
+     * @var EventDispatcherInterface
+     */
+    private \Phake_IMock $eventDispatcher;
+
     /**
      * @Mock
      * @var SerializerInterface
@@ -65,9 +75,11 @@ class RequestArrayOfStructsResolverTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
+        $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
+
         $this->resolver = new RequestArrayOfStructsResolver(
             new HTTPServer(),
-            $this->serializer,
+            $serializerFacade,
             $this->structReader,
             $this->validator
         );
@@ -151,11 +163,16 @@ class RequestArrayOfStructsResolverTest extends TestCase
         $this->expectException(ValidationException::class);
 
         $candies = [new CandyStructStub(), new CandyStructStub()];
+        $content = json_encode($candies);
 
         \Phake::when($this->request)->getContent->thenReturn(json_encode($candies));
         \Phake::when($this->argument)->isVariadic->thenReturn(true);
         \Phake::when($this->argument)->getType->thenReturn(CandyStructStub::class);
         \Phake::when($this->serializer)->deserialize->thenReturn($candies);
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
+            $content,
+            HTTPClient::fromRequest($this->request, new HTTPServer())
+        ));
 
         $violationList = new ConstraintViolationList();
         $violationList->add(new ConstraintViolation('test', null, [], null, null, null));
@@ -170,11 +187,17 @@ class RequestArrayOfStructsResolverTest extends TestCase
      */
     public function testResolveShouldYield($expected, $expectedClassName)
     {
+        $content = json_encode($expected);
+
         \Phake::when($this->request)->getContent->thenReturn(json_encode($expected));
         \Phake::when($this->argument)->isVariadic->thenReturn(true);
         \Phake::when($this->argument)->getType->thenReturn($expectedClassName);
         \Phake::when($this->serializer)->deserialize->thenReturn($expected);
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
+            $content,
+            HTTPClient::fromRequest($this->request, new HTTPServer())
+        ));
 
         $result = $this->resolver->resolve($this->request, $this->argument);
         $this->assertInstanceOf($expectedClassName, $result->current());
