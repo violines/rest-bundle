@@ -10,7 +10,9 @@ use TerryApiBundle\Facade\SerializerFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use TerryApiBundle\Event\DeserializeEvent;
 use TerryApiBundle\Event\SerializeEvent;
+use TerryApiBundle\Tests\Stubs\CandyStructStub;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
@@ -62,7 +64,25 @@ class SerializerFacadeTest extends TestCase
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
         $serializerFacade->serialize($data, $client);
 
-        \Phake::verify($this->eventDispatcher)->dispatch;
         \Phake::verify($this->serializer)->serialize($data, 'json', $context);
+    }
+
+    public function testShouldDeserialize()
+    {
+        $data = '{"weight": 100, "name": "Bonbon", "tastesGood": true}';
+        $type = 'TerryApiBundle\Tests\Stubs\CandyStructStub';
+        $context = ['ctxkey' => 'ctxValue'];
+        $client = HTTPClient::fromRequest($this->request, new HTTPServer());
+
+        $deserializeEvent = new DeserializeEvent($data, $client);
+        $deserializeEvent->mergeToContext($context);
+
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn($deserializeEvent);
+        \Phake::when($this->serializer)->serialize->thenReturn(new CandyStructStub());
+
+        $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
+        $serializerFacade->deserialize($data, $type, $client);
+
+        \Phake::verify($this->serializer)->deserialize($data, $type, 'json', $context);
     }
 }

@@ -6,30 +6,21 @@ namespace TerryApiBundle\Event;
 
 use TerryApiBundle\ValueObject\HTTPClient;
 
-final class SerializeEvent
+final class DeserializeEvent
 {
-    public const NAME = 'terry_api.event.serialize';
+    public const NAME = 'terry_api.event.deserialize';
 
-    /**
-     * @var object[]|object|array $data
-     */
-    private $data;
+    private string $data;
     private HTTPClient $httpClient;
     private array $context = [];
 
-    /**
-     * @param object[]|object|array $data
-     */
-    public function __construct($data, HTTPClient $httpClient)
+    public function __construct(string $data, HTTPClient $httpClient)
     {
         $this->data = $data;
         $this->httpClient = $httpClient;
     }
 
-    /**
-     * @return object[]|object|array
-     */
-    public function getData()
+    public function getData(): string
     {
         return $this->data;
     }

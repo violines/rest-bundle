@@ -6,6 +6,7 @@ namespace TerryApiBundle\Facade;
 
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use TerryApiBundle\Event\DeserializeEvent;
 use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\ValueObject\HTTPClient;
 
@@ -37,6 +38,24 @@ class SerializerFacade
             $data,
             $httpClient->serializerType(),
             $serializeContextEvent->getContext()
+        );
+    }
+
+    /**
+     * @return object[]|object
+     */
+    public function deserialize(string $data, string $type, HTTPClient $httpClient)
+    {
+        $deserializeEvent = $this->eventDispatcher->dispatch(
+            new DeserializeEvent($data, $httpClient),
+            DeserializeEvent::NAME
+        );
+
+        return $this->serializer->deserialize(
+            $data,
+            $type,
+            $httpClient->deserializerType(),
+            $deserializeEvent->getContext()
         );
     }
 }

@@ -7,32 +7,29 @@ namespace TerryApiBundle\ArgumentValueResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\Annotation\StructReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
+use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
 class RequestSingleStructResolver implements ArgumentValueResolverInterface
 {
     private HTTPServer $httpServer;
-
-    private SerializerInterface $serializer;
-
+    private SerializerFacade $serializerFacade;
     private StructReader $structReader;
-
     private ValidatorInterface $validator;
 
     public function __construct(
         HTTPServer $httpServer,
-        SerializerInterface $serializer,
+        SerializerFacade $serializerFacade,
         StructReader $structReader,
         ValidatorInterface $validator
     ) {
         $this->httpServer = $httpServer;
-        $this->serializer = $serializer;
+        $this->serializerFacade = $serializerFacade;
         $this->structReader =  $structReader;
         $this->validator = $validator;
     }
@@ -65,16 +62,12 @@ class RequestSingleStructResolver implements ArgumentValueResolverInterface
 
         if (
             true === $argument->isVariadic() || null === $className
-            || !class_exists($className) || !is_string($request->getContent())
+            || !class_exists($className) || !is_string($content)
         ) {
             throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
         }
 
-        $struct = $this->serializer->deserialize(
-            $content,
-            $className,
-            $client->deserializerType()
-        );
+        $struct = $this->serializerFacade->deserialize($content, $className, $client);
 
         $violations = $this->validator->validate($struct);
 
