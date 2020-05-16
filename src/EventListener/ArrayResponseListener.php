@@ -7,14 +7,12 @@ namespace TerryApiBundle\EventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
-use TerryApiBundle\Annotation\StructReader;
-use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class ResponseTransformListener
+class ArrayResponseListener
 {
     private HTTPServer $httpServer;
 
@@ -22,35 +20,21 @@ class ResponseTransformListener
 
     private SerializerFacade $serializerFacade;
 
-    private StructReader $structReader;
-
     public function __construct(
         HTTPServer $httpServer,
         ResponseBuilder $responseBuilder,
-        SerializerFacade $serializerFacade,
-        StructReader $structReader
+        SerializerFacade $serializerFacade
     ) {
         $this->httpServer = $httpServer;
         $this->responseBuilder = $responseBuilder;
         $this->serializerFacade = $serializerFacade;
-        $this->structReader = $structReader;
     }
 
     public function transform(ViewEvent $viewEvent): void
     {
         $controllerResult = $viewEvent->getControllerResult();
 
-        if (is_object($controllerResult)) {
-            $struct = $controllerResult;
-        } else if (is_array($controllerResult)) {
-            [$struct] = $controllerResult;
-        } else {
-            return;
-        }
-
-        try {
-            $this->structReader->read(get_class($struct));
-        } catch (AnnotationNotFoundException $e) {
+        if (!is_array($controllerResult) || !$this->arrayHasStringKey($controllerResult)) {
             return;
         }
 
@@ -59,10 +43,22 @@ class ResponseTransformListener
         );
     }
 
-    /**
-     * @param object[]|object|array $data
-     */
-    private function createResponse($data, Request $request): Response
+    private function arrayHasStringKey(array $array): bool
+    {
+        foreach ($array as $key => $element) {
+            if (is_string($key)) {
+                return true;
+            }
+
+            if (is_array($element)) {
+                return $this->arrayHasStringKey($element);
+            }
+        }
+
+        return false;
+    }
+
+    private function createResponse(array $data, Request $request): Response
     {
         $client = HTTPClient::fromRequest($request, $this->httpServer);
 

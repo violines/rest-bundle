@@ -36,6 +36,9 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
     {
         return [
             [
+                'terry_api.event_listener.array_response_listener'
+            ],
+            [
                 'terry_api.event_listener.http_error_listener'
             ],
             [

@@ -19,6 +19,13 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('event_listener')
                 ->addDefaultsIfNotSet()
                     ->children()
+                        // array_response_listener
+                        ->arrayNode('array_response_listener')
+                        ->addDefaultsIfNotSet()
+                            ->children()
+                            ->booleanNode('enable')->defaultTrue()->end()
+                            ->end()
+                        ->end()
                         // http_error_listener
                         ->arrayNode('http_error_listener')
                         ->addDefaultsIfNotSet()
@@ -86,7 +93,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end();
-                
+
             return $treeBuilder;
     }
 }

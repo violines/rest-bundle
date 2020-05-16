@@ -32,6 +32,9 @@ class ConfigurationTest extends TestCase
                 [],
                 [
                     'event_listener' => [
+                        'array_response_listener' => [
+                            'enable' => true,
+                        ],
                         'http_error_listener' => [
                             'enable' => true,
                         ],
@@ -77,6 +80,9 @@ class ConfigurationTest extends TestCase
                 ],
                 [
                     'event_listener' => [
+                        'array_response_listener' => [
+                            'enable' => true,
+                        ],
                         'http_error_listener' => [
                             'enable' => true,
                         ],
@@ -113,6 +119,9 @@ class ConfigurationTest extends TestCase
             [
                 [
                     'event_listener' => [
+                        'array_response_listener' => [
+                            'enable' => false,
+                        ],
                         'http_error_listener' => [
                             'enable' => false,
                         ],
@@ -134,6 +143,9 @@ class ConfigurationTest extends TestCase
                 ],
                 [
                     'event_listener' => [
+                        'array_response_listener' => [
+                            'enable' => false,
+                        ],
                         'http_error_listener' => [
                             'enable' => false,
                         ],
