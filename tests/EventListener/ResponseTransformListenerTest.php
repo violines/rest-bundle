@@ -128,7 +128,9 @@ class ResponseTransformListenerTest extends TestCase
     {
         return [
             [null],
-            [new GumModelStub()]
+            [new GumModelStub()],
+            ['key' => 'value'],
+            [['key' => 'value']]
         ];
     }
 }

@@ -40,23 +40,37 @@ class ResponseTransformListener
     {
         $controllerResult = $viewEvent->getControllerResult();
 
-        if (is_object($controllerResult)) {
-            $struct = $controllerResult;
-        } else if (is_array($controllerResult)) {
-            [$struct] = $controllerResult;
-        } else {
-            return;
-        }
-
-        try {
-            $this->structReader->read(get_class($struct));
-        } catch (AnnotationNotFoundException $e) {
+        if (!$this->hasStruct($controllerResult)) {
             return;
         }
 
         $viewEvent->setResponse(
             $this->createResponse($controllerResult, $viewEvent->getRequest())
         );
+    }
+
+    /**
+     * @param object[]|object|array $controllerResult
+     */
+    private function hasStruct($controllerResult): bool
+    {
+        $object = $controllerResult;
+
+        if (is_array($controllerResult)) {
+            $object = current($controllerResult);
+        }
+
+        if (!is_object($object)) {
+            return false;
+        }
+
+        try {
+            $this->structReader->read(get_class($object));
+        } catch (AnnotationNotFoundException $e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
