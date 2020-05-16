@@ -98,6 +98,10 @@ class ArrayResponseListenerTest extends TestCase
         return [
             [
                 ['key' => 'value'],
+                '{"key": "value"}'
+            ],
+            [
+                [['key' => 'value']],
                 '[{"key": "value"}]'
             ]
         ];
