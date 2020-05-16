@@ -55,10 +55,7 @@ class ResponseTransformListener
         }
 
         $viewEvent->setResponse(
-            $this->createResponse(
-                $controllerResult,
-                $viewEvent->getRequest()
-            )
+            $this->createResponse($controllerResult, $viewEvent->getRequest())
         );
     }
 
