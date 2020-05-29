@@ -8,29 +8,29 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use TerryApiBundle\Annotation\StructReader;
+use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
+class RequestSingleObjectResolver implements ArgumentValueResolverInterface
 {
     private HTTPServer $httpServer;
     private SerializerFacade $serializerFacade;
-    private StructReader $structReader;
+    private HTTPApiReader $httpApiReader;
     private ValidatorInterface $validator;
 
     public function __construct(
         HTTPServer $httpServer,
         SerializerFacade $serializerFacade,
-        StructReader $structReader,
+        HTTPApiReader $httpApiReader,
         ValidatorInterface $validator
     ) {
         $this->httpServer = $httpServer;
         $this->serializerFacade = $serializerFacade;
-        $this->structReader =  $structReader;
+        $this->httpApiReader = $httpApiReader;
         $this->validator = $validator;
     }
 
@@ -39,14 +39,14 @@ class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
         $className = $argument->getType();
 
         if (
-            false === $argument->isVariadic() || null === $className
+            true === $argument->isVariadic() || null === $className
             || !class_exists($className) || !is_string($request->getContent())
         ) {
             return false;
         }
 
         try {
-            $this->structReader->read($className);
+            $this->httpApiReader->read($className);
         } catch (AnnotationNotFoundException $e) {
             return false;
         }
@@ -61,22 +61,20 @@ class RequestArrayOfStructsResolver implements ArgumentValueResolverInterface
         $client = HTTPClient::fromRequest($request, $this->httpServer);
 
         if (
-            false === $argument->isVariadic() || null === $className
+            true === $argument->isVariadic() || null === $className
             || !class_exists($className) || !is_string($content)
         ) {
             throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
         }
 
-        $arrayOfStructs = $this->serializerFacade->deserialize($content, $className . '[]', $client);
+        $object = $this->serializerFacade->deserialize($content, $className, $client);
 
-        $violations = $this->validator->validate($arrayOfStructs);
+        $violations = $this->validator->validate($object);
 
         if (0 < count($violations)) {
             throw ValidationException::create($violations);
         }
 
-        foreach ($arrayOfStructs as $struct) {
-            yield $struct;
-        }
+        yield $object;
     }
 }

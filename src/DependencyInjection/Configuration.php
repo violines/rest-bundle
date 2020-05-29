@@ -33,8 +33,8 @@ class Configuration implements ConfigurationInterface
                             ->booleanNode('enable')->defaultTrue()->end()
                             ->end()
                         ->end()
-                        // response_transform_listener
-                        ->arrayNode('response_transform_listener')
+                        // object_response_listener
+                        ->arrayNode('object_response_listener')
                         ->addDefaultsIfNotSet()
                             ->children()
                             ->booleanNode('enable')->defaultTrue()->end()
@@ -54,14 +54,14 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         // request_single_struct_resolver
-                        ->arrayNode('request_single_struct_resolver')
+                        ->arrayNode('single_object_resolver')
                         ->addDefaultsIfNotSet()
                             ->children()
                             ->booleanNode('enable')->defaultTrue()->end()
                             ->end()
                         ->end()
                         // request_array_of_structs_resolver
-                        ->arrayNode('request_array_of_structs_resolver')
+                        ->arrayNode('objects_array_resolver')
                         ->addDefaultsIfNotSet()
                             ->children()
                             ->booleanNode('enable')->defaultTrue()->end()

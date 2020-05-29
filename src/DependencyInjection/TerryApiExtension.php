@@ -33,20 +33,20 @@ class TerryApiExtension extends Extension
             $container->removeDefinition('terry_api.event_listener.http_error_listener');
         }
 
-        if (false === $processedConfigs['event_listener']['response_transform_listener']['enable']) {
-            $container->removeDefinition('terry_api.event_listener.response_transform_listener');
+        if (false === $processedConfigs['event_listener']['object_response_listener']['enable']) {
+            $container->removeDefinition('terry_api.event_listener.object_response_listener');
         }
 
         if (false === $processedConfigs['argument_value_resolver']['abstract_http_client_resolver']['enable']) {
             $container->removeDefinition('terry_api.argument_value_resolver.abstract_http_client_resolver');
         }
 
-        if (false === $processedConfigs['argument_value_resolver']['request_single_struct_resolver']['enable']) {
-            $container->removeDefinition('terry_api.argument_value_resolver.request_single_struct_resolver');
+        if (false === $processedConfigs['argument_value_resolver']['single_object_resolver']['enable']) {
+            $container->removeDefinition('terry_api.argument_value_resolver.single_object_resolver');
         }
 
-        if (false === $processedConfigs['argument_value_resolver']['request_array_of_structs_resolver']['enable']) {
-            $container->removeDefinition('terry_api.argument_value_resolver.request_array_of_structs_resolver');
+        if (false === $processedConfigs['argument_value_resolver']['objects_array_resolver']['enable']) {
+            $container->removeDefinition('terry_api.argument_value_resolver.objects_array_resolver');
         }
     }
 }

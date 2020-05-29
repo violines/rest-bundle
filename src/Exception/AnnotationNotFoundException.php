@@ -11,7 +11,7 @@ class AnnotationNotFoundException extends \RuntimeException implements \Throwabl
         $this->message = $message;
     }
 
-    public static function struct(string $className): self
+    public static function httpApi(string $className): self
     {
         return new self(
             sprintf('Annotation for Struct: %s not found.', $className)

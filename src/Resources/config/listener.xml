@@ -17,14 +17,14 @@
                 <argument type="expression">service("terry_api.factory.http_server_factory").fromConfig()</argument>
                 <argument type="service" id="terry_api.builder.response_builder" />
                 <argument type="service" id="terry_api.facade.serializer_facade" />
-                <argument type="service" id="terry_api.annotation.struct_reader" />
+                <argument type="service" id="terry_api.annotation.http_api_reader" />
             </service>
-            <service id="terry_api.event_listener.response_transform_listener" class="TerryApiBundle\EventListener\ResponseTransformListener">
+            <service id="terry_api.event_listener.object_response_listener" class="TerryApiBundle\EventListener\ObjectResponseListener">
                 <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="10" />
                 <argument type="expression">service("terry_api.factory.http_server_factory").fromConfig()</argument>
                 <argument type="service" id="terry_api.builder.response_builder" />
                 <argument type="service" id="terry_api.facade.serializer_facade" />
-                <argument type="service" id="terry_api.annotation.struct_reader" />
+                <argument type="service" id="terry_api.annotation.http_api_reader" />
             </service>
         </services>
 </container>
