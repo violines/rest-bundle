@@ -5,9 +5,9 @@ namespace TerryApiBundle\Exception;
 interface HTTPErrorInterface
 {
     /**
-     * must return an Object with TerryApiBundle\Annotation\Struct annotation
+     * must return an Object with TerryApiBundle\Annotation\HTTPApi annotation
      */
-    public function getStruct(): object;
+    public function getContent(): object;
 
     /**
      * use the consts from Symfony\Component\HttpFoundation\Response

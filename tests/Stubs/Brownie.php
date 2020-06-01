@@ -7,7 +7,7 @@ namespace TerryApiBundle\Tests\Stubs;
 /**
  * @FakeAnnotation(fakeBool=true)
  */
-class BrownieModelStub
+class Brownie
 {
     public int $weight;
 

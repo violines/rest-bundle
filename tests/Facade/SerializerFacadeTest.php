@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Event\DeserializeEvent;
 use TerryApiBundle\Event\SerializeEvent;
-use TerryApiBundle\Tests\Stubs\CandyStructStub;
+use TerryApiBundle\Tests\Stubs\Candy;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
@@ -78,7 +78,7 @@ class SerializerFacadeTest extends TestCase
         $deserializeEvent->mergeToContext($context);
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn($deserializeEvent);
-        \Phake::when($this->serializer)->serialize->thenReturn(new CandyStructStub());
+        \Phake::when($this->serializer)->serialize->thenReturn(new Candy());
 
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
         $serializerFacade->deserialize($data, $type, $client);

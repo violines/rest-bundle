@@ -7,7 +7,7 @@ namespace TerryApiBundle\Annotation;
 use Doctrine\Common\Annotations\Reader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 
-class StructReader
+class HTTPApiReader
 {
     private Reader $reader;
 
@@ -19,16 +19,16 @@ class StructReader
     /**
      * @param class-string $className
      */
-    public function read(string $className): Struct
+    public function read(string $className): HTTPApi
     {
         $annotations = $this->reader->getClassAnnotations(new \ReflectionClass($className));
 
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof Struct) {
+            if ($annotation instanceof HTTPApi) {
                 return $annotation;
             }
         }
 
-        throw AnnotationNotFoundException::struct($className);
+        throw AnnotationNotFoundException::httpApi($className);
     }
 }

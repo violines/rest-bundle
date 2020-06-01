@@ -7,14 +7,14 @@ namespace TerryApiBundle\EventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
-use TerryApiBundle\Annotation\StructReader;
+use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class ResponseTransformListener
+class ObjectResponseListener
 {
     private HTTPServer $httpServer;
 
@@ -22,18 +22,18 @@ class ResponseTransformListener
 
     private SerializerFacade $serializerFacade;
 
-    private StructReader $structReader;
+    private HTTPApiReader $httpApiReader;
 
     public function __construct(
         HTTPServer $httpServer,
         ResponseBuilder $responseBuilder,
         SerializerFacade $serializerFacade,
-        StructReader $structReader
+        HTTPApiReader $httpApiReader
     ) {
         $this->httpServer = $httpServer;
         $this->responseBuilder = $responseBuilder;
         $this->serializerFacade = $serializerFacade;
-        $this->structReader = $structReader;
+        $this->httpApiReader = $httpApiReader;
     }
 
     public function transform(ViewEvent $viewEvent): void
@@ -65,7 +65,7 @@ class ResponseTransformListener
         }
 
         try {
-            $this->structReader->read(get_class($object));
+            $this->httpApiReader->read(get_class($object));
         } catch (AnnotationNotFoundException $e) {
             return false;
         }

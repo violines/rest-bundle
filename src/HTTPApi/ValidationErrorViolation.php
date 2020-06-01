@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Struct;
+namespace TerryApiBundle\HTTPApi;
 
 use Symfony\Component\Validator\ConstraintViolationInterface;
-use TerryApiBundle\Annotation\Struct;
+use TerryApiBundle\Annotation\HTTPApi;
 
 /**
- * @Struct
+ * @HTTPApi
  */
 class ValidationErrorViolation
 {

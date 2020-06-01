@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Tests\Stubs;
 
-class GumModelStub
+class Gum
 {
     public int $weight;
 

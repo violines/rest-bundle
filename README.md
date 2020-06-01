@@ -17,10 +17,10 @@ composer require simon-schubert/terry-api
 ```
 
 ### How does it work?
-1. Create a PHP class and add the `@TerryApiBundle\Annotation\Struct` annotation
-1. Use any property annotations from symfony/serializer or symfony/validator inside your struct
-1. Declare a struct as type of a controller argument 
-1. Return an instance of a struct in the controller
+1. Create a DTO (normal PHP class) and add the `@TerryApiBundle\Annotation\HTTPApi` annotation
+1. Use any property annotations from symfony/serializer or symfony/validator inside your DTO
+1. Declare your DTO as type of a controller argument 
+1. Return an instance of your DTO in the controller
 
 ### Show Case
 You can find a sample of usage under: https://github.com/simon-schubert/terry-api-show.
@@ -35,9 +35,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\AuthenticationFailedException;
-use App\Struct\Candy;
-use App\Struct\Ok;
-use App\Struct\User;
+use App\DTO\Candy;
+use App\DTO\Ok;
+use App\DTO\User;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CandyController
@@ -50,7 +50,7 @@ class CandyController
         $_candies = [];
 
         foreach ($this->candyRepository->findAll() as $entity) {
-            $_candies[] = $entity->toStruct();
+            $_candies[] = $entity->toDTO();
         }
 
         return $_candies;
@@ -67,7 +67,7 @@ class CandyController
             throw NotFoundException::create();
         }
 
-        return $entity->toStruct();
+        return $entity->toDTO();
     }
 
 

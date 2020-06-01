@@ -38,7 +38,7 @@ class ConfigurationTest extends TestCase
                         'http_error_listener' => [
                             'enable' => true,
                         ],
-                        'response_transform_listener' => [
+                        'object_response_listener' => [
                             'enable' => true,
                         ],
                     ],
@@ -46,10 +46,10 @@ class ConfigurationTest extends TestCase
                         'abstract_http_client_resolver' => [
                             'enable' => true,
                         ],
-                        'request_single_struct_resolver' => [
+                        'single_object_resolver' => [
                             'enable' => true,
                         ],
-                        'request_array_of_structs_resolver' => [
+                        'objects_array_resolver' => [
                             'enable' => true,
                         ],
                     ],
@@ -86,7 +86,7 @@ class ConfigurationTest extends TestCase
                         'http_error_listener' => [
                             'enable' => true,
                         ],
-                        'response_transform_listener' => [
+                        'object_response_listener' => [
                             'enable' => true,
                         ],
                     ],
@@ -94,10 +94,10 @@ class ConfigurationTest extends TestCase
                         'abstract_http_client_resolver' => [
                             'enable' => true,
                         ],
-                        'request_single_struct_resolver' => [
+                        'single_object_resolver' => [
                             'enable' => true,
                         ],
-                        'request_array_of_structs_resolver' => [
+                        'objects_array_resolver' => [
                             'enable' => true,
                         ],
                     ],
@@ -125,7 +125,7 @@ class ConfigurationTest extends TestCase
                         'http_error_listener' => [
                             'enable' => false,
                         ],
-                        'response_transform_listener' => [
+                        'object_response_listener' => [
                             'enable' => false,
                         ],
                     ],
@@ -133,10 +133,10 @@ class ConfigurationTest extends TestCase
                         'abstract_http_client_resolver' => [
                             'enable' => false,
                         ],
-                        'request_single_struct_resolver' => [
+                        'single_object_resolver' => [
                             'enable' => false,
                         ],
-                        'request_array_of_structs_resolver' => [
+                        'objects_array_resolver' => [
                             'enable' => false,
                         ],
                     ]
@@ -149,7 +149,7 @@ class ConfigurationTest extends TestCase
                         'http_error_listener' => [
                             'enable' => false,
                         ],
-                        'response_transform_listener' => [
+                        'object_response_listener' => [
                             'enable' => false,
                         ],
                     ],
@@ -157,10 +157,10 @@ class ConfigurationTest extends TestCase
                         'abstract_http_client_resolver' => [
                             'enable' => false,
                         ],
-                        'request_single_struct_resolver' => [
+                        'single_object_resolver' => [
                             'enable' => false,
                         ],
-                        'request_array_of_structs_resolver' => [
+                        'objects_array_resolver' => [
                             'enable' => false,
                         ],
                     ],

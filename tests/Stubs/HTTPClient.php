@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use TerryApiBundle\ValueObject\AbstractHTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class HTTPClientStub extends AbstractHTTPClient
+class HTTPClient extends AbstractHTTPClient
 {
     public static function fromRequest(Request $request, HTTPServer $httpServer): self
     {

@@ -7,7 +7,7 @@ namespace TerryApiBundle\EventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use TerryApiBundle\Annotation\StructReader;
+use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Exception\HTTPErrorInterface;
 use TerryApiBundle\Facade\SerializerFacade;
@@ -22,18 +22,18 @@ class HTTPErrorListener
 
     private SerializerFacade $serializerFacade;
 
-    private StructReader $structReader;
+    private HTTPApiReader $httpApiReader;
 
     public function __construct(
         HTTPServer $httpServer,
         ResponseBuilder $responseBuilder,
         SerializerFacade $serializerFacade,
-        StructReader $structReader
+        HTTPApiReader $httpApiReader
     ) {
         $this->httpServer = $httpServer;
         $this->responseBuilder = $responseBuilder;
         $this->serializerFacade = $serializerFacade;
-        $this->structReader = $structReader;
+        $this->httpApiReader = $httpApiReader;
     }
 
     public function handle(ExceptionEvent $event): void
@@ -56,12 +56,12 @@ class HTTPErrorListener
     {
         $client = HTTPClient::fromRequest($request, $this->httpServer);
 
-        $struct = $exception->getStruct();
+        $object = $exception->getContent();
 
-        $this->structReader->read(get_class($struct));
+        $this->httpApiReader->read(get_class($object));
 
         return $this->responseBuilder
-            ->setContent($this->serializerFacade->serialize($struct, $client))
+            ->setContent($this->serializerFacade->serialize($object, $client))
             ->setStatus($exception->getHTTPStatusCode())
             ->setHeaders($client->responseHeaders())
             ->getResponse();

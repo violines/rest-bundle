@@ -7,15 +7,15 @@ namespace TerryApi\Tests\Annotation;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Annotation\Struct;
-use TerryApiBundle\Annotation\StructReader;
+use TerryApiBundle\Annotation\HTTPApi;
+use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
-use TerryApiBundle\Tests\Stubs\BrownieModelStub;
-use TerryApiBundle\Tests\Stubs\CandyStructStub;
+use TerryApiBundle\Tests\Stubs\Brownie;
+use TerryApiBundle\Tests\Stubs\Candy;
 
-class StructReaderTest extends TestCase
+class HTTPApiReaderTest extends TestCase
 {
-    private StructReader $structReader;
+    private HTTPApiReader $httpApiReader;
 
     public function setUp(): void
     {
@@ -25,20 +25,18 @@ class StructReaderTest extends TestCase
         $loader = require __DIR__ . "/../../vendor/autoload.php";
         AnnotationRegistry::registerLoader(array($loader, "loadClass"));
 
-        $this->structReader = new StructReader($reader);
+        $this->httpApiReader = new HTTPApiReader($reader);
     }
 
     public function testShouldReturnStructAnnotation(): void
     {
-        $struct = $this->structReader->read(CandyStructStub::class);
-
-        $this->assertInstanceOf(Struct::class, $struct);
+        $this->assertInstanceOf(HTTPApi::class, $this->httpApiReader->read(Candy::class));
     }
 
     public function testShouldThrowAnnotationNotFoundException(): void
     {
         $this->expectException(AnnotationNotFoundException::class);
 
-        $this->structReader->read(BrownieModelStub::class);
+        $this->httpApiReader->read(Brownie::class);
     }
 }

@@ -7,7 +7,7 @@ namespace TerryApiBundle\Tests\Stubs;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ConstraintViolationListStub implements \Iterator, ConstraintViolationListInterface
+class ConstraintViolationList implements \Iterator, ConstraintViolationListInterface
 {
     private $count;
 

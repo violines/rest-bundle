@@ -13,17 +13,17 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\Annotation\StructReader;
-use TerryApiBundle\EventListener\ResponseTransformListener;
+use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Event\SerializeEvent;
+use TerryApiBundle\EventListener\ObjectResponseListener;
 use TerryApiBundle\Facade\SerializerFacade;
-use TerryApiBundle\Tests\Stubs\GumModelStub;
-use TerryApiBundle\Tests\Stubs\OkStructStub;
+use TerryApiBundle\Tests\Stubs\Gum;
+use TerryApiBundle\Tests\Stubs\Ok;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class ResponseTransformListenerTest extends TestCase
+class ObjectResponseListenerTest extends TestCase
 {
     /**
      * @Mock
@@ -49,9 +49,7 @@ class ResponseTransformListenerTest extends TestCase
      */
     private \Phake_IMock $serializer;
 
-    private StructReader $structReader;
-
-    private ResponseTransformListener $responseTransformListener;
+    private ObjectResponseListener $listener;
 
     public function setUp(): void
     {
@@ -65,15 +63,15 @@ class ResponseTransformListenerTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $this->structReader = new StructReader(new AnnotationReader());
+        $httpApiReader = new HTTPApiReader(new AnnotationReader());
 
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
 
-        $this->responseTransformListener = new ResponseTransformListener(
+        $this->listener = new ObjectResponseListener(
             new HTTPServer(),
             new ResponseBuilder(),
             $serializerFacade,
-            $this->structReader
+            $httpApiReader
         );
     }
 
@@ -95,7 +93,7 @@ class ResponseTransformListenerTest extends TestCase
             $controllerResult
         );
 
-        $this->responseTransformListener->transform($viewEvent);
+        $this->listener->transform($viewEvent);
 
         $this->assertEquals($expected, $viewEvent->getResponse()->getContent());
     }
@@ -103,7 +101,7 @@ class ResponseTransformListenerTest extends TestCase
     public function providerShouldPassControllerResultToSerializer()
     {
         return [
-            [[new OkStructStub()], '[{"message": "Everything is fine."}]']
+            [[new Ok()], '[{"message": "Everything is fine."}]']
         ];
     }
 
@@ -119,7 +117,7 @@ class ResponseTransformListenerTest extends TestCase
             $controllerResult
         );
 
-        $this->responseTransformListener->transform($viewEvent);
+        $this->listener->transform($viewEvent);
 
         $this->assertNull($viewEvent->getResponse());
     }
@@ -128,7 +126,7 @@ class ResponseTransformListenerTest extends TestCase
     {
         return [
             [null],
-            [new GumModelStub()],
+            [new Gum()],
             ['key' => 'value'],
             [['key' => 'value']]
         ];

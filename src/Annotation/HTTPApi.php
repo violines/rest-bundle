@@ -7,6 +7,6 @@ namespace TerryApiBundle\Annotation;
 /**
  * @Annotation
  */
-class Struct
+class HTTPApi
 {
 }

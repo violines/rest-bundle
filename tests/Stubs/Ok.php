@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Tests\Stubs;
 
-use TerryApiBundle\Annotation\Struct;
+use TerryApiBundle\Annotation\HTTPApi;
 
 /**
- * @Struct
+ * @HTTPApi
  */
-class OkStructStub
+class Ok
 {
     public $message = "Everything is fine.";
 

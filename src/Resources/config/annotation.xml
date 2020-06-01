@@ -6,7 +6,7 @@
 
         <services>
             <defaults public="false" />
-            <service id="terry_api.annotation.struct_reader" class="TerryApiBundle\Annotation\StructReader">
+            <service id="terry_api.annotation.http_api_reader" class="TerryApiBundle\Annotation\HTTPApiReader">
                 <argument type="service" id="annotations.reader" />
             </service>
         </services>
