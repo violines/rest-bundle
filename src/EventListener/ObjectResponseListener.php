@@ -38,6 +38,7 @@ class ObjectResponseListener
 
     public function transform(ViewEvent $viewEvent): void
     {
+        /** @var object[]|object|array $controllerResult */
         $controllerResult = $viewEvent->getControllerResult();
 
         if (!$this->hasStruct($controllerResult)) {
@@ -57,6 +58,7 @@ class ObjectResponseListener
         $object = $controllerResult;
 
         if (is_array($controllerResult)) {
+            /** @var object|mixed $object */
             $object = current($controllerResult);
         }
 

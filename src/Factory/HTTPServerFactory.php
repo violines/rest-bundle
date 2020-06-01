@@ -17,7 +17,9 @@ class HTTPServerFactory
 
     public function fromConfig(): HTTPServer
     {
+        /** @var array<string, array<string, string>> $configformats */
         $configformats = $this->config['formats'] ?? [];
+        /** @var string $configformatDefault */
         $configformatDefault = $this->config['format_default'] ?? '';
 
         $_formatSerializerMap = [];

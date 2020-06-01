@@ -21,6 +21,7 @@ class TerryApiExtension extends Extension
         $loader->load('resolver.xml');
         $loader->load('service.xml');
 
+        /** @var array<string, array<string, array<string,mixed>>> $processedConfigs */
         $processedConfigs = $this->processConfiguration(new Configuration(), $configs);
 
         $container->getDefinition('terry_api.factory.http_server_factory')->replaceArgument(0, $processedConfigs['http_server'] ?? []);

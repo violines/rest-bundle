@@ -40,6 +40,7 @@ class AbstractHTTPClientResolver implements ArgumentValueResolverInterface
             throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
         }
 
+        /** @var class-string<AbstractHTTPClient> $className */
         yield $className::fromRequest($request, $this->httpServer);
     }
 }

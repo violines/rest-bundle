@@ -70,6 +70,7 @@ class ObjectsArrayResolver implements ArgumentValueResolverInterface
             throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
         }
 
+        /** @var object[] $objectsArray */
         $objectsArray = $this->serializerFacade->deserialize($content, $className . '[]', $client);
 
         $violations = $this->validator->validate($objectsArray);

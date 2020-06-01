@@ -13,7 +13,10 @@ class HTTPClient extends AbstractHTTPClient
 
     private array $contentTypeDefaultsMap = [];
 
-    private array $formatSerializerMap = [];
+    /**
+     * @var array<string, string>
+     */
+    private array $formatSerializerMap;
 
     protected function __construct(Request $request, HTTPServer $httpServer)
     {
