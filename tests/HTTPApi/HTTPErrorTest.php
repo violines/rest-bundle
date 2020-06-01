@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\Struct;
+namespace TerryApi\Tests\HTTPApi;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Struct\HTTPError;
+use TerryApiBundle\HTTPApi\HTTPError;
 
 class HTTPErrorTest extends TestCase
 {
@@ -13,8 +13,8 @@ class HTTPErrorTest extends TestCase
     {
         $message = 'This is the reason for an error.';
 
-        $struct = HTTPError::fromMessage($message);
+        $content = HTTPError::fromMessage($message);
 
-        $this->assertEquals($struct->message, $message);
+        $this->assertEquals($content->message, $message);
     }
 }

@@ -11,7 +11,7 @@ class AnnotationNotFoundExceptionTest extends TestCase
 {
     public function testShouldStruct()
     {
-        $exception = AnnotationNotFoundException::struct('Classname');
+        $exception = AnnotationNotFoundException::httpApi('Classname');
 
         $this->assertInstanceOf(AnnotationNotFoundException::class, $exception);
     }

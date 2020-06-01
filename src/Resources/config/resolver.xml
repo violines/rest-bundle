@@ -10,7 +10,7 @@
                 <argument type="expression">service("terry_api.factory.http_server_factory").fromConfig()</argument>
                 <tag name="controller.argument_value_resolver" priority="50" />
             </service>
-            <service id="terry_api.argument_value_resolver.request_single_struct_resolver" class="TerryApiBundle\ArgumentValueResolver\RequestSingleStructResolver">
+            <service id="terry_api.argument_value_resolver.single_object_resolver" class="TerryApiBundle\ArgumentValueResolver\SingleObjectResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
                 <argument type="expression">service("terry_api.factory.http_server_factory").fromConfig()</argument>
                 <argument type="service" id="terry_api.facade.serializer_facade" />

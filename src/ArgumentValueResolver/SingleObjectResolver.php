@@ -15,7 +15,7 @@ use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class RequestSingleObjectResolver implements ArgumentValueResolverInterface
+class SingleObjectResolver implements ArgumentValueResolverInterface
 {
     private HTTPServer $httpServer;
     private SerializerFacade $serializerFacade;
@@ -54,6 +54,9 @@ class RequestSingleObjectResolver implements ArgumentValueResolverInterface
         return true;
     }
 
+    /**
+     * @return \Generator
+     */
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
         $className = $argument->getType();

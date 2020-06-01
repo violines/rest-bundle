@@ -13,13 +13,15 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\Annotation\StructReader;
+use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\EventListener\HTTPErrorListener;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Facade\SerializerFacade;
-use TerryApiBundle\Tests\Stubs\HTTPErrorExceptionStub;
+use TerryApiBundle\Tests\Stubs\Error;
+use TerryApiBundle\Tests\Stubs\Gum;
+use TerryApiBundle\Tests\Stubs\HTTPErrorException;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
@@ -49,8 +51,6 @@ class HTTPErrorListenerTest extends TestCase
      */
     private \Phake_IMock $serializer;
 
-    private StructReader $structReader;
-
     private HTTPErrorListener $httpErrorListener;
 
     public function setUp(): void
@@ -65,7 +65,7 @@ class HTTPErrorListenerTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $this->structReader = new StructReader(new AnnotationReader());
+        $httpApiReader = new HTTPApiReader(new AnnotationReader());
 
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
 
@@ -73,23 +73,23 @@ class HTTPErrorListenerTest extends TestCase
             new HTTPServer(),
             new ResponseBuilder(),
             $serializerFacade,
-            $this->structReader
+            $httpApiReader
         );
     }
 
     public function testShouldCreateCandyStructStubJson()
     {
         $expectedJson = '{"message": "Test 400"}';
-        $exception = new HTTPErrorExceptionStub();
-        $exception->setStructToStruct();
+        $exception = new HTTPErrorException();
+        $exception->setContent(new Error("Test 400"));
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
-            $exception->getStruct(),
+            $exception->getContent(),
             HTTPClient::fromRequest($this->request, new HTTPServer())
         ));
 
         \Phake::when($this->serializer)
-            ->serialize($exception->getStruct(), 'json', [])
+            ->serialize($exception->getContent(), 'json', [])
             ->thenReturn($expectedJson);
 
         $exceptionEvent = new ExceptionEvent(
@@ -127,8 +127,8 @@ class HTTPErrorListenerTest extends TestCase
     {
         $this->expectException(AnnotationNotFoundException::class);
 
-        $exception = new HTTPErrorExceptionStub();
-        $exception->setStructToNonStructObject();
+        $exception = new HTTPErrorException();
+        $exception->setContent(new Gum());
 
         $exceptionEvent = new ExceptionEvent(
             $this->httpKernel,

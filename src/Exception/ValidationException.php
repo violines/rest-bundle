@@ -6,7 +6,7 @@ namespace TerryApiBundle\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use TerryApiBundle\Struct\ValidationError;
+use TerryApiBundle\HTTPApi\ValidationError;
 
 class ValidationException extends \RuntimeException implements \Throwable, HTTPErrorInterface
 {
@@ -27,7 +27,7 @@ class ValidationException extends \RuntimeException implements \Throwable, HTTPE
         return $this->violations;
     }
 
-    public function getStruct(): ValidationError
+    public function getContent(): ValidationError
     {
         return ValidationError::fromViolations($this->violations);
     }

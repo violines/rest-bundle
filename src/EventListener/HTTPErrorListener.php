@@ -56,7 +56,7 @@ class HTTPErrorListener
     {
         $client = HTTPClient::fromRequest($request, $this->httpServer);
 
-        $object = $exception->getStruct();
+        $object = $exception->getContent();
 
         $this->httpApiReader->read(get_class($object));
 

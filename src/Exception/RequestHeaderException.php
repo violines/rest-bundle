@@ -28,7 +28,7 @@ class RequestHeaderException extends \RuntimeException implements \Throwable, HT
         );
     }
 
-    public function getStruct(): HTTPError
+    public function getContent(): HTTPError
     {
         return HTTPError::fromMessage($this->message);
     }

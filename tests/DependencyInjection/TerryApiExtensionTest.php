@@ -42,16 +42,16 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
                 'terry_api.event_listener.http_error_listener'
             ],
             [
-                'terry_api.event_listener.response_transform_listener'
+                'terry_api.event_listener.object_response_listener'
             ],
             [
                 'terry_api.argument_value_resolver.abstract_http_client_resolver'
             ],
             [
-                'terry_api.argument_value_resolver.request_single_struct_resolver'
+                'terry_api.argument_value_resolver.single_object_resolver'
             ],
             [
-                'terry_api.argument_value_resolver.request_array_of_structs_resolver'
+                'terry_api.argument_value_resolver.objects_array_resolver'
             ]
         ];
     }

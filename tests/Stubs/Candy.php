@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Tests\Stubs;
 
-use TerryApiBundle\Annotation\Struct;
+use TerryApiBundle\Annotation\HTTPApi;
 use Symfony\Component\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Struct
+ * @HTTPApi
  * @FakeAnnotation(fakeBool=true)
  */
-class CandyStructStub
+class Candy
 {
     /**
      * @Serializer\Annotation\SerializedName("weight")

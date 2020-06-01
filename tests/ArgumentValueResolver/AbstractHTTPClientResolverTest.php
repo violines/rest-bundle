@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use TerryApiBundle\ArgumentValueResolver\AbstractHTTPClientResolver;
-use TerryApiBundle\Tests\Stubs\HTTPClientStub;
+use TerryApiBundle\Tests\Stubs\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
 class AbstractHTTPClientResolverTest extends TestCase
@@ -48,13 +48,13 @@ class AbstractHTTPClientResolverTest extends TestCase
         $this->assertTrue($supports);
 
         $result = $this->resolver->resolve($this->request, $this->argument);
-        $this->assertInstanceOf(HTTPClientStub::class, $result->current());
+        $this->assertInstanceOf(HTTPClient::class, $result->current());
     }
 
     public function providerShouldYieldClient(): array
     {
         return [
-            [HTTPClientStub::class],
+            [HTTPClient::class],
         ];
     }
 

@@ -16,8 +16,8 @@ use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\EventListener\ArrayResponseListener;
 use TerryApiBundle\Facade\SerializerFacade;
-use TerryApiBundle\Tests\Stubs\GumModelStub;
-use TerryApiBundle\Tests\Stubs\OkStructStub;
+use TerryApiBundle\Tests\Stubs\Gum;
+use TerryApiBundle\Tests\Stubs\Ok;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
@@ -127,9 +127,9 @@ class ArrayResponseListenerTest extends TestCase
     public function providerShouldSkipListener()
     {
         return [
-            [new OkStructStub()],
-            [[new OkStructStub()]],
-            [new GumModelStub()]
+            [new Ok()],
+            [[new Ok()]],
+            [new Gum()]
         ];
     }
 }

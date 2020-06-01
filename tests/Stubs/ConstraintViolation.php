@@ -6,7 +6,7 @@ namespace TerryApiBundle\Tests\Stubs;
 
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
-class ConstraintViolationStub implements ConstraintViolationInterface
+class ConstraintViolation implements ConstraintViolationInterface
 {
     public function getMessage()
     {

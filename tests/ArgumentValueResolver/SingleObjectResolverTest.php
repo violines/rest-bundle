@@ -13,18 +13,18 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\Annotation\Struct;
-use TerryApiBundle\Annotation\StructReader;
-use TerryApiBundle\ArgumentValueResolver\RequestArrayOfStructsResolver;
+use TerryApiBundle\Annotation\HTTPApi;
+use TerryApiBundle\Annotation\HTTPApiReader;
+use TerryApiBundle\ArgumentValueResolver\SingleObjectResolver;
 use TerryApiBundle\Event\DeserializeEvent;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
-use TerryApiBundle\Tests\Stubs\CandyStructStub;
+use TerryApiBundle\Tests\Stubs\Candy;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class RequestArrayOfStructsResolverTest extends TestCase
+class SingleObjectResolverTest extends TestCase
 {
     /**
      * @Mock
@@ -34,15 +34,9 @@ class RequestArrayOfStructsResolverTest extends TestCase
 
     /**
      * @Mock
-     * @var SerializerInterface
+     * @var ArgumentMetadata
      */
-    private \Phake_IMock $serializer;
-
-    /**
-     * @Mock
-     * @var StructReader
-     */
-    private \Phake_IMock $structReader;
+    private \Phake_IMock $argument;
 
     /**
      * @Mock
@@ -52,9 +46,15 @@ class RequestArrayOfStructsResolverTest extends TestCase
 
     /**
      * @Mock
-     * @var ArgumentMetadata
+     * @var SerializerInterface
      */
-    private \Phake_IMock $argument;
+    private \Phake_IMock $serializer;
+
+    /**
+     * @Mock
+     * @var HTTPApiReader
+     */
+    private \Phake_IMock $httpApiReader;
 
     /**
      * @Mock
@@ -62,7 +62,7 @@ class RequestArrayOfStructsResolverTest extends TestCase
      */
     private \Phake_IMock $validator;
 
-    private RequestArrayOfStructsResolver $resolver;
+    private SingleObjectResolver $resolver;
 
     public function setUp(): void
     {
@@ -77,10 +77,10 @@ class RequestArrayOfStructsResolverTest extends TestCase
 
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
 
-        $this->resolver = new RequestArrayOfStructsResolver(
+        $this->resolver = new SingleObjectResolver(
             new HTTPServer(),
             $serializerFacade,
-            $this->structReader,
+            $this->httpApiReader,
             $this->validator
         );
     }
@@ -99,7 +99,7 @@ class RequestArrayOfStructsResolverTest extends TestCase
         \Phake::when($this->argument)->isVariadic->thenReturn($isVariadic);
 
         if ($throwException) {
-            \Phake::when($this->structReader)->read->thenThrow(AnnotationNotFoundException::struct('test'));
+            \Phake::when($this->httpApiReader)->read->thenThrow(AnnotationNotFoundException::httpApi('test'));
         }
 
         $supports = $this->resolver->supports($this->request, $this->argument);
@@ -110,25 +110,23 @@ class RequestArrayOfStructsResolverTest extends TestCase
     public function providerSupportsShouldReturnFalse(): array
     {
         return [
-            ['string', 'this is a string', true, false],
-            [null, 'this is a string', true, false],
-            [CandyStructStub::class, null, true, false],
-            [CandyStructStub::class, 'this is a string', true, true],
-            [CandyStructStub::class, 'this is a string', false, false],
+            ['string', 'this is a string', false, false],
+            [null, 'this is a string', false, false],
+            [Candy::class, null, false, false],
+            [Candy::class, 'this is a string', false, true],
+            [Candy::class, 'this is a string', true, false],
         ];
     }
 
     public function testSupportsShouldReturnTrue()
     {
         \Phake::when($this->request)->getContent->thenReturn('this is a string');
-        \Phake::when($this->argument)->getType->thenReturn(CandyStructStub::class);
+        \Phake::when($this->argument)->getType->thenReturn(Candy::class);
 
-        $structAnnotation = new Struct();
-        $structAnnotation->supports = true;
-        \Phake::when($this->structReader)->read->thenReturn($structAnnotation);
+        $structAnnotation = new HTTPApi();
+        \Phake::when($this->httpApiReader)->read->thenReturn($structAnnotation);
 
         $supports = $this->resolver->supports($this->request, $this->argument);
-
         $this->assertTrue($supports);
     }
 
@@ -150,10 +148,9 @@ class RequestArrayOfStructsResolverTest extends TestCase
         return [
             ['string', 'this is a string'],
             [null, 'this is a string'],
-            [CandyStructStub::class, null],
+            [Candy::class, null],
         ];
     }
-
 
     /**
      * @dataProvider providerResolveShouldYield
@@ -162,13 +159,13 @@ class RequestArrayOfStructsResolverTest extends TestCase
     {
         $this->expectException(ValidationException::class);
 
-        $candies = [new CandyStructStub(), new CandyStructStub()];
-        $content = json_encode($candies);
+        $candy = new Candy();
+        $content = json_encode($candy);
 
-        \Phake::when($this->request)->getContent->thenReturn(json_encode($candies));
-        \Phake::when($this->argument)->isVariadic->thenReturn(true);
-        \Phake::when($this->argument)->getType->thenReturn(CandyStructStub::class);
-        \Phake::when($this->serializer)->deserialize->thenReturn($candies);
+        \Phake::when($this->request)->getContent->thenReturn($content);
+        \Phake::when($this->argument)->isVariadic->thenReturn(false);
+        \Phake::when($this->argument)->getType->thenReturn(Candy::class);
+        \Phake::when($this->serializer)->deserialize->thenReturn($candy);
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
             $content,
             HTTPClient::fromRequest($this->request, new HTTPServer())
@@ -185,12 +182,12 @@ class RequestArrayOfStructsResolverTest extends TestCase
     /**
      * @dataProvider providerResolveShouldYield
      */
-    public function testResolveShouldYield($expected, $expectedClassName)
+    public function testResolveShouldYield($isVariadic, $expected, $expectedClassName)
     {
         $content = json_encode($expected);
 
         \Phake::when($this->request)->getContent->thenReturn(json_encode($expected));
-        \Phake::when($this->argument)->isVariadic->thenReturn(true);
+        \Phake::when($this->argument)->isVariadic->thenReturn($isVariadic);
         \Phake::when($this->argument)->getType->thenReturn($expectedClassName);
         \Phake::when($this->serializer)->deserialize->thenReturn($expected);
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
@@ -207,9 +204,10 @@ class RequestArrayOfStructsResolverTest extends TestCase
     {
         return [
             [
-                [new CandyStructStub(), new CandyStructStub()],
-                CandyStructStub::class
-            ]
+                false,
+                new Candy(),
+                Candy::class
+            ],
         ];
     }
 }

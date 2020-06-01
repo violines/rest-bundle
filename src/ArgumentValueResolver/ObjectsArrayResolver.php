@@ -54,6 +54,9 @@ class ObjectsArrayResolver implements ArgumentValueResolverInterface
         return true;
     }
 
+    /**
+     * @return \Generator
+     */
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
         $className = $argument->getType();
@@ -75,8 +78,8 @@ class ObjectsArrayResolver implements ArgumentValueResolverInterface
             throw ValidationException::create($violations);
         }
 
-        foreach ($objectsArray as $struct) {
-            yield $struct;
+        foreach ($objectsArray as $item) {
+            yield $item;
         }
     }
 }
