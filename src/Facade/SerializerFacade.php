@@ -29,7 +29,8 @@ class SerializerFacade
      */
     public function serialize($data, HTTPClient $httpClient): string
     {
-        $serializeContextEvent = $this->eventDispatcher->dispatch(
+        /** @var SerializeEvent $serializeEvent */
+        $serializeEvent = $this->eventDispatcher->dispatch(
             new SerializeEvent($data, $httpClient),
             SerializeEvent::NAME
         );
@@ -37,15 +38,16 @@ class SerializerFacade
         return $this->serializer->serialize(
             $data,
             $httpClient->serializerType(),
-            $serializeContextEvent->getContext()
+            $serializeEvent->getContext()
         );
     }
 
     /**
-     * @return object[]|object
+     * @return mixed[]|object
      */
     public function deserialize(string $data, string $type, HTTPClient $httpClient)
     {
+        /** @var DeserializeEvent $deserializeEvent */
         $deserializeEvent = $this->eventDispatcher->dispatch(
             new DeserializeEvent($data, $httpClient),
             DeserializeEvent::NAME

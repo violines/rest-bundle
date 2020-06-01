@@ -12,8 +12,14 @@ class HTTPServer
 
     private string $formatDefault;
 
+    /**
+     * @var array<string, string>
+     */
     private array $formatSerializerMap;
 
+    /**
+     * @param array<string, string> $formatSerializerMap
+     */
     public function __construct(
         string $formatDefault = '',
         array $formatSerializerMap = []
@@ -27,6 +33,9 @@ class HTTPServer
         return $this->formatDefault;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function formatSerializerMap(): array
     {
         return $this->formatSerializerMap;

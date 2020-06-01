@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\HTTPApi;
 
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use TerryApiBundle\Annotation\HTTPApi;
 
@@ -25,6 +26,7 @@ class ValidationError
     {
         $_violations = [];
 
+        /** @var iterable<ConstraintViolationInterface> $violations */
         foreach ($violations as $violation) {
             $_violations[] = ValidationErrorViolation::fromViolation($violation);
         }

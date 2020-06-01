@@ -21,6 +21,7 @@ class HTTPApiReader
      */
     public function read(string $className): HTTPApi
     {
+        /** @var object[] $annotations */
         $annotations = $this->reader->getClassAnnotations(new \ReflectionClass($className));
 
         foreach ($annotations as $annotation) {

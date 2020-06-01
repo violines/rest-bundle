@@ -32,6 +32,7 @@ class ArrayResponseListener
 
     public function transform(ViewEvent $viewEvent): void
     {
+        /** @var object[]|object|array $controllerResult */
         $controllerResult = $viewEvent->getControllerResult();
 
         if (!is_array($controllerResult) || !$this->arrayHasStringKey($controllerResult)) {
@@ -43,6 +44,9 @@ class ArrayResponseListener
         );
     }
 
+    /**
+     * @psalm-suppress MixedAssignment
+     */
     private function arrayHasStringKey(array $array): bool
     {
         foreach ($array as $key => $element) {

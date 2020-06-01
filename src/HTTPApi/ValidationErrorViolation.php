@@ -23,7 +23,7 @@ class ValidationErrorViolation
          * @psalm-suppress PossiblyInvalidPropertyAssignmentValue
          * @psalm-suppress UndefinedDocblockClass
          */
-        $this->message = $violation->getMessage();
+        $this->message = (string) $violation->getMessage();
     }
 
     public static function fromViolation(ConstraintViolationInterface $violation): self
