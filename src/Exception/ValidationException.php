@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use TerryApiBundle\HTTPApi\ValidationError;
 
-class ValidationException extends \RuntimeException implements \Throwable, HTTPErrorInterface
+class ValidationException extends \RuntimeException implements \Throwable
 {
     private ConstraintViolationListInterface $violations;
 

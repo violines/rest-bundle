@@ -12,6 +12,12 @@
                 <argument type="service" id="terry_api.builder.response_builder" />
                 <argument type="service" id="terry_api.facade.serializer_facade" />
             </service>
+            <service id="terry_api.event_listener.constraint_violation_list_response_listener" class="TerryApiBundle\EventListener\ConstraintViolationListResponseListener">
+                <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
+                <argument type="expression">service("terry_api.factory.http_server_factory").fromConfig()</argument>
+                <argument type="service" id="terry_api.builder.response_builder" />
+                <argument type="service" id="terry_api.facade.serializer_facade" />
+            </service>
             <service id="terry_api.event_listener.http_error_listener" class="TerryApiBundle\EventListener\HTTPErrorListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
                 <argument type="expression">service("terry_api.factory.http_server_factory").fromConfig()</argument>
