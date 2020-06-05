@@ -63,7 +63,7 @@ class HTTPErrorListener
         return $this->responseBuilder
             ->setContent($this->serializerFacade->serialize($object, $client))
             ->setStatus($exception->getHTTPStatusCode())
-            ->setHeaders($client->responseHeaders())
+            ->setClient($client)
             ->getResponse();
     }
 }

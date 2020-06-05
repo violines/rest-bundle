@@ -94,18 +94,18 @@ class HTTPClientTest extends TestCase
     }
 
     /**
-     * @dataProvider providerShouldReturnResponseHeaders
+     * @dataProvider providerShouldNegotiateContentType
      */
-    public function testShouldReturnResponseHeaders(array $requestHeaders, array $expected)
+    public function testShouldNegotiateContentType(array $requestHeaders, string $expected)
     {
         $this->request->headers = new HeaderBag($requestHeaders);
 
         $headers = HTTPClient::fromRequest($this->request, $this->httpServer);
 
-        $this->assertEquals($expected, $headers->responseHeaders());
+        $this->assertEquals($expected, $headers->negotiateContentType());
     }
 
-    public function providerShouldReturnResponseHeaders()
+    public function providerShouldNegotiateContentType()
     {
         return [
             [
@@ -113,63 +113,49 @@ class HTTPClientTest extends TestCase
                     'Accept' => 'application/pdf, application/xml',
                     'Content-Type' => 'application/json'
                 ],
-                [
-                    'Content-Type' => 'application/xml',
-                ]
+                'application/xml'
             ],
             [
                 [
                     'Accept' => '*/*',
                     'Content-Type' => 'application/xml'
                 ],
-                [
-                    'Content-Type' => 'application/json',
-                ],
+                'application/json',
             ],
             [
                 [
                     'Accept' => 'random/random, */*',
                     'Content-Type' => 'application/xml'
                 ],
-                [
-                    'Content-Type' => 'application/json',
-                ],
+                'application/json'
             ],
             [
                 [
                     'Accept' => 'application/*, random/random',
                     'Content-Type' => 'application/xml'
                 ],
-                [
-                    'Content-Type' => 'application/json',
-                ],
+                'application/json'
             ],
             [
                 [
                     'Accept' => 'application/xml;q=0.9,application/json;q=1.0,*/*;q=0.8',
                     'Content-Type' => 'application/xml'
                 ],
-                [
-                    'Content-Type' => 'application/json',
-                ],
+                'application/json'
             ],
             [
                 [
                     'Accept' => 'application/xml;q=0.9,application/json,*/*;q=0.8',
                     'Content-Type' => 'application/xml'
                 ],
-                [
-                    'Content-Type' => 'application/json',
-                ],
+                'application/json',
             ],
             [
                 [
                     'Accept' => 'application/xml;q=0.9,text/html;q=0.8,*/*',
                     'Content-Type' => 'application/xml'
                 ],
-                [
-                    'Content-Type' => 'application/json',
-                ],
+                'application/json',
             ]
         ];
     }
@@ -185,7 +171,7 @@ class HTTPClientTest extends TestCase
 
         $headers = HTTPClient::fromRequest($this->request, $this->httpServer);
 
-        $headers->responseHeaders();
+        $headers->negotiateContentType();
     }
 
     public function providerThrowExceptionIfContentNotNegotiatable()

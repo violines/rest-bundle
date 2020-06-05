@@ -84,7 +84,7 @@ class ObjectResponseListener
 
         return $this->responseBuilder
             ->setContent($this->serializerFacade->serialize($data, $client))
-            ->setHeaders($client->responseHeaders())
+            ->setClient($client)
             ->getResponse();
     }
 }
