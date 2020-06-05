@@ -53,7 +53,7 @@ class ConstraintViolationListResponseListener
 
         return $this->responseBuilder
             ->setContent($this->serializerFacade->serialize($exception->violations(), $client))
-            ->setStatus($exception->getHTTPStatusCode())
+            ->setStatus($exception->httpStatusCode())
             ->setHeaders($client->responseHeaders())
             ->getResponse();
     }

@@ -6,9 +6,7 @@ namespace TerryApi\Tests\Exception;
 
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Exception\ValidationException;
-use TerryApiBundle\HTTPApi\ValidationError;
 use TerryApiBundle\Tests\Stubs\ConstraintViolationList;
-use TerryApiBundle\Tests\Stubs\ConstraintViolationListStub;
 
 class ValidationExceptionTest extends TestCase
 {
@@ -28,17 +26,10 @@ class ValidationExceptionTest extends TestCase
         $this->assertEquals($violationList, $exception->violations());
     }
 
-    public function testExceptionShouldReturnValidationErrorStruct(): void
-    {
-        $exception = ValidationException::create(new ConstraintViolationList());
-
-        $this->assertInstanceOf(ValidationError::class, $exception->getContent());
-    }
-
     public function testExceptionShouldReturnBadRequestHttpCode(): void
     {
         $exception = ValidationException::create(new ConstraintViolationList());
 
-        $this->assertEquals(400, $exception->getHTTPStatusCode());
+        $this->assertEquals(400, $exception->httpStatusCode());
     }
 }

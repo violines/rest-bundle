@@ -27,12 +27,7 @@ class ValidationException extends \RuntimeException implements \Throwable
         return $this->violations;
     }
 
-    public function getContent(): ValidationError
-    {
-        return ValidationError::fromViolations($this->violations);
-    }
-
-    public function getHTTPStatusCode(): int
+    public function httpStatusCode(): int
     {
         return Response::HTTP_BAD_REQUEST;
     }
