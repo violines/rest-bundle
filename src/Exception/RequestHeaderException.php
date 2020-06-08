@@ -9,6 +9,8 @@ use TerryApiBundle\HTTPApi\HTTPError;
 
 class RequestHeaderException extends \RuntimeException implements \Throwable, HTTPErrorInterface
 {
+    private const TITLE = 'Request Header wrong';
+
     private function __construct(string $message)
     {
         $this->message = $message;
@@ -30,7 +32,7 @@ class RequestHeaderException extends \RuntimeException implements \Throwable, HT
 
     public function getContent(): HTTPError
     {
-        return HTTPError::fromMessage($this->message);
+        return HTTPError::create($this->message, self::TITLE);
     }
 
     public function getHTTPStatusCode(): int

@@ -7,14 +7,13 @@ namespace TerryApiBundle\EventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Builder\ResponseBuilder;
-use TerryApiBundle\Exception\HTTPErrorInterface;
+use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\ValueObject\HTTPClient;
 use TerryApiBundle\ValueObject\HTTPServer;
 
-class HTTPErrorListener
+class ConstraintViolationListResponseListener
 {
     private HTTPServer $httpServer;
 
@@ -22,25 +21,21 @@ class HTTPErrorListener
 
     private SerializerFacade $serializerFacade;
 
-    private HTTPApiReader $httpApiReader;
-
     public function __construct(
         HTTPServer $httpServer,
         ResponseBuilder $responseBuilder,
-        SerializerFacade $serializerFacade,
-        HTTPApiReader $httpApiReader
+        SerializerFacade $serializerFacade
     ) {
         $this->httpServer = $httpServer;
         $this->responseBuilder = $responseBuilder;
         $this->serializerFacade = $serializerFacade;
-        $this->httpApiReader = $httpApiReader;
     }
 
     public function handle(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
 
-        if (!$exception instanceof HTTPErrorInterface) {
+        if (!$exception instanceof ValidationException) {
             return;
         }
 
@@ -52,17 +47,13 @@ class HTTPErrorListener
         $event->setResponse($response);
     }
 
-    private function createResponse(Request $request, HTTPErrorInterface $exception): Response
+    private function createResponse(Request $request, ValidationException $exception): Response
     {
         $client = HTTPClient::fromRequest($request, $this->httpServer);
 
-        $object = $exception->getContent();
-
-        $this->httpApiReader->read(get_class($object));
-
         return $this->responseBuilder
-            ->setContent($this->serializerFacade->serialize($object, $client))
-            ->setStatus($exception->getHTTPStatusCode())
+            ->setContent($this->serializerFacade->serialize($exception->violations(), $client))
+            ->setStatus($exception->httpStatusCode())
             ->setClient($client)
             ->getResponse();
     }

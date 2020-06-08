@@ -9,12 +9,14 @@ use TerryApiBundle\HTTPApi\HTTPError;
 
 class HTTPErrorTest extends TestCase
 {
-    public function testShouldCreateHTTPErrorStruct()
+    public function testShouldCreateHTTPError()
     {
         $message = 'This is the reason for an error.';
 
-        $content = HTTPError::fromMessage($message);
+        $content = HTTPError::create($message);
 
-        $this->assertEquals($content->message, $message);
+        $this->assertEquals($content->detail, $message);
+        $this->assertEquals($content->type, 'about:blank');
+        $this->assertEquals($content->title, 'General Error');
     }
 }

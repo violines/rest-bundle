@@ -25,6 +25,9 @@ abstract class AbstractHTTPClient
     // CONTENT_TYPE = format: application/json
     public const CONTENT_TYPE = 'Content-Type';
 
+    // CONTENT_LANGUAGE = format same as ACCEPT_LANGUAGE
+    public const CONTENT_LANGUAGE = 'Content-Language';
+
     private const NEGOTIATE_DEFAULTS = [
         '*' => '',
         '*/*' => '',

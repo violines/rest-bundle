@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use TerryApiBundle\HTTPApi\ValidationError;
 
-class ValidationException extends \RuntimeException implements \Throwable, HTTPErrorInterface
+class ValidationException extends \RuntimeException implements \Throwable
 {
     private ConstraintViolationListInterface $violations;
 
@@ -27,12 +27,7 @@ class ValidationException extends \RuntimeException implements \Throwable, HTTPE
         return $this->violations;
     }
 
-    public function getContent(): ValidationError
-    {
-        return ValidationError::fromViolations($this->violations);
-    }
-
-    public function getHTTPStatusCode(): int
+    public function httpStatusCode(): int
     {
         return Response::HTTP_BAD_REQUEST;
     }

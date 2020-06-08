@@ -48,14 +48,7 @@ class HTTPClient extends AbstractHTTPClient
         return $this->formatSerializerMap[$this->contentType()];
     }
 
-    public function responseHeaders(): array
-    {
-        return [
-            self::CONTENT_TYPE => $this->negotiateContentType()
-        ];
-    }
-
-    private function negotiateContentType(): string
+    public function negotiateContentType(): string
     {
         return $this->negotiate(
             $this->accept(),
@@ -63,5 +56,10 @@ class HTTPClient extends AbstractHTTPClient
             $this->contentTypeDefaultsMap,
             array_keys($this->formatSerializerMap)
         );
+    }
+
+    public function language(): string
+    {
+        return $this->locale();
     }
 }
