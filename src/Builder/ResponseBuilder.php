@@ -16,10 +16,7 @@ class ResponseBuilder
 
     private int $status = Response::HTTP_OK;
 
-    /**
-     * @var HTTPClient|null
-     */
-    private $client;
+    private ?HTTPClient $client = null;
 
     public function getResponse(): Response
     {
