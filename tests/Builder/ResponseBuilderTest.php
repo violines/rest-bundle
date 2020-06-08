@@ -16,7 +16,8 @@ class ResponseBuilderTest extends TestCase
 {
     private const FORMAT_SERIALIZER_MAP = [
         'application/json' => 'json',
-        'application/xml' => 'xml'
+        'application/xml' => 'xml',
+        'html' => 'xml'
     ];
 
     private ResponseBuilder $responseBuilder;
@@ -55,28 +56,19 @@ class ResponseBuilderTest extends TestCase
         $content = '{"text": "i am a string"}';
 
         $response = $this->responseBuilder
-            ->setClient(HTTPClient::fromRequest($this->request, $this->httpServer))
             ->setContent($content)
             ->getResponse();
 
         $this->assertEquals($content, $response->getContent());
+        $this->assertEquals(null, $response->headers->get('content-type'));
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    /**
-     * @dataProvider providerShouldResponseWithCustomStatusCode
-     */
-    public function testShouldResponseWithCustomStatusCode(int $status)
+    public function testShouldResponseWithCustomStatusCode()
     {
-        $response = $this->responseBuilder->setStatus($status)->getResponse();
+        $response = $this->responseBuilder->setStatus(Response::HTTP_CREATED)->getResponse();
 
-        $this->assertEquals($status, $response->getStatusCode());
-    }
-
-    public function providerShouldResponseWithCustomStatusCode()
-    {
-        return [
-            [Response::HTTP_CREATED]
-        ];
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
     }
 
     public function testShouldResponseWithHeaders()
@@ -86,5 +78,29 @@ class ResponseBuilderTest extends TestCase
             ->getResponse();
 
         $this->assertEquals('application/json', $response->headers->get('content-type'));
+    }
+
+    /**
+     * @dataProvider providerShouldResponseWithProblem
+     */
+    public function testShouldResponseWithProblem(string $accept, int $status, string $expected)
+    {
+        $this->request->headers->set('Accept', $accept);
+
+        $response = $this->responseBuilder
+            ->setClient(HTTPClient::fromRequest($this->request, $this->httpServer))
+            ->setStatus($status)
+            ->getResponse();
+
+        $this->assertEquals($expected, $response->headers->get('content-type'));
+    }
+
+    public function providerShouldResponseWithProblem()
+    {
+        return [
+            ['application/json', 400, 'application/problem+json'],
+            ['html', 403, 'problem+html'],
+            ['application/json', 500, 'application/json']
+        ];
     }
 }
