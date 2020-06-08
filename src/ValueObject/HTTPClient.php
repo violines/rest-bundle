@@ -58,7 +58,7 @@ class HTTPClient extends AbstractHTTPClient
         );
     }
 
-    public function symfonyLocale(): string
+    public function language(): string
     {
         return $this->locale();
     }

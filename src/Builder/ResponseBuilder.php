@@ -61,7 +61,7 @@ class ResponseBuilder
                 $contentType = $this->withProblem($contentType);
             }
             $headers[AbstractHTTPClient::CONTENT_TYPE] = $contentType;
-            $headers[AbstractHTTPClient::CONTENT_LANGUAGE] = $this->client->symfonyLocale();
+            $headers[AbstractHTTPClient::CONTENT_LANGUAGE] = $this->client->language();
         }
 
         return $headers;
