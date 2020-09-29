@@ -20,9 +20,9 @@ use TerryApiBundle\Event\DeserializeEvent;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
+use TerryApiBundle\HttpClient\HttpClient;
+use TerryApiBundle\HttpClient\ServerSettings;
 use TerryApiBundle\Tests\Stubs\Candy;
-use TerryApiBundle\ValueObject\HTTPClient;
-use TerryApiBundle\ValueObject\HTTPServer;
 
 class ObjectsArrayResolverTest extends TestCase
 {
@@ -78,7 +78,7 @@ class ObjectsArrayResolverTest extends TestCase
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
 
         $this->resolver = new ObjectsArrayResolver(
-            new HTTPServer(),
+            new ServerSettings(),
             $serializerFacade,
             $this->httpApiReader,
             $this->validator
@@ -170,7 +170,7 @@ class ObjectsArrayResolverTest extends TestCase
         \Phake::when($this->serializer)->deserialize->thenReturn($candies);
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
             $content,
-            HTTPClient::fromRequest($this->request, new HTTPServer())
+            HttpClient::fromRequest($this->request, new ServerSettings())
         ));
 
         $violationList = new ConstraintViolationList();
@@ -195,7 +195,7 @@ class ObjectsArrayResolverTest extends TestCase
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
             $content,
-            HTTPClient::fromRequest($this->request, new HTTPServer())
+            HttpClient::fromRequest($this->request, new ServerSettings())
         ));
 
         $result = $this->resolver->resolve($this->request, $this->argument);

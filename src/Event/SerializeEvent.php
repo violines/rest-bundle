@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Event;
 
-use TerryApiBundle\ValueObject\HTTPClient;
+use TerryApiBundle\HttpClient\HttpClient;
 
 final class SerializeEvent
 {
@@ -20,7 +20,7 @@ final class SerializeEvent
     /**
      * @param object[]|object|array $data
      */
-    public function __construct($data, HTTPClient $httpClient)
+    public function __construct($data, HttpClient $httpClient)
     {
         $this->data = $data;
         $this->httpClient = $httpClient;

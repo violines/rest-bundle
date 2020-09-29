@@ -9,8 +9,8 @@ use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use TerryApiBundle\Builder\ResponseBuilder;
-use TerryApiBundle\ValueObject\HTTPClient;
-use TerryApiBundle\ValueObject\HTTPServer;
+use TerryApiBundle\HttpClient\HttpClient;
+use TerryApiBundle\HttpClient\ServerSettings;
 
 class ResponseBuilderTest extends TestCase
 {
@@ -22,7 +22,7 @@ class ResponseBuilderTest extends TestCase
 
     private ResponseBuilder $responseBuilder;
 
-    private HTTPServer $httpServer;
+    private ServerSettings $httpServer;
 
     /**
      * @Mock
@@ -43,7 +43,7 @@ class ResponseBuilderTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $this->httpServer = new HTTPServer('', self::FORMAT_SERIALIZER_MAP);
+        $this->httpServer = new ServerSettings('', self::FORMAT_SERIALIZER_MAP);
     }
 
     public function testShouldReturnEmptyResponse()
@@ -74,7 +74,7 @@ class ResponseBuilderTest extends TestCase
     public function testShouldResponseWithHeaders()
     {
         $response = $this->responseBuilder
-            ->setClient(HTTPClient::fromRequest($this->request, $this->httpServer))
+            ->setClient(HttpClient::fromRequest($this->request, $this->httpServer))
             ->getResponse();
 
         $this->assertEquals('application/json', $response->headers->get('content-type'));
@@ -88,7 +88,7 @@ class ResponseBuilderTest extends TestCase
         $this->request->headers->set('Accept', $accept);
 
         $response = $this->responseBuilder
-            ->setClient(HTTPClient::fromRequest($this->request, $this->httpServer))
+            ->setClient(HttpClient::fromRequest($this->request, $this->httpServer))
             ->setStatus($status)
             ->getResponse();
 

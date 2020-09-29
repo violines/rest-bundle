@@ -8,8 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use TerryApiBundle\Event\DeserializeEvent;
-use TerryApiBundle\ValueObject\HTTPClient;
-use TerryApiBundle\ValueObject\HTTPServer;
+use TerryApiBundle\HttpClient\HttpClient;
+use TerryApiBundle\HttpClient\ServerSettings;
 
 class DeserializeEventTest extends TestCase
 {
@@ -35,7 +35,7 @@ class DeserializeEventTest extends TestCase
     public function testShouldCreateEvent()
     {
         $data = '{"weight": 100, "name": "Bonbon", "tastesGood": true}';
-        $client = HTTPClient::fromRequest($this->request, new HTTPServer());
+        $client = HttpClient::fromRequest($this->request, new ServerSettings());
         $context = ['firstKey' => 'firstVal', 'secondkey' => 'secondVal'];
 
         $serializeContextEvent = new DeserializeEvent($data, $client);

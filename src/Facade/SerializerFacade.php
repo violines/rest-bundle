@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Event\DeserializeEvent;
 use TerryApiBundle\Event\SerializeEvent;
-use TerryApiBundle\ValueObject\HTTPClient;
+use TerryApiBundle\HttpClient\HttpClient;
 
 class SerializerFacade
 {
@@ -27,7 +27,7 @@ class SerializerFacade
     /**
      * @param object[]|object|array $data
      */
-    public function serialize($data, HTTPClient $httpClient): string
+    public function serialize($data, HttpClient $httpClient): string
     {
         /** @var SerializeEvent $serializeEvent */
         $serializeEvent = $this->eventDispatcher->dispatch(
@@ -45,7 +45,7 @@ class SerializerFacade
     /**
      * @return mixed[]|object
      */
-    public function deserialize(string $data, string $type, HTTPClient $httpClient)
+    public function deserialize(string $data, string $type, HttpClient $httpClient)
     {
         /** @var DeserializeEvent $deserializeEvent */
         $deserializeEvent = $this->eventDispatcher->dispatch(

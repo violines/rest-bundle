@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Factory;
+namespace TerryApiBundle\HttpClient;
 
-use TerryApiBundle\ValueObject\HTTPServer;
-
-class HTTPServerFactory
+class ServerSettingsFactory
 {
     private array $config;
 
@@ -15,7 +13,7 @@ class HTTPServerFactory
         $this->config = $config;
     }
 
-    public function fromConfig(): HTTPServer
+    public function fromConfig(): ServerSettings
     {
         /** @var array<string, array<string, string>> $configformats */
         $configformats = $this->config['formats'] ?? [];
@@ -30,6 +28,6 @@ class HTTPServerFactory
             }
         }
 
-        return new HTTPServer($configformatDefault, $_formatSerializerMap);
+        return new ServerSettings($configformatDefault, $_formatSerializerMap);
     }
 }

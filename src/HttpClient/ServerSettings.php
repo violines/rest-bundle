@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\ValueObject;
+namespace TerryApiBundle\HttpClient;
 
-class HTTPServer
+final class ServerSettings
 {
     private const FORMAT_DEFAULT_DEFAULT = 'application/json';
 
@@ -28,7 +28,7 @@ class HTTPServer
         $this->formatSerializerMap = [] !== $formatSerializerMap ? $formatSerializerMap : self::FORMAT_SERIALIZER_MAP_DEFAULT;
     }
 
-    public function formatDefault(): string
+    public function getFormatDefault(): string
     {
         return $this->formatDefault;
     }
@@ -36,7 +36,7 @@ class HTTPServer
     /**
      * @return array<string, string>
      */
-    public function formatSerializerMap(): array
+    public function getFormatSerializerMap(): array
     {
         return $this->formatSerializerMap;
     }

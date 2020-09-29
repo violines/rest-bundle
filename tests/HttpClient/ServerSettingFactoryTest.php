@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace TerryApi\Tests\Factory;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Factory\HTTPServerFactory;
+use TerryApiBundle\HttpClient\ServerSettingsFactory;
 
-class HTTPServerFactoryTest extends TestCase
+class ServerSettingsFactoryTest extends TestCase
 {
     /**
-     * @dataProvider providerShouldCreateHTTPServer
+     * @dataProvider providerShouldCreateServerSettings
      */
-    public function testShouldCreateHTTPServer(array $config, $expetedFormats, $expectedFormatDefault)
+    public function testShouldCreateServerSettings(array $config, $expectedFormatSerializerMap, $expectedFormatDefault)
     {
-        $httpServerFactory = new HTTPServerFactory($config);
-        $httpServer = $httpServerFactory->fromConfig();
+        $serverSettingsFactory = new ServerSettingsFactory($config);
+        $serverSettings = $serverSettingsFactory->fromConfig();
 
-        $this->assertEquals($expetedFormats, $httpServer->formatSerializerMap());
-        $this->assertEquals($expectedFormatDefault, $httpServer->formatDefault());
+        $this->assertEquals($expectedFormatSerializerMap, $serverSettings->getFormatSerializerMap());
+        $this->assertEquals($expectedFormatDefault, $serverSettings->getFormatDefault());
     }
 
-    public function providerShouldCreateHTTPServer()
+    public function providerShouldCreateServerSettings()
     {
         return [
             [

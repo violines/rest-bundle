@@ -18,10 +18,10 @@ use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\EventListener\ObjectResponseListener;
 use TerryApiBundle\Facade\SerializerFacade;
+use TerryApiBundle\HttpClient\HttpClient;
+use TerryApiBundle\HttpClient\ServerSettings;
 use TerryApiBundle\Tests\Stubs\Gum;
 use TerryApiBundle\Tests\Stubs\Ok;
-use TerryApiBundle\ValueObject\HTTPClient;
-use TerryApiBundle\ValueObject\HTTPServer;
 
 class ObjectResponseListenerTest extends TestCase
 {
@@ -68,7 +68,7 @@ class ObjectResponseListenerTest extends TestCase
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
 
         $this->listener = new ObjectResponseListener(
-            new HTTPServer(),
+            new ServerSettings(),
             new ResponseBuilder(),
             $serializerFacade,
             $httpApiReader
@@ -83,7 +83,7 @@ class ObjectResponseListenerTest extends TestCase
         \Phake::when($this->serializer)->serialize($controllerResult, 'json', [])->thenReturn($expected);
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $controllerResult,
-            HTTPClient::fromRequest($this->request, new HTTPServer())
+            HttpClient::fromRequest($this->request, new ServerSettings())
         ));
 
         $viewEvent = new ViewEvent(

@@ -10,19 +10,19 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
-use TerryApiBundle\ValueObject\HTTPClient;
-use TerryApiBundle\ValueObject\HTTPServer;
+use TerryApiBundle\HttpClient\HttpClient;
+use TerryApiBundle\HttpClient\ServerSettings;
 
 class ConstraintViolationListResponseListener
 {
-    private HTTPServer $httpServer;
+    private ServerSettings $httpServer;
 
     private ResponseBuilder $responseBuilder;
 
     private SerializerFacade $serializerFacade;
 
     public function __construct(
-        HTTPServer $httpServer,
+        ServerSettings $httpServer,
         ResponseBuilder $responseBuilder,
         SerializerFacade $serializerFacade
     ) {
@@ -49,7 +49,7 @@ class ConstraintViolationListResponseListener
 
     private function createResponse(Request $request, ValidationException $exception): Response
     {
-        $client = HTTPClient::fromRequest($request, $this->httpServer);
+        $client = HttpClient::fromRequest($request, $this->httpServer);
 
         return $this->responseBuilder
             ->setContent($this->serializerFacade->serialize($exception->violations(), $client))

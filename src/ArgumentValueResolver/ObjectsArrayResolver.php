@@ -12,18 +12,18 @@ use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
-use TerryApiBundle\ValueObject\HTTPClient;
-use TerryApiBundle\ValueObject\HTTPServer;
+use TerryApiBundle\HttpClient\HttpClient;
+use TerryApiBundle\HttpClient\ServerSettings;
 
 class ObjectsArrayResolver implements ArgumentValueResolverInterface
 {
-    private HTTPServer $httpServer;
+    private ServerSettings $httpServer;
     private SerializerFacade $serializerFacade;
     private HTTPApiReader $httpApiReader;
     private ValidatorInterface $validator;
 
     public function __construct(
-        HTTPServer $httpServer,
+        ServerSettings $httpServer,
         SerializerFacade $serializerFacade,
         HTTPApiReader $httpApiReader,
         ValidatorInterface $validator
@@ -61,7 +61,7 @@ class ObjectsArrayResolver implements ArgumentValueResolverInterface
     {
         $className = $argument->getType();
         $content = $request->getContent();
-        $client = HTTPClient::fromRequest($request, $this->httpServer);
+        $client = HttpClient::fromRequest($request, $this->httpServer);
 
         if (
             false === $argument->isVariadic() || null === $className

@@ -19,11 +19,11 @@ use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\EventListener\HTTPErrorListener;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Facade\SerializerFacade;
+use TerryApiBundle\HttpClient\HttpClient;
+use TerryApiBundle\HttpClient\ServerSettings;
 use TerryApiBundle\Tests\Stubs\Error;
 use TerryApiBundle\Tests\Stubs\Gum;
 use TerryApiBundle\Tests\Stubs\HTTPErrorException;
-use TerryApiBundle\ValueObject\HTTPClient;
-use TerryApiBundle\ValueObject\HTTPServer;
 
 class HTTPErrorListenerTest extends TestCase
 {
@@ -70,7 +70,7 @@ class HTTPErrorListenerTest extends TestCase
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
 
         $this->httpErrorListener = new HTTPErrorListener(
-            new HTTPServer(),
+            new ServerSettings(),
             new ResponseBuilder(),
             $serializerFacade,
             $httpApiReader
@@ -85,7 +85,7 @@ class HTTPErrorListenerTest extends TestCase
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $exception->getContent(),
-            HTTPClient::fromRequest($this->request, new HTTPServer())
+            HttpClient::fromRequest($this->request, new ServerSettings())
         ));
 
         \Phake::when($this->serializer)

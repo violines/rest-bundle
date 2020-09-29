@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Event;
 
-use TerryApiBundle\ValueObject\HTTPClient;
+use TerryApiBundle\HttpClient\HttpClient;
 
 final class DeserializeEvent
 {
@@ -14,7 +14,7 @@ final class DeserializeEvent
     private HTTPClient $httpClient;
     private array $context = [];
 
-    public function __construct(string $data, HTTPClient $httpClient)
+    public function __construct(string $data, HttpClient $httpClient)
     {
         $this->data = $data;
         $this->httpClient = $httpClient;

@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace TerryApiBundle\Builder;
 
 use Symfony\Component\HttpFoundation\Response;
-use TerryApiBundle\ValueObject\AbstractHTTPClient;
-use TerryApiBundle\ValueObject\HTTPClient;
+use TerryApiBundle\HttpClient\HttpClient;
 
 class ResponseBuilder
 {
@@ -16,7 +15,7 @@ class ResponseBuilder
 
     private int $status = Response::HTTP_OK;
 
-    private ?HTTPClient $client = null;
+    private ?HttpClient $client = null;
 
     public function getResponse(): Response
     {
@@ -52,13 +51,12 @@ class ResponseBuilder
         /** @var array<string, string> $headers */
         $headers = [];
 
-        if ($this->client instanceof HTTPClient) {
+        if ($this->client instanceof HttpClient) {
             $contentType = $this->client->negotiateContentType();
             if (400 <= $this->status && 500 > $this->status) {
                 $contentType = $this->withProblem($contentType);
             }
-            $headers[AbstractHTTPClient::CONTENT_TYPE] = $contentType;
-            $headers[AbstractHTTPClient::CONTENT_LANGUAGE] = $this->client->language();
+            $headers[HttpClient::CONTENT_TYPE] = $contentType;
         }
 
         return $headers;

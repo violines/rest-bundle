@@ -12,9 +12,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Event\DeserializeEvent;
 use TerryApiBundle\Event\SerializeEvent;
+use TerryApiBundle\HttpClient\HttpClient;
+use TerryApiBundle\HttpClient\ServerSettings;
 use TerryApiBundle\Tests\Stubs\Candy;
-use TerryApiBundle\ValueObject\HTTPClient;
-use TerryApiBundle\ValueObject\HTTPServer;
 
 class SerializerFacadeTest extends TestCase
 {
@@ -53,7 +53,7 @@ class SerializerFacadeTest extends TestCase
     {
         $data = [];
         $context = ['ctxkey' => 'ctxValue'];
-        $client = HTTPClient::fromRequest($this->request, new HTTPServer());
+        $client = HttpClient::fromRequest($this->request, new ServerSettings());
 
         $serializeContextEvent = new SerializeEvent($data, $client);
         $serializeContextEvent->mergeToContext($context);
@@ -72,7 +72,7 @@ class SerializerFacadeTest extends TestCase
         $data = '{"weight": 100, "name": "Bonbon", "tastesGood": true}';
         $type = 'TerryApiBundle\Tests\Stubs\CandyStructStub';
         $context = ['ctxkey' => 'ctxValue'];
-        $client = HTTPClient::fromRequest($this->request, new HTTPServer());
+        $client = HttpClient::fromRequest($this->request, new ServerSettings());
 
         $deserializeEvent = new DeserializeEvent($data, $client);
         $deserializeEvent->mergeToContext($context);
