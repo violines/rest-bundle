@@ -19,7 +19,7 @@ class TerryApiExtension extends Extension
         /** @var array<string, array<string, array<string,mixed>>> $processedConfigs */
         $processedConfigs = $this->processConfiguration(new Configuration(), $configs);
 
-        $container->getDefinition('terry_api.factory.http_server_factory')->replaceArgument(0, $processedConfigs['http_server'] ?? []);
+        $container->getDefinition('terry_api.http_client.server_settings_factory')->replaceArgument(0, $processedConfigs['http_server'] ?? []);
 
         if (false === $processedConfigs['event_listener']['array_response_listener']['enable']) {
             $container->removeDefinition('terry_api.event_listener.array_response_listener');
@@ -31,10 +31,6 @@ class TerryApiExtension extends Extension
 
         if (false === $processedConfigs['event_listener']['object_response_listener']['enable']) {
             $container->removeDefinition('terry_api.event_listener.object_response_listener');
-        }
-
-        if (false === $processedConfigs['argument_value_resolver']['abstract_http_client_resolver']['enable']) {
-            $container->removeDefinition('terry_api.argument_value_resolver.abstract_http_client_resolver');
         }
 
         if (false === $processedConfigs['argument_value_resolver']['single_object_resolver']['enable']) {

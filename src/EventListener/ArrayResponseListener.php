@@ -9,23 +9,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Facade\SerializerFacade;
-use TerryApiBundle\HttpClient\HttpClient;
-use TerryApiBundle\HttpClient\ServerSettings;
+use TerryApiBundle\HttpClient\HttpClientFactory;
 
 class ArrayResponseListener
 {
-    private ServerSettings $httpServer;
+    private HttpClientFactory $httpClientFactory;
 
     private ResponseBuilder $responseBuilder;
 
     private SerializerFacade $serializerFacade;
 
     public function __construct(
-        ServerSettings $httpServer,
+        HttpClientFactory $httpClientFactory,
         ResponseBuilder $responseBuilder,
         SerializerFacade $serializerFacade
     ) {
-        $this->httpServer = $httpServer;
+        $this->httpClientFactory = $httpClientFactory;
         $this->responseBuilder = $responseBuilder;
         $this->serializerFacade = $serializerFacade;
     }
@@ -64,7 +63,7 @@ class ArrayResponseListener
 
     private function createResponse(array $data, Request $request): Response
     {
-        $client = HttpClient::fromRequest($request, $this->httpServer);
+        $client = $this->httpClientFactory->fromRequest($request);
 
         return $this->responseBuilder
             ->setContent($this->serializerFacade->serialize($data, $client))

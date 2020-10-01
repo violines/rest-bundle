@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\HttpClient;
 
-class ServerSettingsFactory
+final class ServerSettingsFactory
 {
     private array $config;
 
@@ -15,19 +15,24 @@ class ServerSettingsFactory
 
     public function fromConfig(): ServerSettings
     {
-        /** @var array<string, array<string, string>> $configformats */
-        $configformats = $this->config['formats'] ?? [];
-        /** @var string $configformatDefault */
-        $configformatDefault = $this->config['format_default'] ?? '';
+        /** @var array<string, array<string, string>>|null $configformats */
+        $configformats = $this->config['formats'];
 
-        $_formatSerializerMap = [];
+        /** @var string|null $configformatDefault */
+        $configformatDefault = $this->config['format_default'];
+
+        if (!isset($configformats) || !isset($configformatDefault)) {
+            return ServerSettings::fromDefaults();
+        }
+
+        $formatSerializerMap = [];
 
         foreach ($configformats as $serializerFormat => $mimeTypes) {
             foreach ($mimeTypes as $mimeType) {
-                $_formatSerializerMap[$mimeType] = $serializerFormat;
+                $formatSerializerMap[$mimeType] = $serializerFormat;
             }
         }
 
-        return new ServerSettings($configformatDefault, $_formatSerializerMap);
+        return ServerSettings::fromConfig($configformatDefault, $formatSerializerMap);
     }
 }

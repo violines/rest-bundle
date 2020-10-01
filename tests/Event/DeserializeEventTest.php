@@ -35,7 +35,7 @@ class DeserializeEventTest extends TestCase
     public function testShouldCreateEvent()
     {
         $data = '{"weight": 100, "name": "Bonbon", "tastesGood": true}';
-        $client = HttpClient::fromRequest($this->request, new ServerSettings());
+        $client = HttpClient::new($this->request, ServerSettings::fromDefaults());
         $context = ['firstKey' => 'firstVal', 'secondkey' => 'secondVal'];
 
         $serializeContextEvent = new DeserializeEvent($data, $client);

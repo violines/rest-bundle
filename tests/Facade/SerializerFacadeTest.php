@@ -53,7 +53,7 @@ class SerializerFacadeTest extends TestCase
     {
         $data = [];
         $context = ['ctxkey' => 'ctxValue'];
-        $client = HttpClient::fromRequest($this->request, new ServerSettings());
+        $client = HttpClient::new($this->request, ServerSettings::fromDefaults());
 
         $serializeContextEvent = new SerializeEvent($data, $client);
         $serializeContextEvent->mergeToContext($context);
@@ -72,7 +72,7 @@ class SerializerFacadeTest extends TestCase
         $data = '{"weight": 100, "name": "Bonbon", "tastesGood": true}';
         $type = 'TerryApiBundle\Tests\Stubs\CandyStructStub';
         $context = ['ctxkey' => 'ctxValue'];
-        $client = HttpClient::fromRequest($this->request, new ServerSettings());
+        $client = HttpClient::new($this->request, ServerSettings::fromDefaults());
 
         $deserializeEvent = new DeserializeEvent($data, $client);
         $deserializeEvent->mergeToContext($context);

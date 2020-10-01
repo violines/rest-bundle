@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\Factory;
+namespace TerryApi\Tests\HttpClient;
 
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\HttpClient\ServerSettingsFactory;
@@ -46,11 +46,8 @@ class ServerSettingsFactoryTest extends TestCase
             ],
             [
                 [
-                    'formats' => [
-                        'json' => [],
-                        'xml' => []
-                    ],
-                    'format_default' => '',
+                    'formats' => null,
+                    'format_default' => null,
                 ],
                 [
                     'application/json' => 'json'

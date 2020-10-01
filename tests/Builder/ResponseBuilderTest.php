@@ -22,8 +22,6 @@ class ResponseBuilderTest extends TestCase
 
     private ResponseBuilder $responseBuilder;
 
-    private ServerSettings $httpServer;
-
     /**
      * @Mock
      * @var HttpFoundationRequest
@@ -42,8 +40,6 @@ class ResponseBuilderTest extends TestCase
             'Accept' => 'application/json, plain/html',
             'Content-Type' => 'application/json'
         ]);
-
-        $this->httpServer = new ServerSettings('', self::FORMAT_SERIALIZER_MAP);
     }
 
     public function testShouldReturnEmptyResponse()
@@ -74,7 +70,7 @@ class ResponseBuilderTest extends TestCase
     public function testShouldResponseWithHeaders()
     {
         $response = $this->responseBuilder
-            ->setClient(HttpClient::fromRequest($this->request, $this->httpServer))
+            ->setClient(HttpClient::new($this->request, ServerSettings::fromConfig('', self::FORMAT_SERIALIZER_MAP)))
             ->getResponse();
 
         $this->assertEquals('application/json', $response->headers->get('content-type'));
@@ -88,7 +84,7 @@ class ResponseBuilderTest extends TestCase
         $this->request->headers->set('Accept', $accept);
 
         $response = $this->responseBuilder
-            ->setClient(HttpClient::fromRequest($this->request, $this->httpServer))
+            ->setClient(HttpClient::new($this->request, ServerSettings::fromConfig('', self::FORMAT_SERIALIZER_MAP)))
             ->setStatus($status)
             ->getResponse();
 

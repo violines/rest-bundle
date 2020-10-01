@@ -46,13 +46,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('argument_value_resolver')
                 ->addDefaultsIfNotSet()
                     ->children()
-                        // abstract_http_client_resolver
-                        ->arrayNode('abstract_http_client_resolver')
-                        ->addDefaultsIfNotSet()
-                            ->children()
-                            ->booleanNode('enable')->defaultTrue()->end()
-                            ->end()
-                        ->end()
                         // request_single_struct_resolver
                         ->arrayNode('single_object_resolver')
                         ->addDefaultsIfNotSet()

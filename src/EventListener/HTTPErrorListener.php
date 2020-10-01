@@ -11,12 +11,11 @@ use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Exception\HTTPErrorInterface;
 use TerryApiBundle\Facade\SerializerFacade;
-use TerryApiBundle\HttpClient\HttpClient;
-use TerryApiBundle\HttpClient\ServerSettings;
+use TerryApiBundle\HttpClient\HttpClientFactory;
 
 class HTTPErrorListener
 {
-    private ServerSettings $httpServer;
+    private HttpClientFactory $httpClientFactory;
 
     private ResponseBuilder $responseBuilder;
 
@@ -25,12 +24,12 @@ class HTTPErrorListener
     private HTTPApiReader $httpApiReader;
 
     public function __construct(
-        ServerSettings $httpServer,
+        HttpClientFactory $httpClientFactory,
         ResponseBuilder $responseBuilder,
         SerializerFacade $serializerFacade,
         HTTPApiReader $httpApiReader
     ) {
-        $this->httpServer = $httpServer;
+        $this->httpClientFactory = $httpClientFactory;
         $this->responseBuilder = $responseBuilder;
         $this->serializerFacade = $serializerFacade;
         $this->httpApiReader = $httpApiReader;
@@ -54,7 +53,7 @@ class HTTPErrorListener
 
     private function createResponse(Request $request, HTTPErrorInterface $exception): Response
     {
-        $client = HttpClient::fromRequest($request, $this->httpServer);
+        $client = $this->httpClientFactory->fromRequest($request);
 
         $object = $exception->getContent();
 

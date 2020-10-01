@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\HttpClient;
 
-use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use TerryApiBundle\Exception\RequestHeaderException;
 
@@ -27,7 +26,9 @@ final class HttpClient
         'application/*' => ''
     ];
 
-    private HeaderBag $headers;
+    private string $accept;
+
+    private string $contentType;
 
     private array $contentTypeDefaultsMap = [];
 
@@ -36,20 +37,21 @@ final class HttpClient
      */
     private array $formatSerializerMap;
 
-    private function __construct(Request $request, ServerSettings $httpServer)
+    private function __construct(Request $request, ServerSettings $serverSettings)
     {
-        $this->headers = $request->headers;
+        $this->accept = (string) $request->headers->get(self::ACCEPT, '');
+        $this->contentType = (string) $request->headers->get(self::CONTENT_TYPE, '');
 
         foreach (self::CONTENT_TYPE_DEFAULT_KEYS as $key) {
-            $this->contentTypeDefaultsMap[$key] = $httpServer->getFormatDefault();
+            $this->contentTypeDefaultsMap[$key] = $serverSettings->getFormatDefault();
         }
 
-        $this->formatSerializerMap = $httpServer->getFormatSerializerMap();
+        $this->formatSerializerMap = $serverSettings->getFormatSerializerMap();
     }
 
-    public static function fromRequest(Request $request, ServerSettings $httpServer): self
+    public static function new(Request $request, ServerSettings $serverSettings): self
     {
-        return new self($request, $httpServer);
+        return new self($request, $serverSettings);
     }
 
     public function serializerType(): string
@@ -59,17 +61,17 @@ final class HttpClient
 
     public function deserializerType(): string
     {
-        if (!isset($this->formatSerializerMap[$this->contentType()])) {
-            throw RequestHeaderException::valueNotAllowed(self::CONTENT_TYPE, $this->contentType());
+        if (!isset($this->formatSerializerMap[$this->contentType])) {
+            throw RequestHeaderException::valueNotAllowed(self::CONTENT_TYPE, $this->contentType);
         }
 
-        return $this->formatSerializerMap[$this->contentType()];
+        return $this->formatSerializerMap[$this->contentType];
     }
 
     public function negotiateContentType(): string
     {
         return $this->negotiate(
-            $this->accept(),
+            $this->accept,
             self::ACCEPT,
             $this->contentTypeDefaultsMap,
             array_keys($this->formatSerializerMap)
@@ -112,15 +114,5 @@ final class HttpClient
         }
 
         throw RequestHeaderException::valueNotAllowed($headerName, $subject);
-    }
-
-    private function accept(): string
-    {
-        return (string) $this->headers->get(self::ACCEPT, '');
-    }
-
-    private function contentType(): string
-    {
-        return (string) $this->headers->get(self::CONTENT_TYPE, '');
     }
 }

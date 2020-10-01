@@ -43,9 +43,6 @@ class ConfigurationTest extends TestCase
                         ],
                     ],
                     'argument_value_resolver' => [
-                        'abstract_http_client_resolver' => [
-                            'enable' => true,
-                        ],
                         'single_object_resolver' => [
                             'enable' => true,
                         ],
@@ -91,9 +88,6 @@ class ConfigurationTest extends TestCase
                         ],
                     ],
                     'argument_value_resolver' => [
-                        'abstract_http_client_resolver' => [
-                            'enable' => true,
-                        ],
                         'single_object_resolver' => [
                             'enable' => true,
                         ],
@@ -130,9 +124,6 @@ class ConfigurationTest extends TestCase
                         ],
                     ],
                     'argument_value_resolver' => [
-                        'abstract_http_client_resolver' => [
-                            'enable' => false,
-                        ],
                         'single_object_resolver' => [
                             'enable' => false,
                         ],
@@ -154,9 +145,6 @@ class ConfigurationTest extends TestCase
                         ],
                     ],
                     'argument_value_resolver' => [
-                        'abstract_http_client_resolver' => [
-                            'enable' => false,
-                        ],
                         'single_object_resolver' => [
                             'enable' => false,
                         ],

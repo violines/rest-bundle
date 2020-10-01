@@ -11,12 +11,11 @@ use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
 use TerryApiBundle\Builder\ResponseBuilder;
 use TerryApiBundle\Facade\SerializerFacade;
-use TerryApiBundle\HttpClient\HttpClient;
-use TerryApiBundle\HttpClient\ServerSettings;
+use TerryApiBundle\HttpClient\HttpClientFactory;
 
 class ObjectResponseListener
 {
-    private ServerSettings $httpServer;
+    private HttpClientFactory $httpClientFactory;
 
     private ResponseBuilder $responseBuilder;
 
@@ -25,12 +24,12 @@ class ObjectResponseListener
     private HTTPApiReader $httpApiReader;
 
     public function __construct(
-        ServerSettings $httpServer,
+        HttpClientFactory $httpClientFactory,
         ResponseBuilder $responseBuilder,
         SerializerFacade $serializerFacade,
         HTTPApiReader $httpApiReader
     ) {
-        $this->httpServer = $httpServer;
+        $this->httpClientFactory = $httpClientFactory;
         $this->responseBuilder = $responseBuilder;
         $this->serializerFacade = $serializerFacade;
         $this->httpApiReader = $httpApiReader;
@@ -80,7 +79,7 @@ class ObjectResponseListener
      */
     private function createResponse($data, Request $request): Response
     {
-        $client = HttpClient::fromRequest($request, $this->httpServer);
+        $client = $this->httpClientFactory->fromRequest($request);
 
         return $this->responseBuilder
             ->setContent($this->serializerFacade->serialize($data, $client))

@@ -6,9 +6,9 @@ namespace TerryApiBundle\HttpClient;
 
 final class ServerSettings
 {
-    private const FORMAT_DEFAULT_DEFAULT = 'application/json';
+    public const FORMAT_DEFAULT_DEFAULT = 'application/json';
 
-    private const FORMAT_SERIALIZER_MAP_DEFAULT = ['application/json' => 'json'];
+    public const FORMAT_SERIALIZER_MAP_DEFAULT = ['application/json' => 'json'];
 
     private string $formatDefault;
 
@@ -20,12 +20,23 @@ final class ServerSettings
     /**
      * @param array<string, string> $formatSerializerMap
      */
-    public function __construct(
-        string $formatDefault = '',
-        array $formatSerializerMap = []
-    ) {
-        $this->formatDefault = '' !== $formatDefault ? $formatDefault : self::FORMAT_DEFAULT_DEFAULT;
-        $this->formatSerializerMap = [] !== $formatSerializerMap ? $formatSerializerMap : self::FORMAT_SERIALIZER_MAP_DEFAULT;
+    private function __construct(string $formatDefault, array $formatSerializerMap)
+    {
+        $this->formatDefault = $formatDefault;
+        $this->formatSerializerMap = $formatSerializerMap;
+    }
+
+    /**
+     * @param array<string, string> $formatSerializerMap
+     */
+    public static function fromConfig(string $formatDefault, array $formatSerializerMap): self
+    {
+        return new self($formatDefault, $formatSerializerMap);
+    }
+
+    public static function fromDefaults(): self
+    {
+        return new self(self::FORMAT_DEFAULT_DEFAULT, self::FORMAT_SERIALIZER_MAP_DEFAULT);
     }
 
     public function getFormatDefault(): string

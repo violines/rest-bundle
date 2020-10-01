@@ -17,7 +17,9 @@ use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\EventListener\ArrayResponseListener;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\HttpClient\HttpClient;
+use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\HttpClient\ServerSettings;
+use TerryApiBundle\HttpClient\ServerSettingsFactory;
 use TerryApiBundle\Tests\Stubs\Gum;
 use TerryApiBundle\Tests\Stubs\Ok;
 
@@ -64,7 +66,7 @@ class ArrayResponseListenerTest extends TestCase
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
 
         $this->arrayResponseListener = new ArrayResponseListener(
-            new ServerSettings(),
+            new HttpClientFactory(new ServerSettingsFactory([])),
             new ResponseBuilder(),
             $serializerFacade
         );
@@ -78,7 +80,7 @@ class ArrayResponseListenerTest extends TestCase
         \Phake::when($this->serializer)->serialize($controllerResult, 'json', [])->thenReturn($expected);
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $controllerResult,
-            HttpClient::fromRequest($this->request, new ServerSettings())
+            HttpClient::new($this->request, ServerSettings::fromDefaults())
         ));
 
         $viewEvent = new ViewEvent(

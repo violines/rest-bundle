@@ -19,7 +19,9 @@ use TerryApiBundle\EventListener\ConstraintViolationListResponseListener;
 use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\HttpClient\HttpClient;
+use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\HttpClient\ServerSettings;
+use TerryApiBundle\HttpClient\ServerSettingsFactory;
 use TerryApiBundle\Tests\Stubs\ConstraintViolationList;
 
 class ConstraintViolationListResponseListenerTest extends TestCase
@@ -65,7 +67,7 @@ class ConstraintViolationListResponseListenerTest extends TestCase
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
 
         $this->listener = new ConstraintViolationListResponseListener(
-            new ServerSettings(),
+            new HttpClientFactory(new ServerSettingsFactory([])),
             new ResponseBuilder(),
             $serializerFacade
         );
@@ -77,7 +79,7 @@ class ConstraintViolationListResponseListenerTest extends TestCase
         \Phake::when($this->serializer)->serialize->thenReturn('string');
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $exception,
-            HttpClient::fromRequest($this->request, new ServerSettings())
+            HttpClient::new($this->request, ServerSettings::fromDefaults())
         ));
 
         $exceptionEvent = new ExceptionEvent(

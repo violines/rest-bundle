@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\ValueObject;
+namespace TerryApi\Tests\HttpClient;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
@@ -18,8 +18,6 @@ class HttpClientTest extends TestCase
         'application/xml' => 'xml'
     ];
 
-    private ServerSettings $serverSettings;
-
     /**
      * @Mock
      * @var HttpFoundationRequest
@@ -32,8 +30,6 @@ class HttpClientTest extends TestCase
 
         \Phake::initAnnotations($this);
         \Phake::when($this->request)->getLocale->thenReturn('en_GB');
-
-        $this->serverSettings = new ServerSettings('', self::FORMAT_SERIALIZER_MAP);
     }
 
     public function testShouldReturnSerializerType()
@@ -43,9 +39,9 @@ class HttpClientTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $headers = HttpClient::fromRequest($this->request, $this->serverSettings);
+        $client = HttpClient::new($this->request, ServerSettings::fromConfig(ServerSettings::FORMAT_DEFAULT_DEFAULT, self::FORMAT_SERIALIZER_MAP));
 
-        $this->assertEquals('xml', $headers->serializerType());
+        $this->assertEquals('xml', $client->serializerType());
     }
 
     /**
@@ -57,9 +53,9 @@ class HttpClientTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = HttpClient::fromRequest($this->request, $this->serverSettings);
+        $client = HttpClient::new($this->request, ServerSettings::fromConfig(ServerSettings::FORMAT_DEFAULT_DEFAULT, self::FORMAT_SERIALIZER_MAP));
 
-        $headers->deserializerType();
+        $client->deserializerType();
     }
 
     public function providerShouldThrowExceptionIfContentTypeNotSet()
@@ -88,9 +84,9 @@ class HttpClientTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $headers = HttpClient::fromRequest($this->request, $this->serverSettings);
+        $client = HttpClient::new($this->request, ServerSettings::fromConfig(ServerSettings::FORMAT_DEFAULT_DEFAULT, self::FORMAT_SERIALIZER_MAP));
 
-        $this->assertEquals('json', $headers->deserializerType());
+        $this->assertEquals('json', $client->deserializerType());
     }
 
     /**
@@ -100,9 +96,9 @@ class HttpClientTest extends TestCase
     {
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = HttpClient::fromRequest($this->request, $this->serverSettings);
+        $client = HttpClient::new($this->request, ServerSettings::fromConfig(ServerSettings::FORMAT_DEFAULT_DEFAULT, self::FORMAT_SERIALIZER_MAP));
 
-        $this->assertEquals($expected, $headers->negotiateContentType());
+        $this->assertEquals($expected, $client->negotiateContentType());
     }
 
     public function providerShouldNegotiateContentType()
@@ -169,9 +165,9 @@ class HttpClientTest extends TestCase
 
         $this->request->headers = new HeaderBag($requestHeaders);
 
-        $headers = HttpClient::fromRequest($this->request, $this->serverSettings);
+        $client = HttpClient::new($this->request, ServerSettings::fromConfig(ServerSettings::FORMAT_DEFAULT_DEFAULT, self::FORMAT_SERIALIZER_MAP));
 
-        $headers->negotiateContentType();
+        $client->negotiateContentType();
     }
 
     public function providerThrowExceptionIfContentNotNegotiatable()

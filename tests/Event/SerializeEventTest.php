@@ -35,7 +35,7 @@ class SerializeEventTest extends TestCase
     public function testShouldCreateEvent()
     {
         $data = [];
-        $client = HttpClient::fromRequest($this->request, new ServerSettings());
+        $client = HttpClient::new($this->request, ServerSettings::fromDefaults());
         $context = ['firstKey' => 'firstVal', 'secondkey' => 'secondVal'];
 
         $serializeContextEvent = new SerializeEvent($data, $client);

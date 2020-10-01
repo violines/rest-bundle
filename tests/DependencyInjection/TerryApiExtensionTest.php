@@ -45,9 +45,6 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
                 'terry_api.event_listener.object_response_listener'
             ],
             [
-                'terry_api.argument_value_resolver.abstract_http_client_resolver'
-            ],
-            [
                 'terry_api.argument_value_resolver.single_object_resolver'
             ],
             [
@@ -56,15 +53,12 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerForEntryPointServiceIds
-     */
-    public function testCreateHTTPServerDefinition()
+    public function testCreateServerSettingsFactoryDefinition()
     {
         $this->load();
 
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'terry_api.factory.http_server_factory',
+            'terry_api.http_client.server_settings_factory',
             0,
             [
                 'formats' => [
