@@ -15,15 +15,15 @@ final class ServerSettingsFactory
 
     public function fromConfig(): ServerSettings
     {
-        /** @var array<string, array<string, string>>|null $configformats */
-        $configformats = $this->config['formats'];
-
-        /** @var string|null $configformatDefault */
-        $configformatDefault = $this->config['format_default'];
-
-        if (!isset($configformats) || !isset($configformatDefault)) {
+        if (!isset($this->config['formats']) || !isset($this->config['format_default'])) {
             return ServerSettings::fromDefaults();
         }
+
+        /** @var array<string, array<string, string>> $configformats */
+        $configformats = $this->config['formats'];
+
+        /** @var string $configformatDefault */
+        $configformatDefault = $this->config['format_default'];
 
         $formatSerializerMap = [];
 
