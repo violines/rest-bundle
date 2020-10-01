@@ -13,6 +13,13 @@
                 <argument type="service" id="event_dispatcher" />
                 <argument type="service" id="serializer" />
             </service>
+            <service id="terry_api.error.error_listener" class="TerryApiBundle\Error\ErrorListener">
+                <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
+                <argument type="service" id="terry_api.http_client.http_client_factory" />
+                <argument type="service" id="terry_api.builder.response_builder" />
+                <argument type="service" id="terry_api.facade.serializer_facade" />
+                <argument type="service" id="terry_api.annotation.http_api_reader" />
+            </service>
             <service id="terry_api.event_listener.array_response_listener" class="TerryApiBundle\EventListener\ArrayResponseListener">
                 <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="20" />
                 <argument type="service" id="terry_api.http_client.http_client_factory" />
@@ -24,13 +31,6 @@
                 <argument type="service" id="terry_api.http_client.http_client_factory" />
                 <argument type="service" id="terry_api.builder.response_builder" />
                 <argument type="service" id="terry_api.facade.serializer_facade" />
-            </service>
-            <service id="terry_api.event_listener.http_error_listener" class="TerryApiBundle\EventListener\HTTPErrorListener">
-                <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
-                <argument type="service" id="terry_api.http_client.http_client_factory" />
-                <argument type="service" id="terry_api.builder.response_builder" />
-                <argument type="service" id="terry_api.facade.serializer_facade" />
-                <argument type="service" id="terry_api.annotation.http_api_reader" />
             </service>
             <service id="terry_api.event_listener.object_response_listener" class="TerryApiBundle\EventListener\ObjectResponseListener">
                 <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="10" />

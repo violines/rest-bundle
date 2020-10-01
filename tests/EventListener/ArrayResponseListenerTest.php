@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\EventListener;
+namespace TerryApiBundle\Tests\EventListener;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;

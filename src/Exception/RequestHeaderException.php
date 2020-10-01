@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace TerryApiBundle\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
-use TerryApiBundle\HTTPApi\HTTPError;
+use TerryApiBundle\Error\ErrorInterface;
+use TerryApiBundle\Error\Error;
 
-class RequestHeaderException extends \RuntimeException implements \Throwable, HTTPErrorInterface
+class RequestHeaderException extends \RuntimeException implements \Throwable, ErrorInterface
 {
     private const TITLE = 'Request Header wrong';
 
@@ -30,9 +31,9 @@ class RequestHeaderException extends \RuntimeException implements \Throwable, HT
         );
     }
 
-    public function getContent(): HTTPError
+    public function getContent(): Error
     {
-        return HTTPError::create($this->message, self::TITLE);
+        return Error::new($this->message, self::TITLE);
     }
 
     public function getHTTPStatusCode(): int

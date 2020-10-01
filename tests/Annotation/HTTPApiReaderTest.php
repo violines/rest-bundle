@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\Annotation;
+namespace TerryApiBundle\Tests\Annotation;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;

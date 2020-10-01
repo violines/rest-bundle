@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\DependencyInjection;
+namespace TerryApiBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use TerryApiBundle\DependencyInjection\TerryApiExtension;
@@ -39,7 +39,7 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
                 'terry_api.event_listener.array_response_listener'
             ],
             [
-                'terry_api.event_listener.http_error_listener'
+                'terry_api.error.error_listener'
             ],
             [
                 'terry_api.event_listener.object_response_listener'

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\ArgumentValueResolver;
+namespace TerryApiBundle\Tests\ArgumentValueResolver;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
@@ -18,7 +18,7 @@ use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\ArgumentValueResolver\SingleObjectResolver;
 use TerryApiBundle\Event\DeserializeEvent;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
-use TerryApiBundle\Exception\ValidationException;
+use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\HttpClient\HttpClient;
 use TerryApiBundle\HttpClient\HttpClientFactory;

@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\Annotation\HTTPApiReader;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
-use TerryApiBundle\Exception\ValidationException;
+use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\HttpClient\HttpClientFactory;
 
@@ -75,7 +75,7 @@ class ObjectsArrayResolver implements ArgumentValueResolverInterface
         $violations = $this->validator->validate($objectsArray);
 
         if (0 < count($violations)) {
-            throw ValidationException::create($violations);
+            throw ValidationException::fromViolationList($violations);
         }
 
         foreach ($objectsArray as $item) {

@@ -1,8 +1,10 @@
 <?php
 
-namespace TerryApiBundle\Exception;
+declare(strict_types=1);
 
-interface HTTPErrorInterface
+namespace TerryApiBundle\Error;
+
+interface ErrorInterface
 {
     /**
      * must return an Object with TerryApiBundle\Annotation\HTTPApi annotation

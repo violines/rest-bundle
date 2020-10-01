@@ -26,7 +26,7 @@ class TerryApiExtension extends Extension
         }
 
         if (false === $processedConfigs['event_listener']['http_error_listener']['enable']) {
-            $container->removeDefinition('terry_api.event_listener.http_error_listener');
+            $container->removeDefinition('terry_api.error.error_listener');
         }
 
         if (false === $processedConfigs['event_listener']['object_response_listener']['enable']) {

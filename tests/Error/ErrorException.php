@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Stubs;
+namespace TerryApiBundle\Tests\Error;
 
-use TerryApiBundle\Exception\HTTPErrorInterface;
+use TerryApiBundle\Error\ErrorInterface;
 
-class HTTPErrorException extends \LogicException implements \Throwable, HTTPErrorInterface
+class ErrorException extends \LogicException implements \Throwable, ErrorInterface
 {
     private $content;
 

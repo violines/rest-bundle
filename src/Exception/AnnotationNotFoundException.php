@@ -13,8 +13,6 @@ class AnnotationNotFoundException extends \RuntimeException implements \Throwabl
 
     public static function httpApi(string $className): self
     {
-        return new self(
-            sprintf('Annotation \'@HTTPApi\' for %s not found.', $className)
-        );
+        return new self(sprintf('Annotation \'@HTTPApi\' for %s not found.', $className));
     }
 }

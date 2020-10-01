@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\Exception;
+namespace TerryApiBundle\Tests\Exception;
 
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Exception\AnnotationNotFoundException;

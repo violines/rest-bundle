@@ -9,8 +9,8 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\Annotation\HTTPApiReader;
+use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\Exception\AnnotationNotFoundException;
-use TerryApiBundle\Exception\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\HttpClient\HttpClientFactory;
 
@@ -74,7 +74,7 @@ class SingleObjectResolver implements ArgumentValueResolverInterface
         $violations = $this->validator->validate($object);
 
         if (0 < count($violations)) {
-            throw ValidationException::create($violations);
+            throw ValidationException::fromViolationList($violations);
         }
 
         yield $object;

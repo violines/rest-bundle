@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Stubs;
+namespace TerryApiBundle\Tests\Error;
 
 use Symfony\Component\Validator\ConstraintViolationInterface;
 

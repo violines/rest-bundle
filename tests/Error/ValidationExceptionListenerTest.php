@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\EventListener;
+namespace TerryApiBundle\Tests\Error;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
@@ -14,17 +14,16 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Builder\ResponseBuilder;
+use TerryApiBundle\Error\ValidationExceptionListener;
 use TerryApiBundle\Event\SerializeEvent;
-use TerryApiBundle\EventListener\ConstraintViolationListResponseListener;
-use TerryApiBundle\Exception\ValidationException;
+use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\HttpClient\HttpClient;
 use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\HttpClient\ServerSettings;
 use TerryApiBundle\HttpClient\ServerSettingsFactory;
-use TerryApiBundle\Tests\Stubs\ConstraintViolationList;
 
-class ConstraintViolationListResponseListenerTest extends TestCase
+class ValidationExceptionListenerTest extends TestCase
 {
     /**
      * @Mock
@@ -50,7 +49,7 @@ class ConstraintViolationListResponseListenerTest extends TestCase
      */
     private \Phake_IMock $serializer;
 
-    private ConstraintViolationListResponseListener $listener;
+    private ValidationExceptionListener $listener;
 
     public function setUp(): void
     {
@@ -66,7 +65,7 @@ class ConstraintViolationListResponseListenerTest extends TestCase
 
         $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
 
-        $this->listener = new ConstraintViolationListResponseListener(
+        $this->listener = new ValidationExceptionListener(
             new HttpClientFactory(new ServerSettingsFactory([])),
             new ResponseBuilder(),
             $serializerFacade
@@ -75,7 +74,7 @@ class ConstraintViolationListResponseListenerTest extends TestCase
 
     public function testShouldCreateViolationResponse()
     {
-        $exception = ValidationException::create(new ConstraintViolationList());
+        $exception = ValidationException::fromViolationList(new ConstraintViolationList());
         \Phake::when($this->serializer)->serialize->thenReturn('string');
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $exception,
