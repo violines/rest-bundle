@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TerryApiBundle\HttpClient;
 
 use Symfony\Component\HttpFoundation\Request;
-use TerryApiBundle\Exception\RequestHeaderException;
+use TerryApiBundle\Error\RequestHeaderException;
 
 final class HttpClient
 {

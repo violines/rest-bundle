@@ -7,7 +7,7 @@ namespace TerryApiBundle\Tests\HttpClient;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
-use TerryApiBundle\Exception\RequestHeaderException;
+use TerryApiBundle\Error\RequestHeaderException;
 use TerryApiBundle\HttpClient\HttpClient;
 use TerryApiBundle\HttpClient\ServerSettings;
 

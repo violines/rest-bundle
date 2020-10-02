@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Error;
 
-use TerryApiBundle\Annotation\HTTPApi;
+use TerryApiBundle\HttpApi\HttpApi;
 
 /**
- * @HTTPApi
+ * @HttpApi
  */
 final class Error
 {

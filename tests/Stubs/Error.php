@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Tests\Stubs;
 
-use TerryApiBundle\Annotation\HTTPApi;
+use TerryApiBundle\HttpApi\HttpApi;
 
 /**
- * @HTTPApi
+ * @HttpApi
  */
 class Error
 {

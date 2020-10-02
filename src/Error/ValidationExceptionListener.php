@@ -7,9 +7,9 @@ namespace TerryApiBundle\Error;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use TerryApiBundle\Builder\ResponseBuilder;
-use TerryApiBundle\Facade\SerializerFacade;
 use TerryApiBundle\HttpClient\HttpClientFactory;
+use TerryApiBundle\Response\ResponseBuilder;
+use TerryApiBundle\Serialize\Serializer;
 
 class ValidationExceptionListener
 {
@@ -17,16 +17,16 @@ class ValidationExceptionListener
 
     private ResponseBuilder $responseBuilder;
 
-    private SerializerFacade $serializerFacade;
+    private Serializer $serializer;
 
     public function __construct(
         HttpClientFactory $httpClientFactory,
         ResponseBuilder $responseBuilder,
-        SerializerFacade $serializerFacade
+        Serializer $serializer
     ) {
         $this->httpClientFactory = $httpClientFactory;
         $this->responseBuilder = $responseBuilder;
-        $this->serializerFacade = $serializerFacade;
+        $this->serializer = $serializer;
     }
 
     public function handle(ExceptionEvent $event): void
@@ -50,7 +50,7 @@ class ValidationExceptionListener
         $client = $this->httpClientFactory->fromRequest($request);
 
         return $this->responseBuilder
-            ->setContent($this->serializerFacade->serialize($exception->getViolationList(), $client))
+            ->setContent($this->serializer->serialize($exception->getViolationList(), $client))
             ->setStatus($exception->getHttpStatusCode())
             ->setClient($client)
             ->getResponse();

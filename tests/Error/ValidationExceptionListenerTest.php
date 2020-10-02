@@ -13,15 +13,15 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\Builder\ResponseBuilder;
-use TerryApiBundle\Error\ValidationExceptionListener;
-use TerryApiBundle\Event\SerializeEvent;
 use TerryApiBundle\Error\ValidationException;
-use TerryApiBundle\Facade\SerializerFacade;
+use TerryApiBundle\Error\ValidationExceptionListener;
+use TerryApiBundle\Serialize\SerializeEvent;
+use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\HttpClient\HttpClient;
 use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\HttpClient\ServerSettings;
 use TerryApiBundle\HttpClient\ServerSettingsFactory;
+use TerryApiBundle\Serialize\Serializer;
 
 class ValidationExceptionListenerTest extends TestCase
 {
@@ -63,12 +63,10 @@ class ValidationExceptionListenerTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $serializerFacade = new SerializerFacade($this->eventDispatcher, $this->serializer);
-
         $this->listener = new ValidationExceptionListener(
             new HttpClientFactory(new ServerSettingsFactory([])),
             new ResponseBuilder(),
-            $serializerFacade
+            new Serializer($this->eventDispatcher, $this->serializer)
         );
     }
 
