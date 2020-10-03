@@ -5,39 +5,21 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
         <services>
             <defaults public="false" />
-            <service id="terry_api.annotation.http_api_reader" class="TerryApiBundle\Annotation\HTTPApiReader">
-                <argument type="service" id="annotations.reader" />
-            </service>
-            <service id="terry_api.builder.response_builder" class="TerryApiBundle\Builder\ResponseBuilder" shared="false"/>
-            <service id="terry_api.facade.serializer_facade" class="TerryApiBundle\Facade\SerializerFacade">
-                <argument type="service" id="event_dispatcher" />
-                <argument type="service" id="serializer" />
-            </service>
             <service id="terry_api.error.error_listener" class="TerryApiBundle\Error\ErrorListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
                 <argument type="service" id="terry_api.http_client.http_client_factory" />
-                <argument type="service" id="terry_api.builder.response_builder" />
-                <argument type="service" id="terry_api.facade.serializer_facade" />
-                <argument type="service" id="terry_api.annotation.http_api_reader" />
+                <argument type="service" id="terry_api.response.response_builder" />
+                <argument type="service" id="terry_api.serialize.serializer" />
+                <argument type="service" id="terry_api.http_api.http_api_reader" />
             </service>
-            <service id="terry_api.event_listener.array_response_listener" class="TerryApiBundle\EventListener\ArrayResponseListener">
-                <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="20" />
-                <argument type="service" id="terry_api.http_client.http_client_factory" />
-                <argument type="service" id="terry_api.builder.response_builder" />
-                <argument type="service" id="terry_api.facade.serializer_facade" />
-            </service>
-            <service id="terry_api.event_listener.constraint_violation_list_response_listener" class="TerryApiBundle\EventListener\ConstraintViolationListResponseListener">
+            <service id="terry_api.error.validation_exception_listener" class="TerryApiBundle\Error\ValidationExceptionListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
                 <argument type="service" id="terry_api.http_client.http_client_factory" />
-                <argument type="service" id="terry_api.builder.response_builder" />
-                <argument type="service" id="terry_api.facade.serializer_facade" />
+                <argument type="service" id="terry_api.response.response_builder" />
+                <argument type="service" id="terry_api.serialize.serializer" />
             </service>
-            <service id="terry_api.event_listener.object_response_listener" class="TerryApiBundle\EventListener\ObjectResponseListener">
-                <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="10" />
-                <argument type="service" id="terry_api.http_client.http_client_factory" />
-                <argument type="service" id="terry_api.builder.response_builder" />
-                <argument type="service" id="terry_api.facade.serializer_facade" />
-                <argument type="service" id="terry_api.annotation.http_api_reader" />
+            <service id="terry_api.http_api.http_api_reader" class="TerryApiBundle\HttpApi\HttpApiReader">
+                <argument type="service" id="annotations.reader" />
             </service>
             <service id="terry_api.http_client.http_client_factory" class="TerryApiBundle\HttpClient\HttpClientFactory">
                 <argument type="service" id="terry_api.http_client.server_settings_factory" />
@@ -45,19 +27,31 @@
             <service id="terry_api.http_client.server_settings_factory" class="TerryApiBundle\HttpClient\ServerSettingsFactory">
                 <argument /> <!-- config array -->
             </service>
-            <service id="terry_api.argument_value_resolver.single_object_resolver" class="TerryApiBundle\ArgumentValueResolver\SingleObjectResolver">
+            <service id="terry_api.response.response_builder" class="TerryApiBundle\Response\ResponseBuilder" shared="false"/>
+            <service id="terry_api.response.response_listener" class="TerryApiBundle\Response\ResponseListener">
+                <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="10" />
+                <argument type="service" id="terry_api.http_client.http_client_factory" />
+                <argument type="service" id="terry_api.response.response_builder" />
+                <argument type="service" id="terry_api.serialize.serializer" />
+                <argument type="service" id="terry_api.http_api.http_api_reader" />
+            </service>
+            <service id="terry_api.request.single_object_resolver" class="TerryApiBundle\Request\SingleObjectResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
-                <argument type="service" id="terry_api.facade.serializer_facade" />
-                <argument type="service" id="terry_api.annotation.http_api_reader" />
+                <argument type="service" id="terry_api.serialize.serializer" />
+                <argument type="service" id="terry_api.http_api.http_api_reader" />
                 <argument type="service" id="terry_api.http_client.http_client_factory" />
                 <argument type="service" id="validator" />
             </service>
-            <service id="terry_api.argument_value_resolver.objects_array_resolver" class="TerryApiBundle\ArgumentValueResolver\ObjectsArrayResolver">
+            <service id="terry_api.request.objects_array_resolver" class="TerryApiBundle\Request\ObjectsArrayResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
-                <argument type="service" id="terry_api.facade.serializer_facade" />
-                <argument type="service" id="terry_api.annotation.http_api_reader" />
+                <argument type="service" id="terry_api.serialize.serializer" />
+                <argument type="service" id="terry_api.http_api.http_api_reader" />
                 <argument type="service" id="terry_api.http_client.http_client_factory" />
                 <argument type="service" id="validator" />
+            </service>
+            <service id="terry_api.serialize.serializer" class="TerryApiBundle\Serialize\Serializer">
+                <argument type="service" id="event_dispatcher" />
+                <argument type="service" id="serializer" />
             </service>
         </services>
 </container>
