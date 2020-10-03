@@ -28,6 +28,8 @@ use TerryApiBundle\Tests\Stubs\Candy;
 
 class ObjectsArrayResolverTest extends TestCase
 {
+    private const TEST_STRING = 'this is a string';
+
     /**
      * @Mock
      * @var EventDispatcherInterface
@@ -111,17 +113,17 @@ class ObjectsArrayResolverTest extends TestCase
     public function providerSupportsShouldReturnFalse(): array
     {
         return [
-            ['string', 'this is a string', true, false],
-            [null, 'this is a string', true, false],
+            ['string', self::TEST_STRING, true, false],
+            [null, self::TEST_STRING, true, false],
             [Candy::class, null, true, false],
-            [Candy::class, 'this is a string', true, true],
-            [Candy::class, 'this is a string', false, false],
+            [Candy::class, self::TEST_STRING, true, true],
+            [Candy::class, self::TEST_STRING, false, false],
         ];
     }
 
     public function testSupportsShouldReturnTrue()
     {
-        \Phake::when($this->request)->getContent->thenReturn('this is a string');
+        \Phake::when($this->request)->getContent->thenReturn(self::TEST_STRING);
         \Phake::when($this->argument)->getType->thenReturn(Candy::class);
 
         $structAnnotation = new HttpApi();
@@ -149,8 +151,8 @@ class ObjectsArrayResolverTest extends TestCase
     public function providerResolveShouldThrowException(): array
     {
         return [
-            ['string', 'this is a string'],
-            [null, 'this is a string'],
+            ['string', self::TEST_STRING],
+            [null, self::TEST_STRING],
             [Candy::class, null],
         ];
     }

@@ -20,6 +20,7 @@ class ConstraintViolationList implements \Iterator, ConstraintViolationListInter
 
     public function addAll($otherList)
     {
+        // test
     }
 
     public function get(int $offset)
@@ -74,12 +75,15 @@ class ConstraintViolationList implements \Iterator, ConstraintViolationListInter
 
     public function offsetGet($offset)
     {
+        // test
     }
     public function offsetSet($offset, $value): void
     {
+        // test
     }
     public function offsetUnset($offset): void
     {
+        // test
     }
 
     public function count()
