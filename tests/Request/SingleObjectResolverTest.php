@@ -28,6 +28,8 @@ use TerryApiBundle\Tests\Stubs\Candy;
 
 class SingleObjectResolverTest extends TestCase
 {
+    private const TEST_STRING = 'this is a string';
+
     /**
      * @Mock
      * @var EventDispatcherInterface
@@ -79,7 +81,7 @@ class SingleObjectResolverTest extends TestCase
 
         $this->resolver = new SingleObjectResolver(
             new HttpClientFactory(new ServerSettingsFactory([])),
-            $serializerFacade = new Serializer($this->eventDispatcher, $this->serializer),
+            new Serializer($this->eventDispatcher, $this->serializer),
             $this->httpApiReader,
             $this->validator
         );
@@ -110,17 +112,17 @@ class SingleObjectResolverTest extends TestCase
     public function providerSupportsShouldReturnFalse(): array
     {
         return [
-            ['string', 'this is a string', false, false],
-            [null, 'this is a string', false, false],
+            ['string', self::TEST_STRING, false, false],
+            [null, self::TEST_STRING, false, false],
             [Candy::class, null, false, false],
-            [Candy::class, 'this is a string', false, true],
-            [Candy::class, 'this is a string', true, false],
+            [Candy::class, self::TEST_STRING, false, true],
+            [Candy::class, self::TEST_STRING, true, false],
         ];
     }
 
     public function testSupportsShouldReturnTrue()
     {
-        \Phake::when($this->request)->getContent->thenReturn('this is a string');
+        \Phake::when($this->request)->getContent->thenReturn(self::TEST_STRING);
         \Phake::when($this->argument)->getType->thenReturn(Candy::class);
 
         $structAnnotation = new HTTPApi();
@@ -146,8 +148,8 @@ class SingleObjectResolverTest extends TestCase
     public function providerResolveShouldThrowException(): array
     {
         return [
-            ['string', 'this is a string'],
-            [null, 'this is a string'],
+            ['string', self::TEST_STRING],
+            [null, self::TEST_STRING],
             [Candy::class, null],
         ];
     }

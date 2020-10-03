@@ -18,13 +18,13 @@ class HttpApiReader
     /**
      * @param class-string $className
      */
-    public function read(string $className): HTTPApi
+    public function read(string $className): HttpApi
     {
         /** @var object[] $annotations */
         $annotations = $this->reader->getClassAnnotations(new \ReflectionClass($className));
 
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof HTTPApi) {
+            if ($annotation instanceof HttpApi) {
                 return $annotation;
             }
         }

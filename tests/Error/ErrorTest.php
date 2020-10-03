@@ -15,8 +15,8 @@ class ErrorTest extends TestCase
 
         $content = Error::new($message);
 
-        $this->assertEquals($content->getType(), 'about:blank');
-        $this->assertEquals($content->getTitle(), 'General Error');
-        $this->assertEquals($content->getDetail(), $message);
+        $this->assertEquals('about:blank', $content->getType());
+        $this->assertEquals('General Error', $content->getTitle());
+        $this->assertEquals($message, $content->getDetail());
     }
 }
