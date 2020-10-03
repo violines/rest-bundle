@@ -11,13 +11,10 @@ use TerryApiBundle\HttpClient\HttpClient;
 final class Serializer
 {
     private EventDispatcherInterface $eventDispatcher;
-
     private SerializerInterface $serializer;
 
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        SerializerInterface $serializer
-    ) {
+    public function __construct(EventDispatcherInterface $eventDispatcher, SerializerInterface $serializer)
+    {
         $this->eventDispatcher = $eventDispatcher;
         $this->serializer = $serializer;
     }

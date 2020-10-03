@@ -14,9 +14,7 @@ use TerryApiBundle\Serialize\Serializer;
 final class ValidationExceptionListener
 {
     private HttpClientFactory $httpClientFactory;
-
     private ResponseBuilder $responseBuilder;
-
     private Serializer $serializer;
 
     public function __construct(

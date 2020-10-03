@@ -79,11 +79,10 @@ class ObjectsArrayResolverTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-
         $this->resolver = new ObjectsArrayResolver(
+            $this->httpApiReader,
             new HttpClientFactory(new ServerSettingsFactory([])),
             new Serializer($this->eventDispatcher, $this->serializer),
-            $this->httpApiReader,
             $this->validator
         );
     }

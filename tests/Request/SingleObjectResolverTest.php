@@ -80,9 +80,9 @@ class SingleObjectResolverTest extends TestCase
         ]);
 
         $this->resolver = new SingleObjectResolver(
+            $this->httpApiReader,
             new HttpClientFactory(new ServerSettingsFactory([])),
             new Serializer($this->eventDispatcher, $this->serializer),
-            $this->httpApiReader,
             $this->validator
         );
     }

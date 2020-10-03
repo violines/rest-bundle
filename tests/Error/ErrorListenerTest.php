@@ -68,10 +68,10 @@ class ErrorListenerTest extends TestCase
         ]);
 
         $this->errorListener = new ErrorListener(
+            new HttpApiReader(new AnnotationReader()),
             new HttpClientFactory(new ServerSettingsFactory([])),
             new ResponseBuilder(),
-            new Serializer($this->eventDispatcher, $this->serializer),
-            new HttpApiReader(new AnnotationReader())
+            new Serializer($this->eventDispatcher, $this->serializer)
         );
     }
 

@@ -7,9 +7,7 @@ namespace TerryApiBundle\HttpClient;
 final class ServerSettings
 {
     public const FORMAT_DEFAULT_DEFAULT = 'application/json';
-
     public const FORMAT_SERIALIZER_MAP_DEFAULT = ['application/json' => 'json'];
-
     private string $formatDefault;
 
     /**

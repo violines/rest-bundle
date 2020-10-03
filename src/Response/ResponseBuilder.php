@@ -10,11 +10,8 @@ use TerryApiBundle\HttpClient\HttpClient;
 final class ResponseBuilder
 {
     private const PROBLEM = 'problem+';
-
     private string $content = '';
-
     private int $status = Response::HTTP_OK;
-
     private ?HttpClient $client = null;
 
     public function getResponse(): Response

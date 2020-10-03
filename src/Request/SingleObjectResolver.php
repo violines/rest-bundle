@@ -17,19 +17,19 @@ use TerryApiBundle\Serialize\Serializer;
 final class SingleObjectResolver implements ArgumentValueResolverInterface
 {
     private HttpClientFactory $httpClientFactory;
-    private Serializer $serializer;
     private HttpApiReader $httpApiReader;
+    private Serializer $serializer;
     private ValidatorInterface $validator;
 
     public function __construct(
+        HttpApiReader $httpApiReader,
         HttpClientFactory $httpClientFactory,
         Serializer $serializer,
-        HttpApiReader $httpApiReader,
         ValidatorInterface $validator
     ) {
+        $this->httpApiReader = $httpApiReader;
         $this->httpClientFactory = $httpClientFactory;
         $this->serializer = $serializer;
-        $this->httpApiReader = $httpApiReader;
         $this->validator = $validator;
     }
 

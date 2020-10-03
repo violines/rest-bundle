@@ -14,24 +14,21 @@ use TerryApiBundle\Serialize\Serializer;
 
 final class ErrorListener
 {
+    private HttpApiReader $httpApiReader;
     private HttpClientFactory $httpClientFactory;
-
     private ResponseBuilder $responseBuilder;
-
     private Serializer $serializer;
 
-    private HttpApiReader $httpApiReader;
-
     public function __construct(
+        HttpApiReader $httpApiReader,
         HttpClientFactory $httpClientFactory,
         ResponseBuilder $responseBuilder,
-        Serializer $serializer,
-        HttpApiReader $httpApiReader
+        Serializer $serializer
     ) {
+        $this->httpApiReader = $httpApiReader;
         $this->httpClientFactory = $httpClientFactory;
         $this->responseBuilder = $responseBuilder;
         $this->serializer = $serializer;
-        $this->httpApiReader = $httpApiReader;
     }
 
     public function handle(ExceptionEvent $event): void

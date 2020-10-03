@@ -70,10 +70,10 @@ class ResponseListenerTest extends TestCase
         $serializer = new Serializer($this->eventDispatcher, $this->serializer);
 
         $this->listener = new ResponseListener(
+            $httpApiReader,
             new HttpClientFactory(new ServerSettingsFactory([])),
             new ResponseBuilder(),
-            $serializer,
-            $httpApiReader
+            $serializer
         );
     }
 

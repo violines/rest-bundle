@@ -11,27 +11,13 @@ final class HttpClient
 {
     // ACCEPT = formats: application/json, application/xml
     public const ACCEPT = 'Accept';
-
     // CONTENT_TYPE = format: application/json
     public const CONTENT_TYPE = 'Content-Type';
-
-    private const CONTENT_TYPE_DEFAULT_KEYS = [
-        '*/*',
-        'application/*'
-    ];
-
-    private const NEGOTIATE_DEFAULTS = [
-        '*' => '',
-        '*/*' => '',
-        'application/*' => ''
-    ];
-
+    private const CONTENT_TYPE_DEFAULT_KEYS = ['*/*', 'application/*'];
+    private const NEGOTIATE_DEFAULTS = ['*' => '', '*/*' => '', 'application/*' => ''];
     private string $accept;
-
     private string $contentType;
-
     private array $contentTypeDefaultsMap = [];
-
     /**
      * @var array<string, string>
      */

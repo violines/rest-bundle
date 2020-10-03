@@ -14,24 +14,21 @@ use TerryApiBundle\Serialize\Serializer;
 
 final class ResponseListener
 {
+    private HttpApiReader $httpApiReader;
     private HttpClientFactory $httpClientFactory;
-
     private ResponseBuilder $responseBuilder;
-
     private Serializer $serializer;
 
-    private HttpApiReader $httpApiReader;
-
     public function __construct(
+        HttpApiReader $httpApiReader,
         HttpClientFactory $httpClientFactory,
         ResponseBuilder $responseBuilder,
-        Serializer $serializer,
-        HttpApiReader $httpApiReader
+        Serializer $serializer
     ) {
+        $this->httpApiReader = $httpApiReader;
         $this->httpClientFactory = $httpClientFactory;
         $this->responseBuilder = $responseBuilder;
         $this->serializer = $serializer;
-        $this->httpApiReader = $httpApiReader;
     }
 
     public function transform(ViewEvent $viewEvent): void
@@ -39,7 +36,7 @@ final class ResponseListener
         /** @var object[]|object|array $controllerResult */
         $controllerResult = $viewEvent->getControllerResult();
 
-        if (!$this->hasStruct($controllerResult)) {
+        if ([] !== $controllerResult && !$this->hasHttpApi($controllerResult)) {
             return;
         }
 
@@ -51,7 +48,7 @@ final class ResponseListener
     /**
      * @param object[]|object|array $controllerResult
      */
-    private function hasStruct($controllerResult): bool
+    private function hasHttpApi($controllerResult): bool
     {
         $object = $controllerResult;
 

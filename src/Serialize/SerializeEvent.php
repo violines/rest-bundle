@@ -9,7 +9,6 @@ use TerryApiBundle\HttpClient\HttpClient;
 final class SerializeEvent
 {
     public const NAME = 'terry_api.event.serialize';
-
     /**
      * @var object[]|object|array $data
      */

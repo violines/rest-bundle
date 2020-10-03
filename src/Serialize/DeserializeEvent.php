@@ -9,7 +9,6 @@ use TerryApiBundle\HttpClient\HttpClient;
 final class DeserializeEvent
 {
     public const NAME = 'terry_api.event.deserialize';
-
     private string $data;
     private HTTPClient $httpClient;
     private array $context = [];
