@@ -20,7 +20,8 @@
         "infection/infection": "^0.16.0",
         "vimeo/psalm": "^3.7",
         "phake/phake": "^3.1",
-        "matthiasnoback/symfony-dependency-injection-test": "^4.1"
+        "matthiasnoback/symfony-dependency-injection-test": "^4.1",
+        "rector/rector": "^0.8.6"
     },
     "autoload": {
         "psr-4": {
