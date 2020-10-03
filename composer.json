@@ -30,7 +30,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "TerryApi\\Tests\\": "tests/"
+            "TerryApiBundle\\Tests\\": "tests/"
         }
     },
     "scripts": {
