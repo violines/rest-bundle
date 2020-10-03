@@ -75,7 +75,7 @@ class SingleObjectResolverTest extends TestCase
 
         $this->request->headers = new HeaderBag([
             'Content-Type' => 'application/json'
-        ]);;
+        ]);
 
         $this->resolver = new SingleObjectResolver(
             new HttpClientFactory(new ServerSettingsFactory([])),
