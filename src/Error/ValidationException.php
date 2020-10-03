@@ -7,7 +7,7 @@ namespace TerryApiBundle\Error;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ValidationException extends \RuntimeException implements \Throwable
+final class ValidationException extends \RuntimeException implements \Throwable
 {
     private ConstraintViolationListInterface $violationList;
 

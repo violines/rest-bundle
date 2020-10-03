@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\HttpApi;
 
-class AnnotationNotFoundException extends \RuntimeException implements \Throwable
+final class AnnotationNotFoundException extends \RuntimeException implements \Throwable
 {
     private function __construct(string $message)
     {

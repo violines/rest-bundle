@@ -7,6 +7,6 @@ namespace TerryApiBundle\HttpApi;
 /**
  * @Annotation
  */
-class HttpApi
+final class HttpApi
 {
 }

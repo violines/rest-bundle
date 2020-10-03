@@ -14,7 +14,7 @@ use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\Serialize\Serializer;
 
-class ObjectsArrayResolver implements ArgumentValueResolverInterface
+final class ObjectsArrayResolver implements ArgumentValueResolverInterface
 {
     private HttpClientFactory $httpClientFactory;
     private Serializer $serializer;

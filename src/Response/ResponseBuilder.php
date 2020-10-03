@@ -7,7 +7,7 @@ namespace TerryApiBundle\Response;
 use Symfony\Component\HttpFoundation\Response;
 use TerryApiBundle\HttpClient\HttpClient;
 
-class ResponseBuilder
+final class ResponseBuilder
 {
     private const PROBLEM = 'problem+';
 

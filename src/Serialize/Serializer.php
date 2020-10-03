@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\HttpClient\HttpClient;
 
-class Serializer
+final class Serializer
 {
     private EventDispatcherInterface $eventDispatcher;
 

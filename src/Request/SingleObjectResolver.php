@@ -14,7 +14,7 @@ use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\Serialize\Serializer;
 
-class SingleObjectResolver implements ArgumentValueResolverInterface
+final class SingleObjectResolver implements ArgumentValueResolverInterface
 {
     private HttpClientFactory $httpClientFactory;
     private Serializer $serializer;

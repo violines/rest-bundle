@@ -11,7 +11,7 @@ use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Serialize\Serializer;
 
-class ValidationExceptionListener
+final class ValidationExceptionListener
 {
     private HttpClientFactory $httpClientFactory;
 

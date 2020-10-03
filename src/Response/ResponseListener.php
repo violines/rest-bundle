@@ -12,7 +12,7 @@ use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\Serialize\Serializer;
 
-class ResponseListener
+final class ResponseListener
 {
     private HttpClientFactory $httpClientFactory;
 

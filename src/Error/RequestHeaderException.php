@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use TerryApiBundle\Error\ErrorInterface;
 use TerryApiBundle\Error\Error;
 
-class RequestHeaderException extends \RuntimeException implements \Throwable, ErrorInterface
+final class RequestHeaderException extends \RuntimeException implements \Throwable, ErrorInterface
 {
     private const TITLE = 'Request Header wrong';
 
