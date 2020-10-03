@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\DependencyInjection;
+namespace TerryApiBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\DependencyInjection\Configuration;
@@ -31,28 +31,6 @@ class ConfigurationTest extends TestCase
             [
                 [],
                 [
-                    'event_listener' => [
-                        'array_response_listener' => [
-                            'enable' => true,
-                        ],
-                        'http_error_listener' => [
-                            'enable' => true,
-                        ],
-                        'object_response_listener' => [
-                            'enable' => true,
-                        ],
-                    ],
-                    'argument_value_resolver' => [
-                        'abstract_http_client_resolver' => [
-                            'enable' => true,
-                        ],
-                        'single_object_resolver' => [
-                            'enable' => true,
-                        ],
-                        'objects_array_resolver' => [
-                            'enable' => true,
-                        ],
-                    ],
                     'http_server' => [
                         'formats' => [
                             'json' => [],
@@ -79,28 +57,6 @@ class ConfigurationTest extends TestCase
                     ]
                 ],
                 [
-                    'event_listener' => [
-                        'array_response_listener' => [
-                            'enable' => true,
-                        ],
-                        'http_error_listener' => [
-                            'enable' => true,
-                        ],
-                        'object_response_listener' => [
-                            'enable' => true,
-                        ],
-                    ],
-                    'argument_value_resolver' => [
-                        'abstract_http_client_resolver' => [
-                            'enable' => true,
-                        ],
-                        'single_object_resolver' => [
-                            'enable' => true,
-                        ],
-                        'objects_array_resolver' => [
-                            'enable' => true,
-                        ],
-                    ],
                     'http_server' => [
                         'formats' => [
                             'json' => [
@@ -113,63 +69,6 @@ class ConfigurationTest extends TestCase
                             ]
                         ],
                         'format_default' => 'application/json',
-                    ],
-                ],
-            ],
-            [
-                [
-                    'event_listener' => [
-                        'array_response_listener' => [
-                            'enable' => false,
-                        ],
-                        'http_error_listener' => [
-                            'enable' => false,
-                        ],
-                        'object_response_listener' => [
-                            'enable' => false,
-                        ],
-                    ],
-                    'argument_value_resolver' => [
-                        'abstract_http_client_resolver' => [
-                            'enable' => false,
-                        ],
-                        'single_object_resolver' => [
-                            'enable' => false,
-                        ],
-                        'objects_array_resolver' => [
-                            'enable' => false,
-                        ],
-                    ]
-                ],
-                [
-                    'event_listener' => [
-                        'array_response_listener' => [
-                            'enable' => false,
-                        ],
-                        'http_error_listener' => [
-                            'enable' => false,
-                        ],
-                        'object_response_listener' => [
-                            'enable' => false,
-                        ],
-                    ],
-                    'argument_value_resolver' => [
-                        'abstract_http_client_resolver' => [
-                            'enable' => false,
-                        ],
-                        'single_object_resolver' => [
-                            'enable' => false,
-                        ],
-                        'objects_array_resolver' => [
-                            'enable' => false,
-                        ],
-                    ],
-                    'http_server' => [
-                        'formats' => [
-                            'json' => [],
-                            'xml' => []
-                        ],
-                        'format_default' => '',
                     ],
                 ],
             ],
