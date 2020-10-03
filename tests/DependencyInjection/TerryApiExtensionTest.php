@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApi\Tests\DependencyInjection;
+namespace TerryApiBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use TerryApiBundle\DependencyInjection\TerryApiExtension;
@@ -19,52 +19,48 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService($serviceId);
     }
 
-    /**
-     * @dataProvider providerForEntryPointServiceIds
-     */
-    public function testShouldCheckServicesNotLoaded(string $serviceId)
-    {
-        $parts = explode('.', $serviceId);
-        $definition[$parts[1]][$parts[2]]['enable'] = false;
-
-        $this->load($definition);
-
-        $this->assertContainerBuilderNotHasService($serviceId);
-    }
-
     public function providerForEntryPointServiceIds()
     {
         return [
             [
-                'terry_api.event_listener.array_response_listener'
+                'terry_api.error.validation_exception_listener'
             ],
             [
-                'terry_api.event_listener.http_error_listener'
+                'terry_api.error.error_listener'
             ],
             [
-                'terry_api.event_listener.object_response_listener'
+                'terry_api.http_api.http_api_reader'
             ],
             [
-                'terry_api.argument_value_resolver.abstract_http_client_resolver'
+                'terry_api.http_client.http_client_factory'
             ],
             [
-                'terry_api.argument_value_resolver.single_object_resolver'
+                'terry_api.http_client.server_settings_factory'
             ],
             [
-                'terry_api.argument_value_resolver.objects_array_resolver'
+                'terry_api.response.response_builder'
+            ],
+            [
+                'terry_api.response.response_listener'
+            ],
+            [
+                'terry_api.request.single_object_resolver'
+            ],
+            [
+                'terry_api.request.objects_array_resolver'
+            ],
+            [
+                'terry_api.serialize.serializer'
             ]
         ];
     }
 
-    /**
-     * @dataProvider providerForEntryPointServiceIds
-     */
-    public function testCreateHTTPServerDefinition()
+    public function testCreateServerSettingsFactoryDefinition()
     {
         $this->load();
 
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'terry_api.factory.http_server_factory',
+            'terry_api.http_client.server_settings_factory',
             0,
             [
                 'formats' => [

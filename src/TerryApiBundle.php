@@ -6,6 +6,6 @@ namespace TerryApiBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class TerryApiBundle extends Bundle
+final class TerryApiBundle extends Bundle
 {
 }

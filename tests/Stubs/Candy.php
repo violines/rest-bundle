@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Tests\Stubs;
 
-use TerryApiBundle\Annotation\HTTPApi;
+use TerryApiBundle\HttpApi\HttpApi;
 use Symfony\Component\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @HTTPApi
+ * @HttpApi
  * @FakeAnnotation(fakeBool=true)
  */
 class Candy
