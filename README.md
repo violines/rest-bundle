@@ -1,5 +1,5 @@
 ## About
-TerryApiBundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, TerryApiBundle handles serialization, validation and HTTP things like headers or status codes.
+TerryApiBundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, TerryApiBundle handles serialization, validation and HTTP related things like headers or status codes.
 
 [![build](https://github.com/simon-schubert/terry-api/workflows/build/badge.svg)](https://github.com/simon-schubert/terry-api)
 [![Code Coverage](https://codecov.io/gh/simon-schubert/terry-api/branch/master/graph/badge.svg)](https://codecov.io/gh/simon-schubert/terry-api)
@@ -9,7 +9,7 @@ TerryApiBundle is a Symfony Bundle to create REST APIs. While you can focus on y
 [![Wiki Docs](https://img.shields.io/badge/wiki-docs-B29700)](https://github.com/simon-schubert/terry-api/wiki)
 
 ### Who should use TerryApi?
-Symfony Developers who want to have full controll over what happens inside the controller: after the Arguments of the Controller are resolved and before the Controller returns.
+Symfony Developers who want to have full controll over what happens inside the controller: after the Arguments of the Controller are resolved and before the Controller returns. This makes it a perfect fit if you want to apply principles like DDD or hexagonal architecture.
 
 ### Install
 ```sh
@@ -28,6 +28,18 @@ You can find a sample of usage under: https://github.com/simon-schubert/terry-ap
 ### Example of a Controller in your project
 
 ```php
+/**
+ * @TerryApiBundle\HttpApi\HttpApi
+ */
+final class Order
+{
+    public $amount;
+    public $articles;
+}
+```
+
+
+```php
 <?php
 
 declare(strict_types=1);
@@ -35,60 +47,55 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\AuthenticationFailedException;
-use App\DTO\Candy;
+use App\DTO\Order;
 use App\DTO\Ok;
 use App\DTO\User;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CandyController
+class OrderController
 {
     /**
-     * @Route("/candies", methods={"GET"}, name="candy_list")
+     * @Route("/orders", methods={"GET"}, name="orders")
+     * @return Order[]
      */
-    public function candyList(): array
+    public function orders(): array
     {
-        $_candies = [];
+        return $this->orderRepository->findOrders();
+    }
 
-        foreach ($this->candyRepository->findAll() as $entity) {
-            $_candies[] = $entity->toDTO();
+    /**
+     * @Route("/order/{id}", methods={"GET"}, name="order")
+     */
+    public function order(int $id): Order
+    {
+        $order = $this->orderRepository->find($id);
+
+        if (null === $order) {
+            throw NotFoundException::new();
         }
 
-        return $_candies;
+        return $order;
     }
 
+
     /**
-     * @Route("/candy/{id}", methods={"GET"}, name="candy_detail")
+     * @Route("/create_order", methods={"POST"}, name="create_order")
      */
-    public function candyDetail(int $id): Candy
+    public function createOrder(Order $order): Ok
     {
-        $entity = $this->candyRepository->findOneBy(['id' => $id]);
+        // create order
 
-        if (null === $candy) {
-            throw NotFoundException::create();
-        }
-
-        return $entity->toDTO();
-    }
-
-
-    /**
-     * @Route("/candy", methods={"POST"}, name="candy_save")
-     */
-    public function candySave(Candy $candy): Ok
-    {
-        // do business logic with Candy
-
-        return Ok::create();
+        return Ok::new();
     }
 
     /**
-     * @Route("/candies", methods={"POST"}, name="candies_save")
+     * @Route("/create_orders", methods={"POST"}, name="createOrders")
      */
-    public function candiesSave(Candy ...$candies): Ok
+    public function createOrders(Order ...$orders): Ok
     {
         // do business logic with Candy[]
 
-        return Ok::create();
+        return Ok::new();
     }
 
 

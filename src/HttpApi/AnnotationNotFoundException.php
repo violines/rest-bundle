@@ -13,6 +13,6 @@ final class AnnotationNotFoundException extends \RuntimeException implements \Th
 
     public static function httpApi(string $className): self
     {
-        return new self(sprintf('Annotation \'@HTTPApi\' for %s not found.', $className));
+        return new self(sprintf('Annotation \'@HttpApi\' for %s not found.', $className));
     }
 }
