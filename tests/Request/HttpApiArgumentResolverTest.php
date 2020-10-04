@@ -13,20 +13,20 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use TerryApiBundle\Error\ValidationException;
+use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\HttpApi\HttpApi;
 use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\Request\SingleObjectResolver;
-use TerryApiBundle\Serialize\DeserializeEvent;
-use TerryApiBundle\HttpApi\AnnotationNotFoundException;
-use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\HttpClient\HttpClient;
 use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\HttpClient\ServerSettings;
 use TerryApiBundle\HttpClient\ServerSettingsFactory;
+use TerryApiBundle\Request\HttpApiArgumentResolver;
+use TerryApiBundle\Serialize\DeserializeEvent;
 use TerryApiBundle\Serialize\Serializer;
 use TerryApiBundle\Tests\Stubs\Candy;
 
-class SingleObjectResolverTest extends TestCase
+class HttpApiArgumentResolverTest extends TestCase
 {
     private const TEST_STRING = 'this is a string';
 
@@ -35,18 +35,6 @@ class SingleObjectResolverTest extends TestCase
      * @var EventDispatcherInterface
      */
     private \Phake_IMock $eventDispatcher;
-
-    /**
-     * @Mock
-     * @var ArgumentMetadata
-     */
-    private \Phake_IMock $argument;
-
-    /**
-     * @Mock
-     * @var HttpFoundationRequest
-     */
-    private \Phake_IMock $request;
 
     /**
      * @Mock
@@ -62,11 +50,23 @@ class SingleObjectResolverTest extends TestCase
 
     /**
      * @Mock
+     * @var HttpFoundationRequest
+     */
+    private \Phake_IMock $request;
+
+    /**
+     * @Mock
+     * @var ArgumentMetadata
+     */
+    private \Phake_IMock $argument;
+
+    /**
+     * @Mock
      * @var ValidatorInterface
      */
     private \Phake_IMock $validator;
 
-    private SingleObjectResolver $resolver;
+    private HttpApiArgumentResolver $resolver;
 
     public function setUp(): void
     {
@@ -79,7 +79,7 @@ class SingleObjectResolverTest extends TestCase
             'Content-Type' => 'application/json'
         ]);
 
-        $this->resolver = new SingleObjectResolver(
+        $this->resolver = new HttpApiArgumentResolver(
             $this->httpApiReader,
             new HttpClientFactory(new ServerSettingsFactory([])),
             new Serializer($this->eventDispatcher, $this->serializer),
@@ -93,12 +93,10 @@ class SingleObjectResolverTest extends TestCase
     public function testSupportsShouldReturnFalse(
         ?string $type,
         ?string $content,
-        bool $isVariadic,
         bool $throwException
     ) {
         \Phake::when($this->argument)->getType->thenReturn($type);
         \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isVariadic->thenReturn($isVariadic);
 
         if ($throwException) {
             \Phake::when($this->httpApiReader)->read->thenThrow(AnnotationNotFoundException::httpApi('test'));
@@ -112,11 +110,10 @@ class SingleObjectResolverTest extends TestCase
     public function providerSupportsShouldReturnFalse(): array
     {
         return [
-            ['string', self::TEST_STRING, false, false],
-            [null, self::TEST_STRING, false, false],
-            [Candy::class, null, false, false],
-            [Candy::class, self::TEST_STRING, false, true],
-            [Candy::class, self::TEST_STRING, true, false],
+            ['string', self::TEST_STRING, true],
+            [null, self::TEST_STRING, true],
+            [Candy::class, null, true],
+            [Candy::class, self::TEST_STRING, true],
         ];
     }
 
@@ -125,22 +122,24 @@ class SingleObjectResolverTest extends TestCase
         \Phake::when($this->request)->getContent->thenReturn(self::TEST_STRING);
         \Phake::when($this->argument)->getType->thenReturn(Candy::class);
 
-        $structAnnotation = new HTTPApi();
+        $structAnnotation = new HttpApi();
         \Phake::when($this->httpApiReader)->read->thenReturn($structAnnotation);
 
         $supports = $this->resolver->supports($this->request, $this->argument);
+
         $this->assertTrue($supports);
     }
 
     /**
      * @dataProvider providerResolveShouldThrowException
      */
-    public function testResolveShouldThrowException(?string $type, ?string $content)
+    public function testResolveShouldThrowException(?string $content, ?string $type)
     {
         \Phake::when($this->request)->getContent->thenReturn($content);
         \Phake::when($this->argument)->getType->thenReturn($type);
 
         $this->expectException(\LogicException::class);
+
         $result = $this->resolver->resolve($this->request, $this->argument);
         $result->current();
     }
@@ -148,26 +147,25 @@ class SingleObjectResolverTest extends TestCase
     public function providerResolveShouldThrowException(): array
     {
         return [
-            ['string', self::TEST_STRING],
-            [null, self::TEST_STRING],
-            [Candy::class, null],
+            [self::TEST_STRING, 'string'],
+            [self::TEST_STRING, null],
+            [null, Candy::class],
         ];
     }
 
     /**
-     * @dataProvider providerResolveShouldYield
+     * @dataProvider providerResolveShouldThrowValidationException
      */
-    public function testResolveShouldThrowValidationException()
+    public function testResolveShouldThrowValidationException($expected)
     {
         $this->expectException(ValidationException::class);
 
-        $candy = new Candy();
-        $content = json_encode($candy);
+        $content = json_encode($expected);
 
         \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isVariadic->thenReturn(false);
+        \Phake::when($this->argument)->isVariadic->thenReturn(is_array($expected));
         \Phake::when($this->argument)->getType->thenReturn(Candy::class);
-        \Phake::when($this->serializer)->deserialize->thenReturn($candy);
+        \Phake::when($this->serializer)->deserialize->thenReturn($expected);
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
             $content,
             HttpClient::new($this->request, ServerSettings::fromDefaults())
@@ -181,16 +179,28 @@ class SingleObjectResolverTest extends TestCase
         $result->current();
     }
 
+    public function providerResolveShouldThrowValidationException(): array
+    {
+        return [
+            [
+                [new Candy(), new Candy()],
+            ],
+            [
+                new Candy(),
+            ]
+        ];
+    }
+
     /**
      * @dataProvider providerResolveShouldYield
      */
-    public function testResolveShouldYield($isVariadic, $expected, $expectedClassName)
+    public function testResolveShouldYield($expected)
     {
         $content = json_encode($expected);
 
-        \Phake::when($this->request)->getContent->thenReturn(json_encode($expected));
-        \Phake::when($this->argument)->isVariadic->thenReturn($isVariadic);
-        \Phake::when($this->argument)->getType->thenReturn($expectedClassName);
+        \Phake::when($this->request)->getContent->thenReturn($content);
+        \Phake::when($this->argument)->isVariadic->thenReturn(is_array($expected));
+        \Phake::when($this->argument)->getType->thenReturn(Candy::class);
         \Phake::when($this->serializer)->deserialize->thenReturn($expected);
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
@@ -199,17 +209,18 @@ class SingleObjectResolverTest extends TestCase
         ));
 
         $result = $this->resolver->resolve($this->request, $this->argument);
-        $this->assertInstanceOf($expectedClassName, $result->current());
+        $this->assertInstanceOf(Candy::class, $result->current());
     }
 
     public function providerResolveShouldYield(): array
     {
         return [
             [
-                false,
-                new Candy(),
-                Candy::class
+                [new Candy(), new Candy()],
             ],
+            [
+                new Candy(),
+            ]
         ];
     }
 }
