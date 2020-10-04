@@ -89,7 +89,7 @@ class OrderController
     }
 
     /**
-     * @Route("/create_orders", methods={"POST"}, name="createOrders")
+     * @Route("/create_orders", methods={"POST"}, name="create_orders")
      */
     public function createOrders(Order ...$orders): Ok
     {
