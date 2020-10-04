@@ -35,14 +35,7 @@
                 <argument type="service" id="terry_api.response.response_builder" />
                 <argument type="service" id="terry_api.serialize.serializer" />
             </service>
-            <service id="terry_api.request.single_object_resolver" class="TerryApiBundle\Request\SingleObjectResolver">
-                <tag name="controller.argument_value_resolver" priority="50" />
-                <argument type="service" id="terry_api.http_api.http_api_reader" />
-                <argument type="service" id="terry_api.http_client.http_client_factory" />
-                <argument type="service" id="terry_api.serialize.serializer" />
-                <argument type="service" id="validator" />
-            </service>
-            <service id="terry_api.request.objects_array_resolver" class="TerryApiBundle\Request\ObjectsArrayResolver">
+            <service id="terry_api.request.http_api_argument_resolver" class="TerryApiBundle\Request\HttpApiArgumentResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
                 <argument type="service" id="terry_api.http_api.http_api_reader" />
                 <argument type="service" id="terry_api.http_client.http_client_factory" />

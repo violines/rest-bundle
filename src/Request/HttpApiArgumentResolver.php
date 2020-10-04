@@ -8,16 +8,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\HttpApi\AnnotationNotFoundException;
+use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\Serialize\Serializer;
 
-final class SingleObjectResolver implements ArgumentValueResolverInterface
+final class HttpApiArgumentResolver implements ArgumentValueResolverInterface
 {
-    private HttpClientFactory $httpClientFactory;
     private HttpApiReader $httpApiReader;
+    private HttpClientFactory $httpClientFactory;
     private Serializer $serializer;
     private ValidatorInterface $validator;
 
@@ -37,10 +37,7 @@ final class SingleObjectResolver implements ArgumentValueResolverInterface
     {
         $className = $argument->getType();
 
-        if (
-            true === $argument->isVariadic() || null === $className
-            || !class_exists($className) || !is_string($request->getContent())
-        ) {
+        if (null === $className || !class_exists($className) || !is_string($request->getContent())) {
             return false;
         }
 
@@ -62,21 +59,25 @@ final class SingleObjectResolver implements ArgumentValueResolverInterface
         $content = $request->getContent();
         $client = $this->httpClientFactory->fromRequest($request);
 
-        if (
-            true === $argument->isVariadic() || null === $className
-            || !class_exists($className) || !is_string($content)
-        ) {
+        if (null === $className || !class_exists($className) || !is_string($content)) {
             throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
         }
 
-        $object = $this->serializer->deserialize($content, $className, $client);
+        $type = $argument->isVariadic() ? $className . '[]' : $className;
 
-        $violations = $this->validator->validate($object);
+        /** @var object[] $objectsArray */
+        $deserialized = $this->serializer->deserialize($content, $type, $client);
+
+        $violations = $this->validator->validate($deserialized);
 
         if (0 < count($violations)) {
             throw ValidationException::fromViolationList($violations);
         }
 
-        yield $object;
+        if (is_array($deserialized)) {
+            yield from $deserialized;
+        }
+
+        yield $deserialized;
     }
 }

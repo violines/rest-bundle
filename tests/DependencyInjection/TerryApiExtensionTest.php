@@ -44,10 +44,7 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
                 'terry_api.response.response_listener'
             ],
             [
-                'terry_api.request.single_object_resolver'
-            ],
-            [
-                'terry_api.request.objects_array_resolver'
+                'terry_api.request.http_api_argument_resolver'
             ],
             [
                 'terry_api.serialize.serializer'
