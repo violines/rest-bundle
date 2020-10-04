@@ -93,7 +93,7 @@ class OrderController
      */
     public function createOrders(Order ...$orders): Ok
     {
-        // do business logic with Candy[]
+        // do business logic with Order[]
 
         return Ok::new();
     }
