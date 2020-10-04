@@ -102,7 +102,7 @@ class ErrorListenerTest extends TestCase
         $response = $exceptionEvent->getResponse();
 
         $this->assertJsonStringEqualsJsonString($expectedJson, $response->getContent());
-        $this->assertEquals($exception->getHTTPStatusCode(), $response->getStatusCode());
+        $this->assertEquals($exception->getStatusCode(), $response->getStatusCode());
     }
 
     public function testShouldSkipListener()
