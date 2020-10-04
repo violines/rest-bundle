@@ -90,10 +90,11 @@ class OrderController
 
     /**
      * @Route("/create_orders", methods={"POST"}, name="create_orders")
+     * @param Order[] $orders
      */
     public function createOrders(Order ...$orders): Ok
     {
-        // do business logic with Order[]
+         // create orders
 
         return Ok::new();
     }
