@@ -15,7 +15,7 @@ class ErrorException extends \LogicException implements \Throwable, ErrorInterfa
         return $this->content;
     }
 
-    public function getHTTPStatusCode(): int
+    public function getStatusCode(): int
     {
         return 400;
     }

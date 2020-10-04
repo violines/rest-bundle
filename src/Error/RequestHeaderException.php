@@ -36,7 +36,7 @@ final class RequestHeaderException extends \RuntimeException implements \Throwab
         return Error::new($this->message, self::TITLE);
     }
 
-    public function getHTTPStatusCode(): int
+    public function getStatusCode(): int
     {
         return Response::HTTP_BAD_REQUEST;
     }

@@ -57,7 +57,7 @@ final class ErrorListener
 
         return $this->responseBuilder
             ->setContent($this->serializer->serialize($object, $client))
-            ->setStatus($exception->getHTTPStatusCode())
+            ->setStatus($exception->getStatusCode())
             ->setClient($client)
             ->getResponse();
     }
