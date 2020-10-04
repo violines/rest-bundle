@@ -28,6 +28,12 @@ You can find a sample of usage under: https://github.com/simon-schubert/terry-ap
 ### Example of a Controller in your project
 
 ```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\DTO;
+
 /**
  * @TerryApiBundle\HttpApi\HttpApi
  */
