@@ -17,7 +17,7 @@ composer require simon-schubert/terry-api
 ```
 
 ### How does it work?
-1. Create a DTO (normal PHP class) and add the `@TerryApiBundle\Annotation\HTTPApi` annotation
+1. Create a DTO (normal PHP class) and add the `@TerryApiBundle\HttpApi\HttpApi` annotation
 1. Use any property annotations from symfony/serializer or symfony/validator inside your DTO
 1. Declare your DTO as type of a controller argument 
 1. Return an instance of your DTO in the controller
