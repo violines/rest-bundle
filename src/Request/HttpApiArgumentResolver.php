@@ -65,7 +65,7 @@ final class HttpApiArgumentResolver implements ArgumentValueResolverInterface
 
         $type = $argument->isVariadic() ? $className . '[]' : $className;
 
-        /** @var object[] $objectsArray */
+        /** @var object[] $deserialized */
         $deserialized = $this->serializer->deserialize($content, $type, $client);
 
         $violations = $this->validator->validate($deserialized);
@@ -74,10 +74,8 @@ final class HttpApiArgumentResolver implements ArgumentValueResolverInterface
             throw ValidationException::fromViolationList($violations);
         }
 
-        if (is_array($deserialized)) {
-            yield from $deserialized;
-        }
+        $result = !is_array($deserialized) ? [$deserialized] : $deserialized;
 
-        yield $deserialized;
+        yield from $result;
     }
 }
