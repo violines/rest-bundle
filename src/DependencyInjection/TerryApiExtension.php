@@ -19,6 +19,6 @@ class TerryApiExtension extends Extension
         /** @var array<string, array<string, array<string,mixed>>> $processedConfigs */
         $processedConfigs = $this->processConfiguration(new Configuration(), $configs);
 
-        $container->getDefinition('terry_api.http_client.server_settings_factory')->replaceArgument(0, $processedConfigs['http_server'] ?? []);
+        $container->getDefinition('terry_api.http_client.server_settings_factory')->replaceArgument(0, $processedConfigs['serialize'] ?? []);
     }
 }
