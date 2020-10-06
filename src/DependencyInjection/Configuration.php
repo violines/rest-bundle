@@ -16,7 +16,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 // http_server
-                ->arrayNode('http_server')
+                ->arrayNode('serialize')
                 ->addDefaultsIfNotSet()
                     ->children()
                         // formats

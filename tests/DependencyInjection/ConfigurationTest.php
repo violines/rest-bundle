@@ -31,7 +31,7 @@ class ConfigurationTest extends TestCase
             [
                 [],
                 [
-                    'http_server' => [
+                    'serialize' => [
                         'formats' => [
                             'json' => [],
                             'xml' => []
@@ -42,7 +42,7 @@ class ConfigurationTest extends TestCase
             ],
             [
                 [
-                    'http_server' => [
+                    'serialize' => [
                         'formats' => [
                             'json' => [
                                 'application/json',
@@ -57,7 +57,7 @@ class ConfigurationTest extends TestCase
                     ]
                 ],
                 [
-                    'http_server' => [
+                    'serialize' => [
                         'formats' => [
                             'json' => [
                                 'application/json',
