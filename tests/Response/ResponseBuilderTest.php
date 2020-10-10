@@ -9,17 +9,10 @@ use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use TerryApiBundle\Response\ResponseBuilder;
-use TerryApiBundle\HttpClient\HttpClient;
-use TerryApiBundle\HttpClient\ServerSettings;
+use TerryApiBundle\Response\ContentTypeHeader;
 
 class ResponseBuilderTest extends TestCase
 {
-    private const FORMAT_SERIALIZER_MAP = [
-        'application/json' => 'json',
-        'application/xml' => 'xml',
-        'html' => 'xml'
-    ];
-
     private ResponseBuilder $responseBuilder;
 
     /**
@@ -35,7 +28,7 @@ class ResponseBuilderTest extends TestCase
         $this->responseBuilder = new ResponseBuilder();
 
         \Phake::initAnnotations($this);
-        \Phake::when($this->request)->getLocale->thenReturn('en_GB');
+
         $this->request->headers = new HeaderBag([
             'Accept' => 'application/json, plain/html',
             'Content-Type' => 'application/json'
@@ -70,7 +63,7 @@ class ResponseBuilderTest extends TestCase
     public function testShouldResponseWithHeaders()
     {
         $response = $this->responseBuilder
-            ->setClient(HttpClient::new($this->request, ServerSettings::fromConfig('', self::FORMAT_SERIALIZER_MAP)))
+            ->setContentType(ContentTypeHeader::fromString('application/json'))
             ->getResponse();
 
         $this->assertEquals('application/json', $response->headers->get('content-type'));
@@ -79,12 +72,10 @@ class ResponseBuilderTest extends TestCase
     /**
      * @dataProvider providerShouldResponseWithProblem
      */
-    public function testShouldResponseWithProblem(string $accept, int $status, string $expected)
+    public function testShouldResponseWithProblem(int $status, string $expected)
     {
-        $this->request->headers->set('Accept', $accept);
-
         $response = $this->responseBuilder
-            ->setClient(HttpClient::new($this->request, ServerSettings::fromConfig('', self::FORMAT_SERIALIZER_MAP)))
+            ->setContentType(ContentTypeHeader::fromString('application/json'))
             ->setStatus($status)
             ->getResponse();
 
@@ -94,9 +85,9 @@ class ResponseBuilderTest extends TestCase
     public function providerShouldResponseWithProblem()
     {
         return [
-            ['application/json', 400, 'application/problem+json'],
-            ['html', 403, 'problem+html'],
-            ['application/json', 500, 'application/json']
+            [400, 'application/problem+json'],
+            [403, 'application/problem+json'],
+            [500, 'application/json']
         ];
     }
 }

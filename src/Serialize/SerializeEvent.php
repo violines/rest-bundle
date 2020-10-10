@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Serialize;
 
-use TerryApiBundle\HttpClient\HttpClient;
-
 final class SerializeEvent
 {
     public const NAME = 'terry_api.event.serialize';
@@ -13,16 +11,16 @@ final class SerializeEvent
      * @var object[]|object|array $data
      */
     private $data;
-    private HTTPClient $httpClient;
+    private Format $format;
     private array $context = [];
 
     /**
      * @param object[]|object|array $data
      */
-    public function __construct($data, HttpClient $httpClient)
+    public function __construct($data, Format $format)
     {
         $this->data = $data;
-        $this->httpClient = $httpClient;
+        $this->format = $format;
     }
 
     /**
@@ -33,9 +31,9 @@ final class SerializeEvent
         return $this->data;
     }
 
-    public function getHttpClient(): HTTPClient
+    public function getFormat(): string
     {
-        return $this->httpClient;
+        return $this->format->toString();
     }
 
     public function getContext(): array

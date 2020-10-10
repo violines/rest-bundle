@@ -17,18 +17,24 @@ use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\HttpApi\HttpApi;
 use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\HttpClient\HttpClient;
-use TerryApiBundle\HttpClient\HttpClientFactory;
-use TerryApiBundle\HttpClient\ServerSettings;
-use TerryApiBundle\HttpClient\ServerSettingsFactory;
 use TerryApiBundle\Request\HttpApiArgumentResolver;
 use TerryApiBundle\Serialize\DeserializeEvent;
+use TerryApiBundle\Serialize\Format;
 use TerryApiBundle\Serialize\Serializer;
+use TerryApiBundle\Serialize\TypeMapper;
 use TerryApiBundle\Tests\Stubs\Candy;
 
 class HttpApiArgumentResolverTest extends TestCase
 {
     private const TEST_STRING = 'this is a string';
+    private const SERIALIZE_FORMATS = [
+        'json' => [
+            'application/json'
+        ],
+        'xml' => [
+            'application/xml'
+        ]
+    ];
 
     /**
      * @Mock
@@ -81,8 +87,7 @@ class HttpApiArgumentResolverTest extends TestCase
 
         $this->resolver = new HttpApiArgumentResolver(
             $this->httpApiReader,
-            new HttpClientFactory(new ServerSettingsFactory([])),
-            new Serializer($this->eventDispatcher, $this->serializer),
+            new Serializer($this->eventDispatcher, $this->serializer, new TypeMapper(self::SERIALIZE_FORMATS)),
             $this->validator
         );
     }
@@ -168,7 +173,7 @@ class HttpApiArgumentResolverTest extends TestCase
         \Phake::when($this->serializer)->deserialize->thenReturn($expected);
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
             $content,
-            HttpClient::new($this->request, ServerSettings::fromDefaults())
+            Format::fromString('application/json')
         ));
 
         $violationList = new ConstraintViolationList();
@@ -205,7 +210,7 @@ class HttpApiArgumentResolverTest extends TestCase
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
             $content,
-            HttpClient::new($this->request, ServerSettings::fromDefaults())
+            Format::fromString('application/json')
         ));
 
         $result = $this->resolver->resolve($this->request, $this->argument);

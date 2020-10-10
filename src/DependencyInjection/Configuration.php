@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                // http_server
+                // serialize
                 ->arrayNode('serialize')
                 ->addDefaultsIfNotSet()
                     ->children()
@@ -25,17 +25,17 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 // json
                                 ->arrayNode('json')
-                                    ->scalarPrototype()
-                                    ->end()
+                                    ->scalarPrototype()->end()
+                                    ->defaultValue(['application/json'])
                                 ->end()
                                 // xml
                                 ->arrayNode('xml')
-                                    ->scalarPrototype()
-                                    ->end()
+                                    ->scalarPrototype()->end()
+                                    ->defaultValue(['application/xml'])
                                 ->end()
                             ->end()
                         ->end()
-                        ->scalarNode('format_default')->defaultNull()
+                        ->scalarNode('format_default')->defaultValue('application/json')
                         ->end()
                     ->end()
                 ->end();

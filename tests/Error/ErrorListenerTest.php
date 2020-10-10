@@ -18,17 +18,28 @@ use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\HttpClient\HttpClient;
-use TerryApiBundle\HttpClient\HttpClientFactory;
-use TerryApiBundle\HttpClient\ServerSettings;
-use TerryApiBundle\HttpClient\ServerSettingsFactory;
+use TerryApiBundle\Negotiation\ContentNegotiator;
+use TerryApiBundle\Serialize\Format;
 use TerryApiBundle\Serialize\Serializer;
+use TerryApiBundle\Serialize\TypeMapper;
 use TerryApiBundle\Tests\Error\ErrorException;
 use TerryApiBundle\Tests\Stubs\Error;
 use TerryApiBundle\Tests\Stubs\Gum;
 
 class ErrorListenerTest extends TestCase
 {
+    private const SERIALIZE_FORMATS = [
+        'json' => [
+            'application/json'
+        ],
+        'xml' => [
+            'application/xml'
+        ]
+    ];
+
+    private const SERIALIZE_FORMAT_DEFAULT = 'application/json';
+
+
     /**
      * @Mock
      * @var EventDispatcherInterface
@@ -69,9 +80,9 @@ class ErrorListenerTest extends TestCase
 
         $this->errorListener = new ErrorListener(
             new HttpApiReader(new AnnotationReader()),
-            new HttpClientFactory(new ServerSettingsFactory([])),
+            new ContentNegotiator(self::SERIALIZE_FORMATS, self::SERIALIZE_FORMAT_DEFAULT),
             new ResponseBuilder(),
-            new Serializer($this->eventDispatcher, $this->serializer)
+            new Serializer($this->eventDispatcher, $this->serializer, new TypeMapper(self::SERIALIZE_FORMATS))
         );
     }
 
@@ -83,7 +94,7 @@ class ErrorListenerTest extends TestCase
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $exception->getContent(),
-            HttpClient::new($this->request, ServerSettings::fromDefaults())
+            Format::fromString(self::SERIALIZE_FORMAT_DEFAULT)
         ));
 
         \Phake::when($this->serializer)

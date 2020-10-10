@@ -8,43 +8,44 @@
             <service id="terry_api.error.error_listener" class="TerryApiBundle\Error\ErrorListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
                 <argument type="service" id="terry_api.http_api.http_api_reader" />
-                <argument type="service" id="terry_api.http_client.http_client_factory" />
+                <argument type="service" id="terry_api.negotiation.content_negotiator" />
                 <argument type="service" id="terry_api.response.response_builder" />
                 <argument type="service" id="terry_api.serialize.serializer" />
             </service>
             <service id="terry_api.error.validation_exception_listener" class="TerryApiBundle\Error\ValidationExceptionListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
-                <argument type="service" id="terry_api.http_client.http_client_factory" />
+                <argument type="service" id="terry_api.negotiation.content_negotiator" />
                 <argument type="service" id="terry_api.response.response_builder" />
                 <argument type="service" id="terry_api.serialize.serializer" />
             </service>
             <service id="terry_api.http_api.http_api_reader" class="TerryApiBundle\HttpApi\HttpApiReader">
                 <argument type="service" id="annotations.reader" />
             </service>
-            <service id="terry_api.http_client.http_client_factory" class="TerryApiBundle\HttpClient\HttpClientFactory">
-                <argument type="service" id="terry_api.http_client.server_settings_factory" />
-            </service>
-            <service id="terry_api.http_client.server_settings_factory" class="TerryApiBundle\HttpClient\ServerSettingsFactory">
-                <argument /> <!-- config array -->
+            <service id="terry_api.negotiation.content_negotiator" class="TerryApiBundle\Negotiation\ContentNegotiator">
+                <argument /> <!-- serializeFormats -->
+                <argument /> <!-- serializeFormatDefault -->
             </service>
             <service id="terry_api.response.response_builder" class="TerryApiBundle\Response\ResponseBuilder" shared="false"/>
             <service id="terry_api.response.response_listener" class="TerryApiBundle\Response\ResponseListener">
                 <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="10" />
                 <argument type="service" id="terry_api.http_api.http_api_reader" />
-                <argument type="service" id="terry_api.http_client.http_client_factory" />
+                <argument type="service" id="terry_api.negotiation.content_negotiator" />
                 <argument type="service" id="terry_api.response.response_builder" />
                 <argument type="service" id="terry_api.serialize.serializer" />
             </service>
             <service id="terry_api.request.http_api_argument_resolver" class="TerryApiBundle\Request\HttpApiArgumentResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
                 <argument type="service" id="terry_api.http_api.http_api_reader" />
-                <argument type="service" id="terry_api.http_client.http_client_factory" />
                 <argument type="service" id="terry_api.serialize.serializer" />
                 <argument type="service" id="validator" />
             </service>
             <service id="terry_api.serialize.serializer" class="TerryApiBundle\Serialize\Serializer">
                 <argument type="service" id="event_dispatcher" />
                 <argument type="service" id="serializer" />
+                <argument type="service" id="terry_api.serialize.type_mapper" />
+            </service>
+            <service id="terry_api.serialize.type_mapper" class="TerryApiBundle\Serialize\TypeMapper">
+                <argument /> <!-- serializeFormats -->
             </service>
         </services>
 </container>

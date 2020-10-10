@@ -11,24 +11,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\Error\ValidationException;
-use TerryApiBundle\HttpClient\HttpClientFactory;
 use TerryApiBundle\Serialize\Serializer;
 
 final class HttpApiArgumentResolver implements ArgumentValueResolverInterface
 {
     private HttpApiReader $httpApiReader;
-    private HttpClientFactory $httpClientFactory;
     private Serializer $serializer;
     private ValidatorInterface $validator;
 
     public function __construct(
         HttpApiReader $httpApiReader,
-        HttpClientFactory $httpClientFactory,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->httpApiReader = $httpApiReader;
-        $this->httpClientFactory = $httpClientFactory;
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
@@ -57,7 +53,7 @@ final class HttpApiArgumentResolver implements ArgumentValueResolverInterface
     {
         $className = $argument->getType();
         $content = $request->getContent();
-        $client = $this->httpClientFactory->fromRequest($request);
+        $contentType = ContentTypeHeader::fromString((string)$request->headers->get(ContentTypeHeader::NAME, ''));
 
         if (null === $className || !class_exists($className) || !is_string($content)) {
             throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
@@ -66,7 +62,7 @@ final class HttpApiArgumentResolver implements ArgumentValueResolverInterface
         $type = $argument->isVariadic() ? $className . '[]' : $className;
 
         /** @var object[] $deserialized */
-        $deserialized = $this->serializer->deserialize($content, $type, $client);
+        $deserialized = $this->serializer->deserialize($content, $type, $contentType->toFormat());
 
         $violations = $this->validator->validate($deserialized);
 
