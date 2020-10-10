@@ -17,14 +17,24 @@ use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\Error\ValidationExceptionListener;
 use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\Response\ResponseBuilder;
-use TerryApiBundle\HttpClient\HttpClient;
-use TerryApiBundle\HttpClient\HttpClientFactory;
-use TerryApiBundle\HttpClient\ServerSettings;
-use TerryApiBundle\HttpClient\ServerSettingsFactory;
+use TerryApiBundle\Negotiation\ContentNegotiator;
+use TerryApiBundle\Serialize\Format;
 use TerryApiBundle\Serialize\Serializer;
+use TerryApiBundle\Serialize\TypeMapper;
 
 class ValidationExceptionListenerTest extends TestCase
 {
+    private const SERIALIZE_FORMATS = [
+        'json' => [
+            'application/json'
+        ],
+        'xml' => [
+            'application/xml'
+        ]
+    ];
+
+    private const SERIALIZE_FORMAT_DEFAULT = 'application/json';
+
     /**
      * @Mock
      * @var EventDispatcherInterface
@@ -64,9 +74,9 @@ class ValidationExceptionListenerTest extends TestCase
         ]);
 
         $this->listener = new ValidationExceptionListener(
-            new HttpClientFactory(new ServerSettingsFactory([])),
+            new ContentNegotiator(self::SERIALIZE_FORMATS, self::SERIALIZE_FORMAT_DEFAULT),
             new ResponseBuilder(),
-            new Serializer($this->eventDispatcher, $this->serializer)
+            new Serializer($this->eventDispatcher, $this->serializer, new TypeMapper(self::SERIALIZE_FORMATS))
         );
     }
 
@@ -76,7 +86,7 @@ class ValidationExceptionListenerTest extends TestCase
         \Phake::when($this->serializer)->serialize->thenReturn('string');
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $exception,
-            HttpClient::new($this->request, ServerSettings::fromDefaults())
+            Format::fromString(self::SERIALIZE_FORMAT_DEFAULT)
         ));
 
         $exceptionEvent = new ExceptionEvent(

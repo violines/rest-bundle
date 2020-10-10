@@ -32,10 +32,7 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
                 'terry_api.http_api.http_api_reader'
             ],
             [
-                'terry_api.http_client.http_client_factory'
-            ],
-            [
-                'terry_api.http_client.server_settings_factory'
+                'terry_api.negotiation.content_negotiator'
             ],
             [
                 'terry_api.response.response_builder'
@@ -48,25 +45,48 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
             ],
             [
                 'terry_api.serialize.serializer'
+            ],
+            [
+                'terry_api.serialize.type_mapper'
             ]
         ];
     }
 
-    public function testCreateServerSettingsFactoryDefinition()
+    /**
+     * @dataProvider providerShouldCheckServiceConfigurationArguments
+     */
+    public function testShouldCheckServiceConfigurationArguments(string $serviceId, int $argNo, $expected)
     {
         $this->load();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'terry_api.http_client.server_settings_factory',
-            0,
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument($serviceId, $argNo, $expected);
+    }
+
+    public function providerShouldCheckServiceConfigurationArguments(): array
+    {
+        return[
             [
-                'formats' => [
-                    'json' => [],
-                    'xml' => []
-                ],
-                'format_default' => '',
+                'terry_api.negotiation.content_negotiator',
+                0,
+                [
+                    'json' => ['application/json'],
+                    'xml' => ['application/xml']
+                ]
+            ],
+            [
+                'terry_api.negotiation.content_negotiator',
+                1,
+                'application/json',
+            ],
+            [
+                'terry_api.serialize.type_mapper',
+                0,
+                [
+                    'json' => ['application/json'],
+                    'xml' => ['application/xml']
+                ]
             ]
-        );
+        ];
     }
 
     protected function getContainerExtensions(): array

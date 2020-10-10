@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace TerryApiBundle\Response;
 
 use Symfony\Component\HttpFoundation\Response;
-use TerryApiBundle\HttpClient\HttpClient;
 
 final class ResponseBuilder
 {
     private const PROBLEM = 'problem+';
     private string $content = '';
     private int $status = Response::HTTP_OK;
-    private ?HttpClient $client = null;
+    private ?ContentTypeHeader $contentType = null;
 
     public function getResponse(): Response
     {
@@ -33,9 +32,9 @@ final class ResponseBuilder
         return $this;
     }
 
-    public function setClient(HTTPClient $client): self
+    public function setContentType(ContentTypeHeader $contentType): self
     {
-        $this->client = $client;
+        $this->contentType = $contentType;
 
         return $this;
     }
@@ -48,12 +47,10 @@ final class ResponseBuilder
         /** @var array<string, string> $headers */
         $headers = [];
 
-        if ($this->client instanceof HttpClient) {
-            $contentType = $this->client->negotiateContentType();
-            if (400 <= $this->status && 500 > $this->status) {
-                $contentType = $this->withProblem($contentType);
-            }
-            $headers[HttpClient::CONTENT_TYPE] = $contentType;
+        if (null !== $this->contentType) {
+            $headers[ContentTypeHeader::NAME] = 400 <= $this->status && 500 > $this->status
+                ? $this->withProblem($this->contentType->toString())
+                : $this->contentType->toString();
         }
 
         return $headers;

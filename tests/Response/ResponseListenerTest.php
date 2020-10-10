@@ -17,16 +17,26 @@ use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Response\ResponseListener;
 use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\HttpClient\HttpClient;
-use TerryApiBundle\HttpClient\HttpClientFactory;
-use TerryApiBundle\HttpClient\ServerSettings;
-use TerryApiBundle\HttpClient\ServerSettingsFactory;
+use TerryApiBundle\Negotiation\ContentNegotiator;
+use TerryApiBundle\Serialize\Format;
 use TerryApiBundle\Serialize\Serializer;
+use TerryApiBundle\Serialize\TypeMapper;
 use TerryApiBundle\Tests\Stubs\Gum;
 use TerryApiBundle\Tests\Stubs\Ok;
 
 class ResponseListenerTest extends TestCase
 {
+    private const SERIALIZE_FORMATS = [
+        'json' => [
+            'application/json'
+        ],
+        'xml' => [
+            'application/xml'
+        ]
+    ];
+
+    private const SERIALIZE_FORMAT_DEFAULT = 'application/json';
+
     /**
      * @Mock
      * @var EventDispatcherInterface
@@ -67,11 +77,11 @@ class ResponseListenerTest extends TestCase
 
         $httpApiReader = new HttpApiReader(new AnnotationReader());
 
-        $serializer = new Serializer($this->eventDispatcher, $this->serializer);
+        $serializer = new Serializer($this->eventDispatcher, $this->serializer, new TypeMapper(self::SERIALIZE_FORMATS));
 
         $this->listener = new ResponseListener(
             $httpApiReader,
-            new HttpClientFactory(new ServerSettingsFactory([])),
+            new ContentNegotiator(self::SERIALIZE_FORMATS, self::SERIALIZE_FORMAT_DEFAULT),
             new ResponseBuilder(),
             $serializer
         );
@@ -85,7 +95,7 @@ class ResponseListenerTest extends TestCase
         \Phake::when($this->serializer)->serialize($controllerResult, 'json', [])->thenReturn($expected);
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $controllerResult,
-            HttpClient::new($this->request, ServerSettings::fromDefaults())
+            Format::fromString(self::SERIALIZE_FORMAT_DEFAULT)
         ));
 
         $viewEvent = new ViewEvent(

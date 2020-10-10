@@ -33,10 +33,10 @@ class ConfigurationTest extends TestCase
                 [
                     'serialize' => [
                         'formats' => [
-                            'json' => [],
-                            'xml' => []
+                            'json' => ['application/json'],
+                            'xml' => ['application/xml']
                         ],
-                        'format_default' => '',
+                        'format_default' => 'application/json',
                     ],
                 ],
             ],

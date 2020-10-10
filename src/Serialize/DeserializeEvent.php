@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Serialize;
 
-use TerryApiBundle\HttpClient\HttpClient;
-
 final class DeserializeEvent
 {
     public const NAME = 'terry_api.event.deserialize';
     private string $data;
-    private HTTPClient $httpClient;
+    private Format $format;
     private array $context = [];
 
-    public function __construct(string $data, HttpClient $httpClient)
+    public function __construct(string $data, Format $format)
     {
         $this->data = $data;
-        $this->httpClient = $httpClient;
+        $this->format = $format;
     }
 
     public function getData(): string
@@ -24,9 +22,9 @@ final class DeserializeEvent
         return $this->data;
     }
 
-    public function getHttpClient(): HTTPClient
+    public function getFormat(): string
     {
-        return $this->httpClient;
+        return $this->format->toString();
     }
 
     public function getContext(): array

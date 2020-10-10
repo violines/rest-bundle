@@ -7,22 +7,24 @@ namespace TerryApiBundle\Error;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use TerryApiBundle\HttpClient\HttpClientFactory;
+use TerryApiBundle\Negotiation\ContentNegotiator;
+use TerryApiBundle\Request\AcceptHeader;
+use TerryApiBundle\Response\ContentTypeHeader;
 use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Serialize\Serializer;
 
 final class ValidationExceptionListener
 {
-    private HttpClientFactory $httpClientFactory;
+    private ContentNegotiator $contentNegotiator;
     private ResponseBuilder $responseBuilder;
     private Serializer $serializer;
 
     public function __construct(
-        HttpClientFactory $httpClientFactory,
+        ContentNegotiator $contentNegotiator,
         ResponseBuilder $responseBuilder,
         Serializer $serializer
     ) {
-        $this->httpClientFactory = $httpClientFactory;
+        $this->contentNegotiator = $contentNegotiator;
         $this->responseBuilder = $responseBuilder;
         $this->serializer = $serializer;
     }
@@ -45,12 +47,13 @@ final class ValidationExceptionListener
 
     private function createResponse(Request $request, ValidationException $exception): Response
     {
-        $client = $this->httpClientFactory->fromRequest($request);
+        $acceptHeader = AcceptHeader::fromString((string) $request->headers->get(AcceptHeader::NAME, ''));
+        $acceptHeaderFormat = $acceptHeader->toFormat($this->contentNegotiator);
 
         return $this->responseBuilder
-            ->setContent($this->serializer->serialize($exception->getViolationList(), $client))
+            ->setContent($this->serializer->serialize($exception->getViolationList(), $acceptHeaderFormat))
             ->setStatus($exception->getHttpStatusCode())
-            ->setClient($client)
+            ->setContentType(ContentTypeHeader::fromString($acceptHeaderFormat->toString()))
             ->getResponse();
     }
 }
