@@ -22,18 +22,11 @@ use TerryApiBundle\Serialize\DeserializeEvent;
 use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
 use TerryApiBundle\Tests\Stubs\Candy;
+use TerryApiBundle\Tests\Stubs\Config;
 
 class HttpApiArgumentResolverTest extends TestCase
 {
     private const TEST_STRING = 'this is a string';
-    private const SERIALIZE_FORMATS = [
-        'json' => [
-            'application/json'
-        ],
-        'xml' => [
-            'application/xml'
-        ]
-    ];
 
     /**
      * @Mock
@@ -86,7 +79,7 @@ class HttpApiArgumentResolverTest extends TestCase
 
         $this->resolver = new HttpApiArgumentResolver(
             $this->httpApiReader,
-            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(self::SERIALIZE_FORMATS)),
+            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS)),
             $this->validator
         );
     }

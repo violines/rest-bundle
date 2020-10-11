@@ -20,20 +20,10 @@ use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Negotiation\ContentNegotiator;
 use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
+use TerryApiBundle\Tests\Stubs\Config;
 
 class ValidationExceptionListenerTest extends TestCase
 {
-    private const SERIALIZE_FORMATS = [
-        'json' => [
-            'application/json'
-        ],
-        'xml' => [
-            'application/xml'
-        ]
-    ];
-
-    private const SERIALIZE_FORMAT_DEFAULT = 'application/json';
-
     /**
      * @Mock
      * @var EventDispatcherInterface
@@ -73,9 +63,9 @@ class ValidationExceptionListenerTest extends TestCase
         ]);
 
         $this->listener = new ValidationExceptionListener(
-            new ContentNegotiator(self::SERIALIZE_FORMATS, self::SERIALIZE_FORMAT_DEFAULT),
+            new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
             new ResponseBuilder(),
-            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(self::SERIALIZE_FORMATS))
+            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS))
         );
     }
 

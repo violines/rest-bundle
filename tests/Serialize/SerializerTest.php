@@ -10,23 +10,13 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Negotiation\MimeType;
 use TerryApiBundle\Serialize\DeserializeEvent;
 use TerryApiBundle\Serialize\SerializeEvent;
-use TerryApiBundle\Serialize\Format;
 use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
-use TerryApiBundle\Serialize\TypeMapper;
 use TerryApiBundle\Tests\Stubs\Candy;
+use TerryApiBundle\Tests\Stubs\Config;
 
 class SerializerTest extends TestCase
 {
-    private const SERIALIZE_FORMATS = [
-        'json' => [
-            'application/json'
-        ],
-        'xml' => [
-            'application/xml'
-        ]
-    ];
-
     /**
      * @Mock
      * @var EventDispatcherInterface
@@ -37,7 +27,7 @@ class SerializerTest extends TestCase
      * @Mock
      * @var SerializerInterface
      */
-    private \Phake_IMock $serializer;
+    private \Phake_IMock $serializerInterface;
 
     public function setUp(): void
     {
@@ -55,12 +45,12 @@ class SerializerTest extends TestCase
         $serializeContextEvent->mergeToContext($context);
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn($serializeContextEvent);
-        \Phake::when($this->serializer)->serialize->thenReturn('[]');
+        \Phake::when($this->serializerInterface)->serialize->thenReturn('[]');
 
-        $serializer = new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(self::SERIALIZE_FORMATS));
+        $serializer = new Serializer($this->eventDispatcher, $this->serializerInterface, new FormatMapper(Config::SERIALIZE_FORMATS));
         $serializer->serialize($data, $mimeType);
 
-        \Phake::verify($this->serializer)->serialize($data, 'json', $context);
+        \Phake::verify($this->serializerInterface)->serialize($data, 'json', $context);
     }
 
     public function testShouldDeserialize()
@@ -74,11 +64,11 @@ class SerializerTest extends TestCase
         $deserializeEvent->mergeToContext($context);
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn($deserializeEvent);
-        \Phake::when($this->serializer)->serialize->thenReturn(new Candy());
+        \Phake::when($this->serializerInterface)->serialize->thenReturn(new Candy());
 
-        $serializer = new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(self::SERIALIZE_FORMATS));
+        $serializer = new Serializer($this->eventDispatcher, $this->serializerInterface, new FormatMapper(Config::SERIALIZE_FORMATS));
         $serializer->deserialize($data, $type, $mimeType);
 
-        \Phake::verify($this->serializer)->deserialize($data, $type, 'json', $context);
+        \Phake::verify($this->serializerInterface)->deserialize($data, $type, 'json', $context);
     }
 }
