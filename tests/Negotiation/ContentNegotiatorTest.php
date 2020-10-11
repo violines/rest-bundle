@@ -8,27 +8,17 @@ use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Error\RequestHeaderException;
 use TerryApiBundle\Negotiation\ContentNegotiator;
 use TerryApiBundle\Request\AcceptHeader;
+use TerryApiBundle\Tests\Stubs\Config;
 
 class ContentNegotiatorTest extends TestCase
 {
-    private const SERIALIZE_FORMATS = [
-        'json' => [
-            'application/json'
-        ],
-        'xml' => [
-            'application/xml'
-        ]
-    ];
-
-    private const SERIALIZE_FORMAT_DEFAULT = 'application/json';
-
     private ContentNegotiator $contentNegotiator;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->contentNegotiator = new ContentNegotiator(self::SERIALIZE_FORMATS, self::SERIALIZE_FORMAT_DEFAULT);
+        $this->contentNegotiator = new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT);
     }
 
     /**

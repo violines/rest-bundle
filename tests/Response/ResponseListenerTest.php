@@ -20,22 +20,12 @@ use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\Negotiation\ContentNegotiator;
 use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
+use TerryApiBundle\Tests\Stubs\Config;
 use TerryApiBundle\Tests\Stubs\Gum;
 use TerryApiBundle\Tests\Stubs\Ok;
 
 class ResponseListenerTest extends TestCase
 {
-    private const SERIALIZE_FORMATS = [
-        'json' => [
-            'application/json'
-        ],
-        'xml' => [
-            'application/xml'
-        ]
-    ];
-
-    private const SERIALIZE_FORMAT_DEFAULT = 'application/json';
-
     /**
      * @Mock
      * @var EventDispatcherInterface
@@ -76,11 +66,11 @@ class ResponseListenerTest extends TestCase
 
         $httpApiReader = new HttpApiReader(new AnnotationReader());
 
-        $serializer = new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(self::SERIALIZE_FORMATS));
+        $serializer = new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS));
 
         $this->listener = new ResponseListener(
             $httpApiReader,
-            new ContentNegotiator(self::SERIALIZE_FORMATS, self::SERIALIZE_FORMAT_DEFAULT),
+            new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
             new ResponseBuilder(),
             $serializer
         );

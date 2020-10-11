@@ -6,7 +6,6 @@ namespace TerryApiBundle\Tests\Serialize;
 
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Serialize\DeserializeEvent;
-use TerryApiBundle\Serialize\Format;
 
 class DeserializeEventTest extends TestCase
 {
