@@ -49,8 +49,8 @@ final class ResponseBuilder
 
         if (null !== $this->contentType) {
             $headers[ContentTypeHeader::NAME] = 400 <= $this->status && 500 > $this->status
-                ? $this->withProblem($this->contentType->toString())
-                : $this->contentType->toString();
+                ? $this->withProblem($this->contentType->toMimeType()->toString())
+                : $this->contentType->toMimeType()->toString();
         }
 
         return $headers;

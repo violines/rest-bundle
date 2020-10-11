@@ -18,9 +18,8 @@ use TerryApiBundle\Error\ValidationExceptionListener;
 use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Negotiation\ContentNegotiator;
-use TerryApiBundle\Serialize\Format;
+use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
-use TerryApiBundle\Serialize\TypeMapper;
 
 class ValidationExceptionListenerTest extends TestCase
 {
@@ -76,7 +75,7 @@ class ValidationExceptionListenerTest extends TestCase
         $this->listener = new ValidationExceptionListener(
             new ContentNegotiator(self::SERIALIZE_FORMATS, self::SERIALIZE_FORMAT_DEFAULT),
             new ResponseBuilder(),
-            new Serializer($this->eventDispatcher, $this->serializer, new TypeMapper(self::SERIALIZE_FORMATS))
+            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(self::SERIALIZE_FORMATS))
         );
     }
 
@@ -86,7 +85,7 @@ class ValidationExceptionListenerTest extends TestCase
         \Phake::when($this->serializer)->serialize->thenReturn('string');
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $exception,
-            Format::fromString(self::SERIALIZE_FORMAT_DEFAULT)
+            'json'
         ));
 
         $exceptionEvent = new ExceptionEvent(

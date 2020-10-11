@@ -11,13 +11,13 @@ final class SerializeEvent
      * @var object[]|object|array $data
      */
     private $data;
-    private Format $format;
+    private string $format;
     private array $context = [];
 
     /**
      * @param object[]|object|array $data
      */
-    public function __construct($data, Format $format)
+    public function __construct($data, string $format)
     {
         $this->data = $data;
         $this->format = $format;
@@ -33,7 +33,7 @@ final class SerializeEvent
 
     public function getFormat(): string
     {
-        return $this->format->toString();
+        return $this->format;
     }
 
     public function getContext(): array

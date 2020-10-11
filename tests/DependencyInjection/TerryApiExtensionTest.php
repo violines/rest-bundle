@@ -44,10 +44,10 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
                 'terry_api.request.http_api_argument_resolver'
             ],
             [
-                'terry_api.serialize.serializer'
+                'terry_api.serialize.format_mapper'
             ],
             [
-                'terry_api.serialize.type_mapper'
+                'terry_api.serialize.serializer'
             ]
         ];
     }
@@ -79,7 +79,7 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
                 'application/json',
             ],
             [
-                'terry_api.serialize.type_mapper',
+                'terry_api.serialize.format_mapper',
                 0,
                 [
                     'json' => ['application/json'],

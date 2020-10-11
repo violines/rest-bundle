@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Response;
 
+use TerryApiBundle\Negotiation\MimeType;
+
 final class ContentTypeHeader
 {
     public const NAME = 'Content-Type';
@@ -19,8 +21,8 @@ final class ContentTypeHeader
         return new self($contentType);
     }
 
-    public function toString(): string
+    public function toMimeType(): MimeType
     {
-        return $this->contentType;
+        return MimeType::fromString($this->contentType);
     }
 }

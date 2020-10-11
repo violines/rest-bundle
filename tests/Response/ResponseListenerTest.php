@@ -18,9 +18,8 @@ use TerryApiBundle\Response\ResponseListener;
 use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\Negotiation\ContentNegotiator;
-use TerryApiBundle\Serialize\Format;
+use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
-use TerryApiBundle\Serialize\TypeMapper;
 use TerryApiBundle\Tests\Stubs\Gum;
 use TerryApiBundle\Tests\Stubs\Ok;
 
@@ -77,7 +76,7 @@ class ResponseListenerTest extends TestCase
 
         $httpApiReader = new HttpApiReader(new AnnotationReader());
 
-        $serializer = new Serializer($this->eventDispatcher, $this->serializer, new TypeMapper(self::SERIALIZE_FORMATS));
+        $serializer = new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(self::SERIALIZE_FORMATS));
 
         $this->listener = new ResponseListener(
             $httpApiReader,
@@ -95,7 +94,7 @@ class ResponseListenerTest extends TestCase
         \Phake::when($this->serializer)->serialize($controllerResult, 'json', [])->thenReturn($expected);
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $controllerResult,
-            Format::fromString(self::SERIALIZE_FORMAT_DEFAULT)
+            'json'
         ));
 
         $viewEvent = new ViewEvent(

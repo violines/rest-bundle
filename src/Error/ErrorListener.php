@@ -53,16 +53,16 @@ final class ErrorListener
     private function createResponse(Request $request, ErrorInterface $exception): Response
     {
         $acceptHeader = AcceptHeader::fromString((string) $request->headers->get(AcceptHeader::NAME, ''));
-        $acceptHeaderFormat = $acceptHeader->toFormat($this->contentNegotiator);
+        $preferredMimeType = $this->contentNegotiator->negotiate($acceptHeader);
 
         $object = $exception->getContent();
 
         $this->httpApiReader->read(get_class($object));
 
         return $this->responseBuilder
-            ->setContent($this->serializer->serialize($object, $acceptHeaderFormat))
+            ->setContent($this->serializer->serialize($object, $preferredMimeType))
             ->setStatus($exception->getStatusCode())
-            ->setContentType(ContentTypeHeader::fromString($acceptHeaderFormat->toString()))
+            ->setContentType(ContentTypeHeader::fromString($preferredMimeType->toString()))
             ->getResponse();
     }
 }

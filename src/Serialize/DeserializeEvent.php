@@ -8,10 +8,10 @@ final class DeserializeEvent
 {
     public const NAME = 'terry_api.event.deserialize';
     private string $data;
-    private Format $format;
+    private string $format;
     private array $context = [];
 
-    public function __construct(string $data, Format $format)
+    public function __construct(string $data, string $format)
     {
         $this->data = $data;
         $this->format = $format;
@@ -24,7 +24,7 @@ final class DeserializeEvent
 
     public function getFormat(): string
     {
-        return $this->format->toString();
+        return $this->format;
     }
 
     public function getContext(): array

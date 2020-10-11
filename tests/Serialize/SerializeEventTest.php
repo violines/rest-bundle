@@ -13,7 +13,7 @@ class SerializeEventTest extends TestCase
     public function testShouldCreateEvent()
     {
         $data = [];
-        $format = Format::fromString('application/json');
+        $format = 'json';
         $context = ['firstKey' => 'firstVal', 'secondkey' => 'secondVal'];
 
         $serializeContextEvent = new SerializeEvent($data, $format);
@@ -22,7 +22,7 @@ class SerializeEventTest extends TestCase
         $serializeContextEvent->mergeToContext(['secondkey' => 'secondVal']);
 
         $this->assertEquals($data, $serializeContextEvent->getData());
-        $this->assertEquals($format->toString(), $serializeContextEvent->getFormat());
+        $this->assertEquals($format, $serializeContextEvent->getFormat());
         $this->assertEquals($context, $serializeContextEvent->getContext());
     }
 }

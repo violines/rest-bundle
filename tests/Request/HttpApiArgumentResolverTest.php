@@ -19,9 +19,8 @@ use TerryApiBundle\HttpApi\HttpApi;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\Request\HttpApiArgumentResolver;
 use TerryApiBundle\Serialize\DeserializeEvent;
-use TerryApiBundle\Serialize\Format;
+use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
-use TerryApiBundle\Serialize\TypeMapper;
 use TerryApiBundle\Tests\Stubs\Candy;
 
 class HttpApiArgumentResolverTest extends TestCase
@@ -87,7 +86,7 @@ class HttpApiArgumentResolverTest extends TestCase
 
         $this->resolver = new HttpApiArgumentResolver(
             $this->httpApiReader,
-            new Serializer($this->eventDispatcher, $this->serializer, new TypeMapper(self::SERIALIZE_FORMATS)),
+            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(self::SERIALIZE_FORMATS)),
             $this->validator
         );
     }
@@ -173,7 +172,7 @@ class HttpApiArgumentResolverTest extends TestCase
         \Phake::when($this->serializer)->deserialize->thenReturn($expected);
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
             $content,
-            Format::fromString('application/json')
+            'json'
         ));
 
         $violationList = new ConstraintViolationList();
@@ -210,7 +209,7 @@ class HttpApiArgumentResolverTest extends TestCase
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
             $content,
-            Format::fromString('application/json')
+            'json'
         ));
 
         $result = $this->resolver->resolve($this->request, $this->argument);
