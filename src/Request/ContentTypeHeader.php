@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Request;
 
-use TerryApiBundle\Serialize\Format;
+use TerryApiBundle\Negotiation\MimeType;
 
 final class ContentTypeHeader
 {
@@ -21,8 +21,8 @@ final class ContentTypeHeader
         return new self($contentType);
     }
 
-    public function toFormat(): Format
+    public function toMimeType(): MimeType
     {
-        return Format::fromString($this->contentType);
+        return MimeType::fromString($this->contentType);
     }
 }

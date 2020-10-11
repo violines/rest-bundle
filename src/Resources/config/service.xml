@@ -39,13 +39,13 @@
                 <argument type="service" id="terry_api.serialize.serializer" />
                 <argument type="service" id="validator" />
             </service>
+            <service id="terry_api.serialize.format_mapper" class="TerryApiBundle\Serialize\FormatMapper">
+                <argument /> <!-- serializeFormats -->
+            </service>
             <service id="terry_api.serialize.serializer" class="TerryApiBundle\Serialize\Serializer">
                 <argument type="service" id="event_dispatcher" />
                 <argument type="service" id="serializer" />
                 <argument type="service" id="terry_api.serialize.type_mapper" />
-            </service>
-            <service id="terry_api.serialize.type_mapper" class="TerryApiBundle\Serialize\TypeMapper">
-                <argument /> <!-- serializeFormats -->
             </service>
         </services>
 </container>

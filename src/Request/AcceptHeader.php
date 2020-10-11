@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Request;
 
-use TerryApiBundle\Negotiation\ContentNegotiator;
-use TerryApiBundle\Negotiation\Negotiatable;
-use TerryApiBundle\Serialize\Format;
-
-final class AcceptHeader implements Negotiatable
+final class AcceptHeader
 {
     public const NAME = 'Accept';
     private string $accept;
@@ -23,18 +19,8 @@ final class AcceptHeader implements Negotiatable
         return new self($accept);
     }
 
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getValue(): string
+    public function toString(): string
     {
         return $this->accept;
-    }
-
-    public function toFormat(ContentNegotiator $negotiator): Format
-    {
-        return $negotiator->negotiate($this);
     }
 }

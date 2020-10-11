@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TerryApiBundle\Negotiation;
 
 use TerryApiBundle\Error\RequestHeaderException;
-use TerryApiBundle\Serialize\Format;
+use TerryApiBundle\Request\AcceptHeader;
 
 final class ContentNegotiator
 {
@@ -29,12 +29,12 @@ final class ContentNegotiator
         }
     }
 
-    public function negotiate(Negotiatable $header): Format
+    public function negotiate(AcceptHeader $header): MimeType
     {
         $headerFormats = explode(
             ',',
             strtr(
-                preg_replace("@[ 　]@u", '', $header->getValue()),
+                preg_replace("@[ 　]@u", '', $header->toString()),
                 $this->defaults
             )
         );
@@ -57,9 +57,9 @@ final class ContentNegotiator
         $firstResultFormat = current($resultFormats);
 
         if (false === $firstResultFormat) {
-            throw RequestHeaderException::valueNotAllowed($header->getValue(), $header->getName());
+            throw RequestHeaderException::valueNotAllowed(AcceptHeader::NAME, $header->toString());
         }
 
-        return Format::fromString($firstResultFormat);
+        return MimeType::fromString($firstResultFormat);
     }
 }

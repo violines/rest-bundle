@@ -19,9 +19,8 @@ use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\Negotiation\ContentNegotiator;
-use TerryApiBundle\Serialize\Format;
+use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
-use TerryApiBundle\Serialize\TypeMapper;
 use TerryApiBundle\Tests\Error\ErrorException;
 use TerryApiBundle\Tests\Stubs\Error;
 use TerryApiBundle\Tests\Stubs\Gum;
@@ -82,7 +81,7 @@ class ErrorListenerTest extends TestCase
             new HttpApiReader(new AnnotationReader()),
             new ContentNegotiator(self::SERIALIZE_FORMATS, self::SERIALIZE_FORMAT_DEFAULT),
             new ResponseBuilder(),
-            new Serializer($this->eventDispatcher, $this->serializer, new TypeMapper(self::SERIALIZE_FORMATS))
+            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(self::SERIALIZE_FORMATS))
         );
     }
 
@@ -94,7 +93,7 @@ class ErrorListenerTest extends TestCase
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
             $exception->getContent(),
-            Format::fromString(self::SERIALIZE_FORMAT_DEFAULT)
+            'json'
         ));
 
         \Phake::when($this->serializer)

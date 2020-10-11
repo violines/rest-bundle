@@ -21,6 +21,6 @@ class TerryApiExtension extends Extension
 
         $container->getDefinition('terry_api.negotiation.content_negotiator')->replaceArgument(0, $processedConfigs['serialize']['formats']);
         $container->getDefinition('terry_api.negotiation.content_negotiator')->replaceArgument(1, $processedConfigs['serialize']['format_default']);
-        $container->getDefinition('terry_api.serialize.type_mapper')->replaceArgument(0, $processedConfigs['serialize']['formats']);
+        $container->getDefinition('terry_api.serialize.format_mapper')->replaceArgument(0, $processedConfigs['serialize']['formats']);
     }
 }

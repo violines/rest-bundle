@@ -48,12 +48,12 @@ final class ValidationExceptionListener
     private function createResponse(Request $request, ValidationException $exception): Response
     {
         $acceptHeader = AcceptHeader::fromString((string) $request->headers->get(AcceptHeader::NAME, ''));
-        $acceptHeaderFormat = $acceptHeader->toFormat($this->contentNegotiator);
+        $preferredMimeType = $this->contentNegotiator->negotiate($acceptHeader);
 
         return $this->responseBuilder
-            ->setContent($this->serializer->serialize($exception->getViolationList(), $acceptHeaderFormat))
+            ->setContent($this->serializer->serialize($exception->getViolationList(), $preferredMimeType))
             ->setStatus($exception->getHttpStatusCode())
-            ->setContentType(ContentTypeHeader::fromString($acceptHeaderFormat->toString()))
+            ->setContentType(ContentTypeHeader::fromString($preferredMimeType->toString()))
             ->getResponse();
     }
 }

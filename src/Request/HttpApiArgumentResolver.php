@@ -62,7 +62,7 @@ final class HttpApiArgumentResolver implements ArgumentValueResolverInterface
         $type = $argument->isVariadic() ? $className . '[]' : $className;
 
         /** @var object[] $deserialized */
-        $deserialized = $this->serializer->deserialize($content, $type, $contentType->toFormat());
+        $deserialized = $this->serializer->deserialize($content, $type, $contentType->toMimeType());
 
         $violations = $this->validator->validate($deserialized);
 

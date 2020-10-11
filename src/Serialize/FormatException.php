@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Serialize;
 
-use TerryApiBundle\Serialize\Format;
+use TerryApiBundle\Negotiation\MimeType;
 
 final class FormatException extends \RuntimeException implements \Throwable
 {
@@ -13,8 +13,8 @@ final class FormatException extends \RuntimeException implements \Throwable
         $this->message = $message;
     }
 
-    public static function notConfigured(Format $format)
+    public static function notConfigured(MimeType $mimeType)
     {
-        return new self(sprintf('Format %s was not configured. Check bundle configuration under serialize > formats', $format->toString()));
+        return new self(sprintf('MimeType %s was not configured for any Format. Check bundle configuration under serialize > formats', $mimeType->toString()));
     }
 }

@@ -77,11 +77,11 @@ final class ResponseListener
     private function createResponse($data, Request $request): Response
     {
         $acceptHeader = AcceptHeader::fromString((string) $request->headers->get(AcceptHeader::NAME, ''));
-        $acceptHeaderFormat = $acceptHeader->toFormat($this->contentNegotiator);
+        $preferredMimeType = $this->contentNegotiator->negotiate($acceptHeader);
 
         return $this->responseBuilder
-            ->setContent($this->serializer->serialize($data, $acceptHeaderFormat))
-            ->setContentType(ContentTypeHeader::fromString($acceptHeaderFormat->toString()))
+            ->setContent($this->serializer->serialize($data, $preferredMimeType))
+            ->setContentType(ContentTypeHeader::fromString($preferredMimeType->toString()))
             ->getResponse();
     }
 }
