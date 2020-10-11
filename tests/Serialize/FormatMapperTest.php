@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Negotiation\MimeType;
 use TerryApiBundle\Serialize\FormatException;
 use TerryApiBundle\Serialize\FormatMapper;
+use TerryApiBundle\Tests\Stubs\MimeTypes;
 
 class FormatMapperTest extends TestCase
 {
@@ -27,20 +28,20 @@ class FormatMapperTest extends TestCase
             [
                 [
                     'json' => [
-                        'application/json'
+                        MimeTypes::APPLICATION_JSON
                     ]
                 ],
-                'application/json',
+                MimeTypes::APPLICATION_JSON,
                 'json'
             ],
             [
                 [
                     'xml' => [
-                        'application/xml',
+                        MimeTypes::APPLICATION_XML,
                         'application/atom+xml'
                     ]
                 ],
-                'application/xml',
+                MimeTypes::APPLICATION_XML,
                 'xml'
             ]
         ];
@@ -64,14 +65,14 @@ class FormatMapperTest extends TestCase
             [
                 [
                     'json' => [
-                        'application/json'
+                        MimeTypes::APPLICATION_JSON
                     ]
                 ],
-                'application/xml'
+                MimeTypes::APPLICATION_XML
             ],
             [
                 [],
-                'application/xml'
+                MimeTypes::APPLICATION_XML
             ]
         ];
     }
