@@ -41,9 +41,7 @@ final class ResponseListener
             return;
         }
 
-        $viewEvent->setResponse(
-            $this->createResponse($controllerResult, $viewEvent->getRequest())
-        );
+        $viewEvent->setResponse($this->createResponse($controllerResult, $viewEvent->getRequest()));
     }
 
     /**

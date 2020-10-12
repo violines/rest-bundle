@@ -57,9 +57,7 @@ class ErrorListenerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
         \Phake::initAnnotations($this);
-        \Phake::when($this->request)->getLocale->thenReturn('en_GB');
 
         $this->request->headers = new HeaderBag([
             'Accept' => 'application/pdf, application/json, application/xml',

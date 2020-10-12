@@ -29,6 +29,6 @@ class ValidationExceptionTest extends TestCase
     {
         $exception = ValidationException::fromViolationList(new ConstraintViolationList());
 
-        $this->assertEquals(400, $exception->getHttpStatusCode());
+        $this->assertEquals(400, $exception->getStatusCode());
     }
 }

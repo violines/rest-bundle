@@ -69,9 +69,7 @@ class HttpApiArgumentResolverTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
         \Phake::initAnnotations($this);
-        \Phake::when($this->request)->getLocale->thenReturn('en_GB');
 
         $this->request->headers = new HeaderBag([
             'Content-Type' => 'application/json'

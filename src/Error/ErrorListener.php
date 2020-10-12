@@ -41,12 +41,7 @@ final class ErrorListener
             return;
         }
 
-        $response = $this->createResponse(
-            $event->getRequest(),
-            $exception
-        );
-
-        $event->setResponse($response);
+        $event->setResponse($this->createResponse($event->getRequest(), $exception));
     }
 
 
