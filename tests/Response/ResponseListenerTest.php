@@ -55,24 +55,18 @@ class ResponseListenerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
         \Phake::initAnnotations($this);
-        \Phake::when($this->request)->getLocale->thenReturn('en_GB');
 
         $this->request->headers = new HeaderBag([
             'Accept' => 'application/pdf, application/json, application/xml',
             'Content-Type' => 'application/json'
         ]);
 
-        $httpApiReader = new HttpApiReader(new AnnotationReader());
-
-        $serializer = new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS));
-
         $this->listener = new ResponseListener(
-            $httpApiReader,
+            new HttpApiReader(new AnnotationReader()),
             new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
             new ResponseBuilder(),
-            $serializer
+            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS))
         );
     }
 
@@ -82,10 +76,7 @@ class ResponseListenerTest extends TestCase
     public function testShouldPassControllerResultToSerializer($controllerResult, string $expected)
     {
         \Phake::when($this->serializer)->serialize($controllerResult, 'json', [])->thenReturn($expected);
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
-            $controllerResult,
-            'json'
-        ));
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent($controllerResult, 'json'));
 
         $viewEvent = new ViewEvent(
             $this->httpKernel,

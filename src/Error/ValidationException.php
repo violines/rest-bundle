@@ -26,7 +26,7 @@ final class ValidationException extends \RuntimeException implements \Throwable
         return $this->violationList;
     }
 
-    public function getHttpStatusCode(): int
+    public function getStatusCode(): int
     {
         return Response::HTTP_BAD_REQUEST;
     }

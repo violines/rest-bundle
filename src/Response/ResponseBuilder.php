@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ResponseBuilder
 {
-    private const PROBLEM = 'problem+';
     private string $content = '';
     private int $status = Response::HTTP_OK;
     private ?ContentTypeHeader $contentType = null;
@@ -49,33 +48,10 @@ final class ResponseBuilder
 
         if (null !== $this->contentType) {
             $headers[ContentTypeHeader::NAME] = 400 <= $this->status && 500 > $this->status
-                ? $this->withProblem($this->contentType->toMimeType()->toString())
-                : $this->contentType->toMimeType()->toString();
+                ? $this->contentType->toStringWithProblem()
+                : $this->contentType->toString();
         }
 
         return $headers;
-    }
-
-    private function withProblem(string $contentType): string
-    {
-        $problemContentType = '';
-
-        $parts = explode('/', $contentType);
-
-        $limit = count($parts) - 1;
-
-        for ($i = $limit; $i >= 0; $i--) {
-            if ($i !== $limit) {
-                $problemContentType = '/' . $problemContentType;
-            }
-
-            $problemContentType = $parts[$i] . $problemContentType;
-
-            if ($i === $limit) {
-                $problemContentType = self::PROBLEM . $problemContentType;
-            }
-        }
-
-        return $problemContentType;
     }
 }

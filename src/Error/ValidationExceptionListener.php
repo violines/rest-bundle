@@ -37,12 +37,7 @@ final class ValidationExceptionListener
             return;
         }
 
-        $response = $this->createResponse(
-            $event->getRequest(),
-            $exception
-        );
-
-        $event->setResponse($response);
+        $event->setResponse($this->createResponse($event->getRequest(), $exception));
     }
 
     private function createResponse(Request $request, ValidationException $exception): Response
@@ -52,7 +47,7 @@ final class ValidationExceptionListener
 
         return $this->responseBuilder
             ->setContent($this->serializer->serialize($exception->getViolationList(), $preferredMimeType))
-            ->setStatus($exception->getHttpStatusCode())
+            ->setStatus($exception->getStatusCode())
             ->setContentType(ContentTypeHeader::fromString($preferredMimeType->toString()))
             ->getResponse();
     }

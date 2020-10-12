@@ -21,6 +21,11 @@ final class ContentTypeHeader
         return new self($contentType);
     }
 
+    public function toString(): string
+    {
+        return $this->contentType;
+    }
+    
     public function toMimeType(): MimeType
     {
         return MimeType::fromString($this->contentType);

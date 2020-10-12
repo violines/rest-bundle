@@ -43,17 +43,13 @@ final class ContentNegotiator
         foreach ($headerFormats as $format) {
             $splited = explode(';', $format);
             $key = $splited[1] ?? 'q=1.0';
-            if (
-                in_array($splited[0], $this->availables)
-                && !array_key_exists($key, $resultFormats)
-            ) {
+            if (in_array($splited[0], $this->availables) && !array_key_exists($key, $resultFormats)) {
                 $resultFormats[$key] = $splited[0];
             }
         }
 
         krsort($resultFormats);
 
-        /** string $_result */
         $firstResultFormat = current($resultFormats);
 
         if (false === $firstResultFormat) {

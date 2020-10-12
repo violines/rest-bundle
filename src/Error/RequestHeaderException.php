@@ -19,16 +19,12 @@ final class RequestHeaderException extends \RuntimeException implements \Throwab
 
     public static function expected(string $key): self
     {
-        return new self(
-            sprintf('The Header: %s is expected.', $key)
-        );
+        return new self(sprintf('The Header: %s is expected.', $key));
     }
 
     public static function valueNotAllowed(string $key, string $value): self
     {
-        return new self(
-            sprintf('Value: %s of Header: %s is not allowed.', $value, $key)
-        );
+        return new self(sprintf('Value: %s of Header: %s is not allowed.', $value, $key));
     }
 
     public function getContent(): Error

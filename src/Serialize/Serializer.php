@@ -29,10 +29,7 @@ final class Serializer
         $format = $this->formatMapper->byMimeType($mimeType);
 
         /** @var SerializeEvent $serializeEvent */
-        $serializeEvent = $this->eventDispatcher->dispatch(
-            new SerializeEvent($data, $format),
-            SerializeEvent::NAME
-        );
+        $serializeEvent = $this->eventDispatcher->dispatch(new SerializeEvent($data, $format), SerializeEvent::NAME);
 
         return $this->serializer->serialize($data, $format, $serializeEvent->getContext());
     }
@@ -45,10 +42,7 @@ final class Serializer
         $format = $this->formatMapper->byMimeType($mimeType);
 
         /** @var DeserializeEvent $deserializeEvent */
-        $deserializeEvent = $this->eventDispatcher->dispatch(
-            new DeserializeEvent($data, $format),
-            DeserializeEvent::NAME
-        );
+        $deserializeEvent = $this->eventDispatcher->dispatch(new DeserializeEvent($data, $format), DeserializeEvent::NAME);
 
         return $this->serializer->deserialize($data, $type, $format, $deserializeEvent->getContext());
     }
