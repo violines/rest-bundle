@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Negotiation;
 
-use TerryApiBundle\Error\RequestHeaderException;
 use TerryApiBundle\Request\AcceptHeader;
 
 final class ContentNegotiator
 {
     private const DEFAULT_KEYS = ['*' , '*/*', 'application/*'];
     private array $availables = [];
+    /** @var array<string,string> $defaults*/
     private array $defaults = [];
 
     /**
-     * @param array<string, array<string>> $serializeformats
+     * @param array<string,array<string>> $serializeformats
      */
     public function __construct(array $serializeformats, string $defaultFormat)
     {
@@ -31,7 +31,7 @@ final class ContentNegotiator
 
     public function negotiate(AcceptHeader $header): MimeType
     {
-        $headerFormats = explode(
+        $headerMimeTypes = explode(
             ',',
             strtr(
                 preg_replace("@[ 　]@u", '', $header->toString()),
@@ -39,23 +39,17 @@ final class ContentNegotiator
             )
         );
 
-        $resultFormats = [];
-        foreach ($headerFormats as $format) {
-            $splited = explode(';', $format);
+        $resultMimeTypes = [];
+        foreach ($headerMimeTypes as $mimeType) {
+            $splited = explode(';', $mimeType);
             $key = $splited[1] ?? 'q=1.0';
-            if (in_array($splited[0], $this->availables) && !array_key_exists($key, $resultFormats)) {
-                $resultFormats[$key] = $splited[0];
+            if (in_array($splited[0], $this->availables) && !array_key_exists($key, $resultMimeTypes)) {
+                $resultMimeTypes[$key] = $splited[0];
             }
         }
 
-        krsort($resultFormats);
+        krsort($resultMimeTypes);
 
-        $firstResultFormat = current($resultFormats);
-
-        if (false === $firstResultFormat) {
-            throw RequestHeaderException::valueNotAllowed(AcceptHeader::NAME, $header->toString());
-        }
-
-        return MimeType::fromString($firstResultFormat);
+        return MimeType::fromString(current($resultMimeTypes) ?: $this->defaults['*']);
     }
 }
