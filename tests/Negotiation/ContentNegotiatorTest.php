@@ -9,6 +9,7 @@ use TerryApiBundle\Error\RequestHeaderException;
 use TerryApiBundle\Negotiation\ContentNegotiator;
 use TerryApiBundle\Request\AcceptHeader;
 use TerryApiBundle\Tests\Stubs\Config;
+use TerryApiBundle\Tests\Stubs\MimeTypes;
 
 class ContentNegotiatorTest extends TestCase
 {
@@ -24,7 +25,7 @@ class ContentNegotiatorTest extends TestCase
     /**
      * @dataProvider providerShouldNegotiateContentType
      */
-    public function testShouldNegotiateContentType(string $accept, string $expected)
+    public function testShouldNegotiateContentType(string $expected, string $accept)
     {
         $accept = AcceptHeader::fromString($accept);
 
@@ -34,61 +35,16 @@ class ContentNegotiatorTest extends TestCase
     public function providerShouldNegotiateContentType()
     {
         return [
-            [
-                'application/pdf, application/xml',
-                'application/xml'
-            ],
-            [
-                '*/*',
-                'application/json'
-            ],
-            [
-                'random/random, */*',
-                'application/json'
-            ],
-            [
-                'application/*, random/random',
-                'application/json'
-            ],
-            [
-                'application/xml;q=0.9,application/json;q=1.0,*/*;q=0.8',
-                'application/json'
-            ],
-            [
-                'application/xml;q=0.9,application/json,*/*;q=0.8',
-                'application/json',
-            ],
-            [
-                'application/xml;q=0.9,text/html;q=0.8,*/*',
-                'application/json',
-            ]
-        ];
-    }
-
-    /**
-     * @dataProvider providerThrowExceptionIfContentNotNegotiatable
-     */
-    public function testShouldThrowExceptionIfContentNotNegotiatable(string $accept)
-    {
-        $this->expectException(RequestHeaderException::class);
-
-        $accept = AcceptHeader::fromString($accept);
-
-        $this->contentNegotiator->negotiate($accept);
-    }
-
-    public function providerThrowExceptionIfContentNotNegotiatable()
-    {
-        return [
-            [
-                ''
-            ],
-            [
-                'randomstringButNotEmpty'
-            ],
-            [
-                'application/random'
-            ]
+            [MimeTypes::APPLICATION_XML, 'application/pdf, application/xml'],
+            [MimeTypes::APPLICATION_JSON, '*/*'],
+            [MimeTypes::APPLICATION_JSON, 'random/random, */*'],
+            [MimeTypes::APPLICATION_JSON, 'application/*, random/random'],
+            [MimeTypes::APPLICATION_JSON, 'application/xml;q=0.9,application/json;q=1.0,*/*;q=0.8'],
+            [MimeTypes::APPLICATION_JSON, 'application/xml;q=0.9,application/json,*/*;q=0.8'],
+            [MimeTypes::APPLICATION_JSON, 'application/xml;q=0.9,text/html;q=0.8,*/*'],
+            [MimeTypes::APPLICATION_JSON, ''],
+            [MimeTypes::APPLICATION_JSON, 'randomstringButNotEmpty'],
+            [MimeTypes::APPLICATION_JSON, 'application/random']
         ];
     }
 }
