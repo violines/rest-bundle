@@ -31,10 +31,12 @@ final class ContentNegotiator
 
     public function negotiate(AcceptHeader $header): MimeType
     {
+        $headerString = '' !== $header->toString() ? $header->toString() : $this->defaults['*'];
+
         $headerMimeTypes = explode(
             ',',
             strtr(
-                preg_replace("@[ 　]@u", '', $header->toString()),
+                preg_replace("@[ 　]@u", '', $headerString),
                 $this->defaults
             )
         );
@@ -48,8 +50,12 @@ final class ContentNegotiator
             }
         }
 
+        if ([] === $resultMimeTypes) {
+            throw NotNegotiableException::notConfigured($header->toString());
+        }
+
         krsort($resultMimeTypes);
 
-        return MimeType::fromString(current($resultMimeTypes) ?: $this->defaults['*']);
+        return MimeType::fromString(current($resultMimeTypes));
     }
 }
