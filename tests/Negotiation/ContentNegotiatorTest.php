@@ -7,6 +7,7 @@ namespace TerryApiBundle\Tests\Negotiation;
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Error\RequestHeaderException;
 use TerryApiBundle\Negotiation\ContentNegotiator;
+use TerryApiBundle\Negotiation\NotNegotiableException;
 use TerryApiBundle\Request\AcceptHeader;
 use TerryApiBundle\Tests\Stubs\Config;
 use TerryApiBundle\Tests\Stubs\MimeTypes;
@@ -43,8 +44,26 @@ class ContentNegotiatorTest extends TestCase
             [MimeTypes::APPLICATION_JSON, 'application/xml;q=0.9,application/json,*/*;q=0.8'],
             [MimeTypes::APPLICATION_JSON, 'application/xml;q=0.9,text/html;q=0.8,*/*'],
             [MimeTypes::APPLICATION_JSON, ''],
-            [MimeTypes::APPLICATION_JSON, 'randomstringButNotEmpty'],
-            [MimeTypes::APPLICATION_JSON, 'application/random']
+        ];
+    }
+
+    /**
+     * @dataProvider providerShouldThrowNotNegotiatableException
+     */
+    public function testShouldThrowNotNegotiatableException(string $accept)
+    {
+        $this->expectException(NotNegotiableException::class);
+
+        $accept = AcceptHeader::fromString($accept);
+
+        $this->contentNegotiator->negotiate($accept)->toString();
+    }
+
+    public function providerShouldThrowNotNegotiatableException()
+    {
+        return [
+            ['randomstringButNotEmpty'],
+            ['application/random']
         ];
     }
 }

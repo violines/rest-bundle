@@ -53,7 +53,7 @@ class NotAcceptableListenerTest extends TestCase
 
         $response = $exceptionEvent->getResponse();
 
-        $this->assertEquals('MimeType text/html was not configured for any Format. Check bundle configuration under serialize > formats', $response->getContent());
+        $this->assertEquals('MimeType text/html was not configured for any Format. Check configuration under serialize > formats', $response->getContent());
         $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
     }
 
