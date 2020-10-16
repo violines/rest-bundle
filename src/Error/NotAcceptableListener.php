@@ -6,6 +6,7 @@ namespace TerryApiBundle\Error;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use TerryApiBundle\Negotiation\NotNegotiableException;
 use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Serialize\FormatException;
 
@@ -22,7 +23,7 @@ final class NotAcceptableListener
     {
         $exception = $event->getThrowable();
 
-        if (!$exception instanceof FormatException) {
+        if (!$exception instanceof NotNegotiableException && !$exception instanceof FormatException) {
             return;
         }
 

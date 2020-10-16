@@ -12,6 +12,10 @@
                 <argument type="service" id="terry_api.response.response_builder" />
                 <argument type="service" id="terry_api.serialize.serializer" />
             </service>
+            <service id="terry_api.error.not_acceptable_listener" class="TerryApiBundle\Error\NotAcceptableListener">
+                <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
+                <argument type="service" id="terry_api.response.response_builder" />
+            </service>
             <service id="terry_api.error.validation_exception_listener" class="TerryApiBundle\Error\ValidationExceptionListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
                 <argument type="service" id="terry_api.negotiation.content_negotiator" />
