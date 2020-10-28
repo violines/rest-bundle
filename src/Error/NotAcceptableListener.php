@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Error;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+use Psr\Log\NullLogger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use TerryApiBundle\Negotiation\NotNegotiableException;
@@ -12,10 +15,12 @@ use TerryApiBundle\Serialize\FormatException;
 
 final class NotAcceptableListener
 {
+    private LoggerInterface $logger;
     private ResponseBuilder $responseBuilder;
 
-    public function __construct(ResponseBuilder $responseBuilder)
+    public function __construct(ResponseBuilder $responseBuilder, ?LoggerInterface $logger)
     {
+        $this->logger = $logger ?? new NullLogger();
         $this->responseBuilder = $responseBuilder;
     }
 
@@ -27,15 +32,13 @@ final class NotAcceptableListener
             return;
         }
 
-        $event->setResponse($this->createResponse($exception));
+        $this->logger->log(LogLevel::DEBUG, $exception->getMessage());
+
+        $event->setResponse($this->createResponse());
     }
 
-
-    private function createResponse(\Exception $exception): Response
+    private function createResponse(): Response
     {
-        return $this->responseBuilder
-            ->setContent($exception->getMessage())
-            ->setStatus(Response::HTTP_NOT_ACCEPTABLE)
-            ->getResponse();
+        return $this->responseBuilder->setStatus(Response::HTTP_NOT_ACCEPTABLE)->getResponse();
     }
 }

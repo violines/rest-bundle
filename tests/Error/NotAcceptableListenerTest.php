@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TerryApiBundle\Tests\Error;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -20,12 +21,21 @@ class NotAcceptableListenerTest extends TestCase
 {
     /**
      * @Mock
+     *
+     * @var LoggerInterface
+     */
+    private \Phake_IMock $logger;
+
+    /**
+     * @Mock
+     *
      * @var HttpKernel
      */
     private \Phake_IMock $httpKernel;
 
     /**
      * @Mock
+     *
      * @var HttpFoundationRequest
      */
     private \Phake_IMock $request;
@@ -36,45 +46,49 @@ class NotAcceptableListenerTest extends TestCase
     {
         parent::setUp();
         \Phake::initAnnotations($this);
-        $this->notAcceptableListener = new NotAcceptableListener(new ResponseBuilder());
+        $this->notAcceptableListener = new NotAcceptableListener(new ResponseBuilder(), $this->logger);
     }
 
-    public function testShouldReturnNotAcceptableByFormatException()
+    /**
+     * @dataProvider providerShouldReturnNotAcceptableAndLog
+     */
+    public function testShouldReturnNotAcceptableAndLog(\Exception $givenException, string $expectedLogMessage)
     {
-        $exception = FormatException::notConfigured(MimeType::fromString('text/html'));
-
-        $exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
-            HttpKernelInterface::MASTER_REQUEST,
-            $exception
-        );
+        $exceptionEvent = new ExceptionEvent($this->httpKernel, $this->request, HttpKernelInterface::MASTER_REQUEST, $givenException);
 
         $this->notAcceptableListener->handle($exceptionEvent);
 
-        $response = $exceptionEvent->getResponse();
+        \Phake::verify($this->logger)->log(\Phake::capture($logLevel), \Phake::capture($logMessage));
+        $this->assertEquals('debug', $logLevel);
+        $this->assertEquals($expectedLogMessage, $logMessage);
 
-        $this->assertEquals('MimeType text/html was not configured for any Format. Check configuration under serialize > formats', $response->getContent());
+        $response = $exceptionEvent->getResponse();
         $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
     }
 
-    public function testShouldReturnNotAcceptableByNotNegotiableException()
+    public function providerShouldReturnNotAcceptableAndLog()
     {
-        $exception = NotNegotiableException::notConfigured('application/atom+xml');
+        return [
+            [
+                FormatException::notConfigured(MimeType::fromString('text/html')),
+                'MimeType text/html was not configured for any Format. Check configuration under serialize > formats',
+            ],
+            [
+                NotNegotiableException::notConfigured('application/atom+xml'),
+                'None of the accepted mimetypes application/atom+xml are configured for any Format. Check configuration under serialize > formats',
+            ],
+        ];
+    }
 
-        $exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
-            HttpKernelInterface::MASTER_REQUEST,
-            $exception
-        );
+    public function testShouldReturnNotAcceptableAndNullLog()
+    {
+        $exceptionEvent = new ExceptionEvent($this->httpKernel, $this->request, HttpKernelInterface::MASTER_REQUEST, NotNegotiableException::notConfigured('application/atom+xml'));
 
-        $this->notAcceptableListener->handle($exceptionEvent);
+        $listenerWithNullLogger = new NotAcceptableListener(new ResponseBuilder(), null);
 
-        $response = $exceptionEvent->getResponse();
+        $listenerWithNullLogger->handle($exceptionEvent);
 
-        $this->assertEquals('None of the accepted mimetypes application/atom+xml are configured for any Format. Check configuration under serialize > formats', $response->getContent());
-        $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $exceptionEvent->getResponse()->getStatusCode());
     }
 
     public function testShouldSkipListener()
