@@ -32,7 +32,7 @@ final class NotAcceptableListener
             return;
         }
 
-        $this->logger->log(LogLevel::INFO, $exception->getMessage());
+        $this->logger->log(LogLevel::DEBUG, $exception->getMessage());
 
         $event->setResponse($this->createResponse());
     }

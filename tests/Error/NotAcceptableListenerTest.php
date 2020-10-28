@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Tests\Error;
 
-use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -21,18 +21,21 @@ class NotAcceptableListenerTest extends TestCase
 {
     /**
      * @Mock
+     *
      * @var LoggerInterface
      */
     private \Phake_IMock $logger;
 
     /**
      * @Mock
+     *
      * @var HttpKernel
      */
     private \Phake_IMock $httpKernel;
 
     /**
      * @Mock
+     *
      * @var HttpFoundationRequest
      */
     private \Phake_IMock $request;
@@ -56,9 +59,9 @@ class NotAcceptableListenerTest extends TestCase
         $this->notAcceptableListener->handle($exceptionEvent);
 
         \Phake::verify($this->logger)->log(\Phake::capture($logLevel), \Phake::capture($logMessage));
-        $this->assertEquals('info', $logLevel);
+        $this->assertEquals('debug', $logLevel);
         $this->assertEquals($expectedLogMessage, $logMessage);
-        
+
         $response = $exceptionEvent->getResponse();
         $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
     }
@@ -68,12 +71,12 @@ class NotAcceptableListenerTest extends TestCase
         return [
             [
                 FormatException::notConfigured(MimeType::fromString('text/html')),
-                'MimeType text/html was not configured for any Format. Check configuration under serialize > formats'
+                'MimeType text/html was not configured for any Format. Check configuration under serialize > formats',
             ],
             [
                 NotNegotiableException::notConfigured('application/atom+xml'),
-                'None of the accepted mimetypes application/atom+xml are configured for any Format. Check configuration under serialize > formats'
-            ]
+                'None of the accepted mimetypes application/atom+xml are configured for any Format. Check configuration under serialize > formats',
+            ],
         ];
     }
 
