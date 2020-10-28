@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Tests\Error;
 
+use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,12 @@ use TerryApiBundle\Serialize\FormatException;
 
 class NotAcceptableListenerTest extends TestCase
 {
+    /**
+     * @Mock
+     * @var LoggerInterface
+     */
+    private \Phake_IMock $logger;
+
     /**
      * @Mock
      * @var HttpKernel
@@ -36,7 +43,7 @@ class NotAcceptableListenerTest extends TestCase
     {
         parent::setUp();
         \Phake::initAnnotations($this);
-        $this->notAcceptableListener = new NotAcceptableListener(new ResponseBuilder());
+        $this->notAcceptableListener = new NotAcceptableListener(new ResponseBuilder(), $this->logger);
     }
 
     public function testShouldReturnNotAcceptableByFormatException()
@@ -52,9 +59,11 @@ class NotAcceptableListenerTest extends TestCase
 
         $this->notAcceptableListener->handle($exceptionEvent);
 
+        \Phake::verify($this->logger)->log(\Phake::capture($logLevel), \Phake::capture($exceptionMessage));
+        $this->assertEquals('info', $logLevel);
+        $this->assertEquals('MimeType text/html was not configured for any Format. Check configuration under serialize > formats', $exceptionMessage);
+        
         $response = $exceptionEvent->getResponse();
-
-        $this->assertEquals('MimeType text/html was not configured for any Format. Check configuration under serialize > formats', $response->getContent());
         $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
     }
 
@@ -71,9 +80,11 @@ class NotAcceptableListenerTest extends TestCase
 
         $this->notAcceptableListener->handle($exceptionEvent);
 
+        \Phake::verify($this->logger)->log(\Phake::capture($logLevel), \Phake::capture($exceptionMessage));
+        $this->assertEquals('info', $logLevel);
+        $this->assertEquals('None of the accepted mimetypes application/atom+xml are configured for any Format. Check configuration under serialize > formats', $exceptionMessage);
+        
         $response = $exceptionEvent->getResponse();
-
-        $this->assertEquals('None of the accepted mimetypes application/atom+xml are configured for any Format. Check configuration under serialize > formats', $response->getContent());
         $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
     }
 
