@@ -46,46 +46,35 @@ class NotAcceptableListenerTest extends TestCase
         $this->notAcceptableListener = new NotAcceptableListener(new ResponseBuilder(), $this->logger);
     }
 
-    public function testShouldReturnNotAcceptableByFormatException()
+    /**
+     * @dataProvider providerShouldReturnNotAcceptableAndLog
+     */
+    public function testShouldReturnNotAcceptableAndLog(\Exception $givenException, string $expectedLogMessage)
     {
-        $exception = FormatException::notConfigured(MimeType::fromString('text/html'));
-
-        $exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
-            HttpKernelInterface::MASTER_REQUEST,
-            $exception
-        );
+        $exceptionEvent = new ExceptionEvent($this->httpKernel, $this->request, HttpKernelInterface::MASTER_REQUEST, $givenException);
 
         $this->notAcceptableListener->handle($exceptionEvent);
 
-        \Phake::verify($this->logger)->log(\Phake::capture($logLevel), \Phake::capture($exceptionMessage));
+        \Phake::verify($this->logger)->log(\Phake::capture($logLevel), \Phake::capture($logMessage));
         $this->assertEquals('info', $logLevel);
-        $this->assertEquals('MimeType text/html was not configured for any Format. Check configuration under serialize > formats', $exceptionMessage);
+        $this->assertEquals($expectedLogMessage, $logMessage);
         
         $response = $exceptionEvent->getResponse();
         $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
     }
 
-    public function testShouldReturnNotAcceptableByNotNegotiableException()
+    public function providerShouldReturnNotAcceptableAndLog()
     {
-        $exception = NotNegotiableException::notConfigured('application/atom+xml');
-
-        $exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
-            HttpKernelInterface::MASTER_REQUEST,
-            $exception
-        );
-
-        $this->notAcceptableListener->handle($exceptionEvent);
-
-        \Phake::verify($this->logger)->log(\Phake::capture($logLevel), \Phake::capture($exceptionMessage));
-        $this->assertEquals('info', $logLevel);
-        $this->assertEquals('None of the accepted mimetypes application/atom+xml are configured for any Format. Check configuration under serialize > formats', $exceptionMessage);
-        
-        $response = $exceptionEvent->getResponse();
-        $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
+        return [
+            [
+                FormatException::notConfigured(MimeType::fromString('text/html')),
+                'MimeType text/html was not configured for any Format. Check configuration under serialize > formats'
+            ],
+            [
+                NotNegotiableException::notConfigured('application/atom+xml'),
+                'None of the accepted mimetypes application/atom+xml are configured for any Format. Check configuration under serialize > formats'
+            ]
+        ];
     }
 
     public function testShouldSkipListener()
