@@ -80,6 +80,17 @@ class NotAcceptableListenerTest extends TestCase
         ];
     }
 
+    public function testShouldReturnNotAcceptableAndNullLog()
+    {
+        $exceptionEvent = new ExceptionEvent($this->httpKernel, $this->request, HttpKernelInterface::MASTER_REQUEST, NotNegotiableException::notConfigured('application/atom+xml'));
+
+        $listenerWithNullLogger = new NotAcceptableListener(new ResponseBuilder(), null);
+
+        $listenerWithNullLogger->handle($exceptionEvent);
+
+        $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $exceptionEvent->getResponse()->getStatusCode());
+    }
+
     public function testShouldSkipListener()
     {
         $exception = new \Exception();
