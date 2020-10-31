@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Tests\Request;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Error\ValidationException;
-use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\HttpApi\HttpApi;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\Request\HttpApiArgumentResolver;
@@ -23,11 +25,10 @@ use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
 use TerryApiBundle\Tests\Stubs\Candy;
 use TerryApiBundle\Tests\Stubs\Config;
+use TerryApiBundle\Tests\Stubs\Gum;
 
 class HttpApiArgumentResolverTest extends TestCase
 {
-    private const TEST_STRING = 'this is a string';
-
     /**
      * @Mock
      * @var EventDispatcherInterface
@@ -39,12 +40,6 @@ class HttpApiArgumentResolverTest extends TestCase
      * @var SerializerInterface
      */
     private \Phake_IMock $serializer;
-
-    /**
-     * @Mock
-     * @var HttpApiReader
-     */
-    private \Phake_IMock $httpApiReader;
 
     /**
      * @Mock
@@ -71,12 +66,11 @@ class HttpApiArgumentResolverTest extends TestCase
         parent::setUp();
         \Phake::initAnnotations($this);
 
-        $this->request->headers = new HeaderBag([
-            'Content-Type' => 'application/json'
-        ]);
+        $this->request->headers = new HeaderBag(['Content-Type' => 'application/json']);
 
         $this->resolver = new HttpApiArgumentResolver(
-            $this->httpApiReader,
+            new HttpApiReader(new AnnotationReader()),
+            new ObjectNormalizer(),
             new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS)),
             $this->validator
         );
@@ -85,17 +79,9 @@ class HttpApiArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerSupportsShouldReturnFalse
      */
-    public function testSupportsShouldReturnFalse(
-        ?string $type,
-        ?string $content,
-        bool $throwException
-    ) {
+    public function testSupportsShouldReturnFalse(?string $type)
+    {
         \Phake::when($this->argument)->getType->thenReturn($type);
-        \Phake::when($this->request)->getContent->thenReturn($content);
-
-        if ($throwException) {
-            \Phake::when($this->httpApiReader)->read->thenThrow(AnnotationNotFoundException::httpApi('test'));
-        }
 
         $supports = $this->resolver->supports($this->request, $this->argument);
 
@@ -105,20 +91,15 @@ class HttpApiArgumentResolverTest extends TestCase
     public function providerSupportsShouldReturnFalse(): array
     {
         return [
-            ['string', self::TEST_STRING, true],
-            [null, self::TEST_STRING, true],
-            [Candy::class, null, true],
-            [Candy::class, self::TEST_STRING, true],
+            ['string'],
+            [null],
+            [Gum::class],
         ];
     }
 
     public function testSupportsShouldReturnTrue()
     {
-        \Phake::when($this->request)->getContent->thenReturn(self::TEST_STRING);
         \Phake::when($this->argument)->getType->thenReturn(Candy::class);
-
-        $structAnnotation = new HttpApi();
-        \Phake::when($this->httpApiReader)->read->thenReturn($structAnnotation);
 
         $supports = $this->resolver->supports($this->request, $this->argument);
 
@@ -128,9 +109,8 @@ class HttpApiArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerResolveShouldThrowException
      */
-    public function testResolveShouldThrowException(?string $content, ?string $type)
+    public function testResolveShouldThrowException(?string $type)
     {
-        \Phake::when($this->request)->getContent->thenReturn($content);
         \Phake::when($this->argument)->getType->thenReturn($type);
 
         $this->expectException(\LogicException::class);
@@ -142,9 +122,8 @@ class HttpApiArgumentResolverTest extends TestCase
     public function providerResolveShouldThrowException(): array
     {
         return [
-            [self::TEST_STRING, 'string'],
-            [self::TEST_STRING, null],
-            [null, Candy::class],
+            ['string'],
+            [null]
         ];
     }
 
@@ -161,10 +140,7 @@ class HttpApiArgumentResolverTest extends TestCase
         \Phake::when($this->argument)->isVariadic->thenReturn(is_array($expected));
         \Phake::when($this->argument)->getType->thenReturn(Candy::class);
         \Phake::when($this->serializer)->deserialize->thenReturn($expected);
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
-            $content,
-            'json'
-        ));
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent($content, 'json'));
 
         $violationList = new ConstraintViolationList();
         $violationList->add(new ConstraintViolation('test', null, [], null, null, null));
@@ -189,32 +165,47 @@ class HttpApiArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerResolveShouldYield
      */
-    public function testResolveShouldYield($expected)
+    public function testResolveShouldYield($expected, $type, $data, $requestInfoSource)
     {
-        $content = json_encode($expected);
+        \Phake::when($this->argument)->getType->thenReturn($type);
 
-        \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isVariadic->thenReturn(is_array($expected));
-        \Phake::when($this->argument)->getType->thenReturn(Candy::class);
-        \Phake::when($this->serializer)->deserialize->thenReturn($expected);
+        if (HttpApi::QUERY_STRING === $requestInfoSource) {
+            $this->request->query = new InputBag($data);
+        }
+
+        if (HttpApi::BODY === $requestInfoSource) {
+            \Phake::when($this->request)->getContent->thenReturn($data);
+            \Phake::when($this->argument)->isVariadic->thenReturn(is_array($expected));
+            \Phake::when($this->serializer)->deserialize->thenReturn($expected);
+            \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent($data, 'json'));
+        }
+        
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent(
-            $content,
-            'json'
-        ));
-
+        
         $result = $this->resolver->resolve($this->request, $this->argument);
-        $this->assertInstanceOf(Candy::class, $result->current());
+        $this->assertInstanceOf($type, $result->current());
     }
 
     public function providerResolveShouldYield(): array
     {
         return [
             [
+                new QueryString(),
+                QueryString::class,
+                ['filterPriceFrom' => 1000, 'filterPriceTo' => 9000],
+                HttpApi::QUERY_STRING
+            ],
+            [
                 [new Candy(), new Candy()],
+                Candy::class,
+                '[{"weight":100,"name":"Bonbon","tastesGood":true},{"weight":100,"name":"Bonbon","tastesGood":true}]',
+                HttpApi::BODY
             ],
             [
                 new Candy(),
+                Candy::class,
+                '{"weight":100,"name":"Bonbon","tastesGood":true}',
+                HttpApi::BODY
             ]
         ];
     }
