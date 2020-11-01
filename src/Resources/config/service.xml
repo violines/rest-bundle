@@ -41,6 +41,7 @@
             <service id="terry_api.request.http_api_argument_resolver" class="TerryApiBundle\Request\HttpApiArgumentResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
                 <argument type="service" id="terry_api.http_api.http_api_reader" />
+                <argument type="service" id="serializer.normalizer.object" />
                 <argument type="service" id="terry_api.serialize.serializer" />
                 <argument type="service" id="validator" />
             </service>
