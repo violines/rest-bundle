@@ -7,22 +7,22 @@ namespace TerryApiBundle\Request;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\HttpApi\AnnotationNotFoundException;
-use TerryApiBundle\Error\ValidationException;
+use TerryApiBundle\HttpApi\HttpApi;
 use TerryApiBundle\Serialize\Serializer;
+use TerryApiBundle\Validation\Validator;
 
-final class HttpApiArgumentResolver implements ArgumentValueResolverInterface
+final class BodyArgumentResolver implements ArgumentValueResolverInterface
 {
     private HttpApiReader $httpApiReader;
     private Serializer $serializer;
-    private ValidatorInterface $validator;
+    private Validator $validator;
 
     public function __construct(
         HttpApiReader $httpApiReader,
         Serializer $serializer,
-        ValidatorInterface $validator
+        Validator $validator
     ) {
         $this->httpApiReader = $httpApiReader;
         $this->serializer = $serializer;
@@ -32,18 +32,17 @@ final class HttpApiArgumentResolver implements ArgumentValueResolverInterface
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         $className = $argument->getType();
-
-        if (null === $className || !class_exists($className) || !is_string($request->getContent())) {
+        if (null === $className || !class_exists($className)) {
             return false;
         }
 
         try {
-            $this->httpApiReader->read($className);
+            $httpApi = $this->httpApiReader->read($className);
         } catch (AnnotationNotFoundException $e) {
             return false;
         }
 
-        return true;
+        return HttpApi::BODY === $httpApi->requestInfoSource;
     }
 
     /**
@@ -52,23 +51,18 @@ final class HttpApiArgumentResolver implements ArgumentValueResolverInterface
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
         $className = $argument->getType();
-        $content = $request->getContent();
+        if (null === $className || !class_exists($className)) {
+            throw SupportsException::covered();
+        }
+
+        $content = (string)$request->getContent();
+        $type = $argument->isVariadic() ? $className . '[]' : $className;
         $contentType = ContentTypeHeader::fromString((string)$request->headers->get(ContentTypeHeader::NAME, ''));
 
-        if (null === $className || !class_exists($className) || !is_string($content)) {
-            throw new \LogicException('This should have been covered by self::supports(). This is a bug, please report.');
-        }
-
-        $type = $argument->isVariadic() ? $className . '[]' : $className;
-
-        /** @var object[] $deserialized */
+        /** @var object[]|object $deserialized */
         $deserialized = $this->serializer->deserialize($content, $type, $contentType->toMimeType());
 
-        $violations = $this->validator->validate($deserialized);
-
-        if (0 < count($violations)) {
-            throw ValidationException::fromViolationList($violations);
-        }
+        $this->validator->validate($deserialized);
 
         $result = !is_array($deserialized) ? [$deserialized] : $deserialized;
 

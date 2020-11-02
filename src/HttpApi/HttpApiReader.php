@@ -20,13 +20,11 @@ class HttpApiReader
      */
     public function read(string $className): HttpApi
     {
-        /** @var object[] $annotations */
-        $annotations = $this->reader->getClassAnnotations(new \ReflectionClass($className));
+        /** @var HttpApi|null $annotation */
+        $annotation = $this->reader->getClassAnnotation(new \ReflectionClass($className), HttpApi::class);
 
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof HttpApi) {
-                return $annotation;
-            }
+        if (null !== $annotation) {
+            return $annotation;
         }
 
         throw AnnotationNotFoundException::httpApi($className);
