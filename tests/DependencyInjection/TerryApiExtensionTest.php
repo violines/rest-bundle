@@ -44,6 +44,9 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
                 'terry_api.request.body_argument_resolver'
             ],
             [
+                'terry_api.request.query_string_argument_resolver'
+            ],
+            [
                 'terry_api.serialize.format_mapper'
             ],
             [
