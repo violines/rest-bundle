@@ -47,7 +47,7 @@
             <service id="terry_api.request.query_string_argument_resolver" class="TerryApiBundle\Request\QueryStringArgumentResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
                 <argument type="service" id="terry_api.http_api.http_api_reader" />
-                <argument type="service" id="terry_api.serialize.serializer" />
+                <argument type="service" id="serializer" />
                 <argument type="service" id="terry_api.validation.validator" />
             </service>
             <service id="terry_api.serialize.format_mapper" class="TerryApiBundle\Serialize\FormatMapper">
