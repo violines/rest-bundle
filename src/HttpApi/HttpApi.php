@@ -16,5 +16,5 @@ final class HttpApi
     /**
      * @Enum({TerryApiBundle\HttpApi\HttpApi::BODY, TerryApiBundle\HttpApi\HttpApi::QUERY_STRING})
      */
-    public $requestInfoSource = self::BODY;
+    public string $requestInfoSource = self::BODY;
 }

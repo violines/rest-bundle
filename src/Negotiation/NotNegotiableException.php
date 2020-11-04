@@ -11,7 +11,7 @@ final class NotNegotiableException extends \RuntimeException implements \Throwab
         $this->message = $message;
     }
 
-    public static function notConfigured(string $mimeTypes)
+    public static function notConfigured(string $mimeTypes): self
     {
         return new self(sprintf('None of the accepted mimetypes %s are configured for any Format. Check configuration under serialize > formats', $mimeTypes));
     }

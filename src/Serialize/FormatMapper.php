@@ -11,7 +11,7 @@ final class FormatMapper
     /**
      * @var array<string, string>
      */
-    private array $map;
+    private array $map = [];
 
     /**
      * @param array<string, array<string>> $serializeformats
