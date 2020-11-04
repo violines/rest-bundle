@@ -38,7 +38,7 @@
         "test": [
             "phpcs",
             "phpunit",
-            "psalm",
+            "psalm --show-info=true",
             "infection"
         ]
     }
