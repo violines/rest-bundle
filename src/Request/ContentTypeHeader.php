@@ -25,7 +25,7 @@ final class ContentTypeHeader
     {
         return $this->contentType;
     }
-    
+
     public function toMimeType(): MimeType
     {
         return MimeType::fromString($this->contentType);

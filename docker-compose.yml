@@ -1,11 +1,12 @@
 version: "3.1"
 services:
-    php-fpm:
-      build: docker/php-fpm
-      container_name: terry_api
+    php:
+      build: docker
+      image: terry-api-php
+      container_name: terry-api
       working_dir: /app
       env_file:
-        - ./docker/php-fpm/.env
+        - ./docker/.env
       volumes:
         - ./vendor:/app/vendor:cached
         - .:/app

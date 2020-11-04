@@ -1,4 +1,4 @@
-/docker/php-fpm/.env
+/docker/.env
 /vendor/
 .vscode
 .phpunit.result.cache
