@@ -49,6 +49,7 @@ class FormatMapperTest extends TestCase
 
     /**
      * @dataProvider providerShouldThrowException
+     * @coversNothing
      */
     public function testShouldThrowException(array $serializeFormats, $givenMimeType)
     {
