@@ -12,7 +12,7 @@ class ConfigurationTest extends TestCase
     /**
      * @dataProvider providerShouldCheckConfiguration
      */
-    public function testShouldCheckConfiguration(array $input, array $expected)
+    public function testShouldCheckConfiguration(array $input, array $expected): void
     {
         $configuration = new Configuration();
 
@@ -25,7 +25,7 @@ class ConfigurationTest extends TestCase
         $this->assertEquals($expected, $finalized);
     }
 
-    public function providerShouldCheckConfiguration()
+    public function providerShouldCheckConfiguration(): array
     {
         return [
             [

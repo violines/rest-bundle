@@ -14,11 +14,11 @@ final class FormatMapper
     private array $map = [];
 
     /**
-     * @param array<string, array<string>> $serializeformats
+     * @param array<string, array<string>> $serializeFormats
      */
-    public function __construct(array $serializeformats)
+    public function __construct(array $serializeFormats)
     {
-        foreach ($serializeformats as $format => $mimeTypes) {
+        foreach ($serializeFormats as $format => $mimeTypes) {
             foreach ($mimeTypes as $mimeType) {
                 $this->map[$mimeType] = $format;
             }

@@ -9,7 +9,7 @@ use TerryApiBundle\Serialize\DeserializeEvent;
 
 class DeserializeEventTest extends TestCase
 {
-    public function testShouldCreateEvent()
+    public function testShouldCreateEvent(): void
     {
         $data = '{"weight": 100, "name": "Bonbon", "tastesGood": true}';
         $format = 'json';

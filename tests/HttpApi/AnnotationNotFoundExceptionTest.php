@@ -9,7 +9,7 @@ use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 
 class AnnotationNotFoundExceptionTest extends TestCase
 {
-    public function testShouldStruct()
+    public function testShouldStruct(): void
     {
         $exception = AnnotationNotFoundException::httpApi('Classname');
 

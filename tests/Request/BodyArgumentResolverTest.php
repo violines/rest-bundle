@@ -74,7 +74,7 @@ class BodyArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerSupportsShouldReturnFalse
      */
-    public function testSupportsShouldReturnFalse($type)
+    public function testSupportsShouldReturnFalse($type): void
     {
         \Phake::when($this->argument)->getType->thenReturn($type);
 
@@ -90,7 +90,7 @@ class BodyArgumentResolverTest extends TestCase
         ];
     }
 
-    public function testSupportsShouldReturnTrue()
+    public function testSupportsShouldReturnTrue(): void
     {
         \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
 
@@ -100,7 +100,7 @@ class BodyArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerResolveShouldThrowException
      */
-    public function testResolveShouldThrowException(?string $type)
+    public function testResolveShouldThrowException(?string $type): void
     {
         $this->expectException(SupportsException::class);
 
@@ -121,7 +121,7 @@ class BodyArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerResolveShouldThrowValidationException
      */
-    public function testResolveShouldThrowValidationException($expected)
+    public function testResolveShouldThrowValidationException($expected): void
     {
         $this->expectException(ValidationException::class);
 
@@ -156,7 +156,7 @@ class BodyArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerResolveShouldYield
      */
-    public function testResolveShouldYield($expected)
+    public function testResolveShouldYield($expected): void
     {
         $content = json_encode($expected);
 
@@ -186,7 +186,7 @@ class BodyArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerResolveShouldTypeCastEmpty
      */
-    public function testResolveShouldTypeCastEmpty($content)
+    public function testResolveShouldTypeCastEmpty($content): void
     {
         \Phake::when($this->request)->getContent->thenReturn($content);
         \Phake::when($this->argument)->isVariadic->thenReturn(false);

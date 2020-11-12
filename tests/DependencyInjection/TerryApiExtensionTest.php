@@ -12,14 +12,14 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
     /**
      * @dataProvider providerForEntryPointServiceIds
      */
-    public function testShouldCheckDefaultServiceLoad(string $serviceId)
+    public function testShouldCheckDefaultServiceLoad(string $serviceId): void
     {
         $this->load();
 
         $this->assertContainerBuilderHasService($serviceId);
     }
 
-    public function providerForEntryPointServiceIds()
+    public function providerForEntryPointServiceIds(): array
     {
         return [
             [
@@ -61,7 +61,7 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
     /**
      * @dataProvider providerShouldCheckServiceConfigurationArguments
      */
-    public function testShouldCheckServiceConfigurationArguments(string $serviceId, int $argNo, $expected)
+    public function testShouldCheckServiceConfigurationArguments(string $serviceId, int $argNo, $expected): void
     {
         $this->load();
 

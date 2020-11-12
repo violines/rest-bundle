@@ -72,7 +72,7 @@ class ErrorListenerTest extends TestCase
         );
     }
 
-    public function testShouldCreateCandyStructStubJson()
+    public function testShouldCreateCandyStructStubJson(): void
     {
         $expectedJson = '{"message": "Test 400"}';
         $exception = new ErrorException();
@@ -102,7 +102,7 @@ class ErrorListenerTest extends TestCase
         $this->assertEquals($exception->getStatusCode(), $response->getStatusCode());
     }
 
-    public function testShouldSkipListener()
+    public function testShouldSkipListener(): void
     {
         $exception = new \Exception();
 
@@ -118,7 +118,7 @@ class ErrorListenerTest extends TestCase
         $this->assertNull($exceptionEvent->getResponse());
     }
 
-    public function testShouldThrowAnnotationNotFoundException()
+    public function testShouldThrowAnnotationNotFoundException(): void
     {
         $this->expectException(AnnotationNotFoundException::class);
 

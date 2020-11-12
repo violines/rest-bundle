@@ -67,7 +67,7 @@ class ValidationExceptionListenerTest extends TestCase
         );
     }
 
-    public function testShouldCreateViolationResponse()
+    public function testShouldCreateViolationResponse(): void
     {
         $exception = ValidationException::fromViolationList(new ConstraintViolationList());
         \Phake::when($this->serializer)->serialize->thenReturn('string');
@@ -90,7 +90,7 @@ class ValidationExceptionListenerTest extends TestCase
         $this->assertInstanceOf(ConstraintViolationListInterface::class, $data);
     }
 
-    public function testShouldSkipListener()
+    public function testShouldSkipListener(): void
     {
         $exception = new \Exception();
 

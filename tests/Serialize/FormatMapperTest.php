@@ -15,14 +15,14 @@ class FormatMapperTest extends TestCase
     /**
      * @dataProvider providerShouldMapMimeTypeToFormat
      */
-    public function testShouldMapMimeTypeToFormat(array $serializeFormats, $givenMimeType, $expectedFormat)
+    public function testShouldMapMimeTypeToFormat(array $serializeFormats, $givenMimeType, $expectedFormat): void
     {
         $formatMapper = new FormatMapper($serializeFormats);
 
         $this->assertEquals($expectedFormat, $formatMapper->byMimeType(MimeType::fromString($givenMimeType)));
     }
 
-    public function providerShouldMapMimeTypeToFormat()
+    public function providerShouldMapMimeTypeToFormat(): array
     {
         return [
             [
@@ -50,7 +50,7 @@ class FormatMapperTest extends TestCase
     /**
      * @dataProvider providerShouldThrowException
      */
-    public function testShouldThrowException(array $serializeFormats, $givenMimeType)
+    public function testShouldThrowException(array $serializeFormats, $givenMimeType): void
     {
         $this->expectException(FormatException::class);
 
@@ -59,7 +59,7 @@ class FormatMapperTest extends TestCase
         $formatMapper->byMimeType(MimeType::fromString($givenMimeType));
     }
 
-    public function providerShouldThrowException()
+    public function providerShouldThrowException(): array
     {
         return [
             [

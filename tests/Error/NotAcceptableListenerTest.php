@@ -52,7 +52,7 @@ class NotAcceptableListenerTest extends TestCase
     /**
      * @dataProvider providerShouldReturnNotAcceptableAndLog
      */
-    public function testShouldReturnNotAcceptableAndLog(\Exception $givenException, string $expectedLogMessage)
+    public function testShouldReturnNotAcceptableAndLog(\Exception $givenException, string $expectedLogMessage): void
     {
         $exceptionEvent = new ExceptionEvent($this->httpKernel, $this->request, HttpKernelInterface::MASTER_REQUEST, $givenException);
 
@@ -66,7 +66,7 @@ class NotAcceptableListenerTest extends TestCase
         $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
     }
 
-    public function providerShouldReturnNotAcceptableAndLog()
+    public function providerShouldReturnNotAcceptableAndLog(): array
     {
         return [
             [
@@ -80,7 +80,7 @@ class NotAcceptableListenerTest extends TestCase
         ];
     }
 
-    public function testShouldReturnNotAcceptableAndNullLog()
+    public function testShouldReturnNotAcceptableAndNullLog(): void
     {
         $exceptionEvent = new ExceptionEvent($this->httpKernel, $this->request, HttpKernelInterface::MASTER_REQUEST, NotNegotiableException::notConfigured('application/atom+xml'));
 
@@ -91,7 +91,7 @@ class NotAcceptableListenerTest extends TestCase
         $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $exceptionEvent->getResponse()->getStatusCode());
     }
 
-    public function testShouldSkipListener()
+    public function testShouldSkipListener(): void
     {
         $exception = new \Exception();
 

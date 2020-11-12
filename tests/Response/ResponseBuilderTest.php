@@ -35,12 +35,12 @@ class ResponseBuilderTest extends TestCase
         ]);
     }
 
-    public function testShouldReturnEmptyResponse()
+    public function testShouldReturnEmptyResponse(): void
     {
         $this->assertInstanceOf(Response::class, $this->responseBuilder->getResponse());
     }
 
-    public function testShouldReturnResponseWithContent()
+    public function testShouldReturnResponseWithContent(): void
     {
         $content = '{"text": "i am a string"}';
 
@@ -53,14 +53,14 @@ class ResponseBuilderTest extends TestCase
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    public function testShouldResponseWithCustomStatusCode()
+    public function testShouldResponseWithCustomStatusCode(): void
     {
         $response = $this->responseBuilder->setStatus(Response::HTTP_CREATED)->getResponse();
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
     }
 
-    public function testShouldResponseWithHeaders()
+    public function testShouldResponseWithHeaders(): void
     {
         $response = $this->responseBuilder
             ->setContentType(ContentTypeHeader::fromString('application/json'))
@@ -71,8 +71,10 @@ class ResponseBuilderTest extends TestCase
 
     /**
      * @dataProvider providerShouldResponseWithProblem
+     *
+     * @return void
      */
-    public function testShouldResponseWithProblem(int $status, string $expected)
+    public function testShouldResponseWithProblem(int $status, string $expected): void
     {
         $response = $this->responseBuilder
             ->setContentType(ContentTypeHeader::fromString('application/json'))
@@ -82,7 +84,12 @@ class ResponseBuilderTest extends TestCase
         $this->assertEquals($expected, $response->headers->get('content-type'));
     }
 
-    public function providerShouldResponseWithProblem()
+    /**
+     * @return (int|string)[][]
+     *
+     * @psalm-return array{0: array{0: int, 1: string}, 1: array{0: int, 1: string}, 2: array{0: int, 1: string}}
+     */
+    public function providerShouldResponseWithProblem(): array
     {
         return [
             [400, 'application/problem+json'],
