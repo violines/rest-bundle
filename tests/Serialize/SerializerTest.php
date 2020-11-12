@@ -35,7 +35,7 @@ class SerializerTest extends TestCase
         \Phake::initAnnotations($this);
     }
 
-    public function testShouldSerialize()
+    public function testShouldSerialize(): void
     {
         $data = [];
         $context = ['ctxkey' => 'ctxValue'];
@@ -53,7 +53,7 @@ class SerializerTest extends TestCase
         \Phake::verify($this->serializerInterface)->serialize($data, 'json', $context);
     }
 
-    public function testShouldDeserialize()
+    public function testShouldDeserialize(): void
     {
         $data = '{"weight": 100, "name": "Bonbon", "tastesGood": true}';
         $type = 'TerryApiBundle\Tests\Stubs\CandyStructStub';

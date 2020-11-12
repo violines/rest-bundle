@@ -9,7 +9,7 @@ use TerryApiBundle\HttpApi\HttpApi;
 /**
  * @HttpApi(requestInfoSource=HttpApi::QUERY_STRING)
  */
-class QueryStringHttpApi
+final class QueryStringHttpApi
 {
     public $priceFrom;
     public $priceTo;

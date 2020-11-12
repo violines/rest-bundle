@@ -56,7 +56,7 @@ class QueryStringArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerSupportsShouldReturnFalse
      */
-    public function testSupportsShouldReturnFalse($type)
+    public function testSupportsShouldReturnFalse($type): void
     {
         \Phake::when($this->argument)->getType->thenReturn($type);
 
@@ -72,7 +72,7 @@ class QueryStringArgumentResolverTest extends TestCase
         ];
     }
 
-    public function testSupportsShouldReturnTrue()
+    public function testSupportsShouldReturnTrue(): void
     {
         \Phake::when($this->argument)->getType->thenReturn(QueryStringHttpApi::class);
 
@@ -82,7 +82,7 @@ class QueryStringArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerResolveShouldThrowException
      */
-    public function testResolveShouldThrowException(?string $type)
+    public function testResolveShouldThrowException(?string $type): void
     {
         $this->expectException(SupportsException::class);
 

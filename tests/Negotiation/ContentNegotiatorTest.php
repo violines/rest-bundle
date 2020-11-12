@@ -26,14 +26,14 @@ class ContentNegotiatorTest extends TestCase
     /**
      * @dataProvider providerShouldNegotiateContentType
      */
-    public function testShouldNegotiateContentType(string $expected, string $accept)
+    public function testShouldNegotiateContentType(string $expected, string $accept): void
     {
         $accept = AcceptHeader::fromString($accept);
 
         $this->assertEquals($expected, $this->contentNegotiator->negotiate($accept)->toString());
     }
 
-    public function providerShouldNegotiateContentType()
+    public function providerShouldNegotiateContentType(): array
     {
         return [
             [MimeTypes::APPLICATION_XML, 'application/pdf, application/xml'],
@@ -50,7 +50,7 @@ class ContentNegotiatorTest extends TestCase
     /**
      * @dataProvider providerShouldThrowNotNegotiatableException
      */
-    public function testShouldThrowNotNegotiatableException(string $accept)
+    public function testShouldThrowNotNegotiatableException(string $accept): void
     {
         $this->expectException(NotNegotiableException::class);
 
@@ -59,7 +59,7 @@ class ContentNegotiatorTest extends TestCase
         $this->contentNegotiator->negotiate($accept)->toString();
     }
 
-    public function providerShouldThrowNotNegotiatableException()
+    public function providerShouldThrowNotNegotiatableException(): array
     {
         return [
             ['randomstringButNotEmpty'],

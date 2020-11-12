@@ -9,7 +9,7 @@ use TerryApiBundle\Error\Error;
 
 class ErrorTest extends TestCase
 {
-    public function testShouldCreateHTTPError()
+    public function testShouldCreateHttpError(): void
     {
         $message = 'This is the reason for an error.';
 

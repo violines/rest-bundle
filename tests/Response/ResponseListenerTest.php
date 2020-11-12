@@ -73,7 +73,7 @@ class ResponseListenerTest extends TestCase
     /**
      * @dataProvider providerShouldPassControllerResultToSerializer
      */
-    public function testShouldPassControllerResultToSerializer($controllerResult, string $expected)
+    public function testShouldPassControllerResultToSerializer($controllerResult, string $expected): void
     {
         \Phake::when($this->serializer)->serialize($controllerResult, 'json', [])->thenReturn($expected);
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent($controllerResult, 'json'));
@@ -90,7 +90,7 @@ class ResponseListenerTest extends TestCase
         $this->assertEquals($expected, $viewEvent->getResponse()->getContent());
     }
 
-    public function providerShouldPassControllerResultToSerializer()
+    public function providerShouldPassControllerResultToSerializer(): array
     {
         return [
             [[new Ok()], '[{"message": "Everything is fine."}]']
@@ -100,7 +100,7 @@ class ResponseListenerTest extends TestCase
     /**
      * @dataProvider providerShouldSkipListener
      */
-    public function testShouldSkipListener($controllerResult)
+    public function testShouldSkipListener($controllerResult): void
     {
         $viewEvent = new ViewEvent(
             $this->httpKernel,
@@ -114,7 +114,7 @@ class ResponseListenerTest extends TestCase
         $this->assertNull($viewEvent->getResponse());
     }
 
-    public function providerShouldSkipListener()
+    public function providerShouldSkipListener(): array
     {
         return [
             [null],
