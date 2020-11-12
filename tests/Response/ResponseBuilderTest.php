@@ -71,8 +71,6 @@ class ResponseBuilderTest extends TestCase
 
     /**
      * @dataProvider providerShouldResponseWithProblem
-     *
-     * @return void
      */
     public function testShouldResponseWithProblem(int $status, string $expected): void
     {
@@ -84,11 +82,6 @@ class ResponseBuilderTest extends TestCase
         $this->assertEquals($expected, $response->headers->get('content-type'));
     }
 
-    /**
-     * @return (int|string)[][]
-     *
-     * @psalm-return array{0: array{0: int, 1: string}, 1: array{0: int, 1: string}, 2: array{0: int, 1: string}}
-     */
     public function providerShouldResponseWithProblem(): array
     {
         return [

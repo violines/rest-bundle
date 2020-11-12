@@ -25,8 +25,6 @@ class ContentNegotiatorTest extends TestCase
 
     /**
      * @dataProvider providerShouldNegotiateContentType
-     *
-     * @return void
      */
     public function testShouldNegotiateContentType(string $expected, string $accept): void
     {
@@ -35,11 +33,6 @@ class ContentNegotiatorTest extends TestCase
         $this->assertEquals($expected, $this->contentNegotiator->negotiate($accept)->toString());
     }
 
-    /**
-     * @return string[][]
-     *
-     * @psalm-return array{0: array{0: string, 1: string}, 1: array{0: string, 1: string}, 2: array{0: string, 1: string}, 3: array{0: string, 1: string}, 4: array{0: string, 1: string}, 5: array{0: string, 1: string}, 6: array{0: string, 1: string}, 7: array{0: string, 1: string}}
-     */
     public function providerShouldNegotiateContentType(): array
     {
         return [
