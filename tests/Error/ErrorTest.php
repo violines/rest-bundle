@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Error\Error;
 
 /**
- * @covers TerryApiBundle\Error\Error
+ * @covers \TerryApiBundle\Error\Error
  */
 class ErrorTest extends TestCase
 {

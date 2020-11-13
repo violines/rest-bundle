@@ -11,9 +11,7 @@ use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Tests\Stubs\MimeTypes;
 
 /**
- * @covers TerryApiBundle\Serialize\FormatMapper
- * @uses TerryApiBundle\Serialize\FormatException
- * @uses TerryApiBundle\Serialize\FormatException
+ * @covers \TerryApiBundle\Serialize\FormatMapper
  */
 class FormatMapperTest extends TestCase
 {
