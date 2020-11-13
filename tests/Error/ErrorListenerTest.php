@@ -26,6 +26,16 @@ use TerryApiBundle\Tests\Stubs\Config;
 use TerryApiBundle\Tests\Stubs\Error;
 use TerryApiBundle\Tests\Stubs\Gum;
 
+/**
+ * @covers TerryApiBundle\Error\ErrorListener
+ * @uses TerryApiBundle\Response\ResponseBuilder
+ * @uses TerryApiBundle\Serialize\SerializeEvent
+ * @uses TerryApiBundle\HttpApi\AnnotationNotFoundException
+ * @uses TerryApiBundle\HttpApi\HttpApiReader
+ * @uses TerryApiBundle\Negotiation\ContentNegotiator
+ * @uses TerryApiBundle\Serialize\FormatMapper
+ * @uses TerryApiBundle\Serialize\Serializer
+ */
 class ErrorListenerTest extends TestCase
 {
     /**

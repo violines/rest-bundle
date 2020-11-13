@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace TerryApiBundle\Tests\Negotiation;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Error\RequestHeaderException;
 use TerryApiBundle\Negotiation\ContentNegotiator;
 use TerryApiBundle\Negotiation\NotNegotiableException;
 use TerryApiBundle\Request\AcceptHeader;
 use TerryApiBundle\Tests\Stubs\Config;
 use TerryApiBundle\Tests\Stubs\MimeTypes;
 
+/**
+ * @covers TerryApiBundle\Negotiation\ContentNegotiator
+ * @uses TerryApiBundle\Negotiation\NotNegotiableException
+ * @uses TerryApiBundle\Request\AcceptHeader
+ */
 class ContentNegotiatorTest extends TestCase
 {
     private ContentNegotiator $contentNegotiator;

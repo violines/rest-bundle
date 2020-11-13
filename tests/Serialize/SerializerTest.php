@@ -15,6 +15,12 @@ use TerryApiBundle\Serialize\Serializer;
 use TerryApiBundle\Tests\Stubs\Candy;
 use TerryApiBundle\Tests\Stubs\Config;
 
+/**
+ * @covers TerryApiBundle\Serialize\Serializer
+ * @uses TerryApiBundle\Serialize\DeserializeEvent
+ * @uses TerryApiBundle\Serialize\SerializeEvent
+ * @uses TerryApiBundle\Serialize\FormatMapper
+ */
 class SerializerTest extends TestCase
 {
     /**

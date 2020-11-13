@@ -7,6 +7,9 @@ namespace TerryApiBundle\Tests\Error;
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Error\ValidationException;
 
+/**
+ * @covers TerryApiBundle\Error\ValidationException
+ */
 class ValidationExceptionTest extends TestCase
 {
     public function testShouldCreateValidationException(): void

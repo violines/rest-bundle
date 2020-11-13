@@ -11,6 +11,10 @@ use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Response\ContentTypeHeader;
 
+/**
+ * @covers TerryApiBundle\Response\ResponseBuilder
+ * @uses TerryApiBundle\Response\ContentTypeHeader
+ */
 class ResponseBuilderTest extends TestCase
 {
     private ResponseBuilder $responseBuilder;

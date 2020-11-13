@@ -24,6 +24,15 @@ use TerryApiBundle\Tests\Stubs\Config;
 use TerryApiBundle\Tests\Stubs\Gum;
 use TerryApiBundle\Tests\Stubs\Ok;
 
+/**
+ * @covers TerryApiBundle\Response\ResponseListener
+ * @uses TerryApiBundle\Response\ResponseBuilder
+ * @uses TerryApiBundle\Serialize\SerializeEvent
+ * @uses TerryApiBundle\HttpApi\HttpApiReader
+ * @uses TerryApiBundle\Negotiation\ContentNegotiator
+ * @uses TerryApiBundle\Serialize\FormatMapper
+ * @uses TerryApiBundle\Serialize\Serializer
+ */
 class ResponseListenerTest extends TestCase
 {
     /**

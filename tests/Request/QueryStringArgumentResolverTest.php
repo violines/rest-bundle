@@ -18,6 +18,12 @@ use TerryApiBundle\Request\SupportsException;
 use TerryApiBundle\Tests\Serialize\SerializerMock;
 use TerryApiBundle\Validation\Validator;
 
+/**
+ * @covers TerryApiBundle\Request\QueryStringArgumentResolver
+ * @uses TerryApiBundle\HttpApi\HttpApiReader
+ * @uses TerryApiBundle\Request\SupportsException
+ * @uses TerryApiBundle\Validation\Validator
+ */
 class QueryStringArgumentResolverTest extends TestCase
 {
     /**
