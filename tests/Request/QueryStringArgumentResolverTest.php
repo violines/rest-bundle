@@ -19,10 +19,7 @@ use TerryApiBundle\Tests\Serialize\SerializerMock;
 use TerryApiBundle\Validation\Validator;
 
 /**
- * @covers TerryApiBundle\Request\QueryStringArgumentResolver
- * @uses TerryApiBundle\HttpApi\HttpApiReader
- * @uses TerryApiBundle\Request\SupportsException
- * @uses TerryApiBundle\Validation\Validator
+ * @covers \TerryApiBundle\Request\QueryStringArgumentResolver
  */
 class QueryStringArgumentResolverTest extends TestCase
 {

@@ -23,13 +23,9 @@ use TerryApiBundle\Serialize\Serializer;
 use TerryApiBundle\Tests\Stubs\Config;
 
 /**
- * @covers TerryApiBundle\Error\ValidationExceptionListener
- * @uses TerryApiBundle\Error\ValidationException
- * @uses TerryApiBundle\Serialize\SerializeEvent
- * @uses TerryApiBundle\Response\ResponseBuilder
- * @uses TerryApiBundle\Negotiation\ContentNegotiator
- * @uses TerryApiBundle\Serialize\FormatMapper
- * @uses TerryApiBundle\Serialize\Serializer
+ * @covers \TerryApiBundle\Error\ValidationExceptionListener
+ * @uses \TerryApiBundle\Error\ValidationException
+ * @uses \TerryApiBundle\Serialize\SerializeEvent
  */
 class ValidationExceptionListenerTest extends TestCase
 {

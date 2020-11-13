@@ -7,6 +7,9 @@ namespace TerryApiBundle\Tests\Serialize;
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Serialize\SerializeEvent;
 
+/**
+ * @covers \TerryApiBundle\Serialize\SerializeEvent
+ */
 class SerializeEventTest extends TestCase
 {
     public function testShouldCreateEvent(): void

@@ -7,6 +7,9 @@ namespace TerryApiBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\DependencyInjection\Configuration;
 
+/**
+ * @covers \TerryApiBundle\DependencyInjection\Configuration
+ */
 class ConfigurationTest extends TestCase
 {
     /**

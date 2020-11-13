@@ -16,10 +16,9 @@ use TerryApiBundle\Tests\Stubs\Candy;
 use TerryApiBundle\Tests\Stubs\Config;
 
 /**
- * @covers TerryApiBundle\Serialize\Serializer
- * @uses TerryApiBundle\Serialize\DeserializeEvent
- * @uses TerryApiBundle\Serialize\SerializeEvent
- * @uses TerryApiBundle\Serialize\FormatMapper
+ * @covers \TerryApiBundle\Serialize\Serializer
+ * @uses \TerryApiBundle\Serialize\DeserializeEvent
+ * @uses \TerryApiBundle\Serialize\SerializeEvent
  */
 class SerializerTest extends TestCase
 {

@@ -13,9 +13,7 @@ use TerryApiBundle\Tests\Stubs\Brownie;
 use TerryApiBundle\Tests\Stubs\Candy;
 
 /**
- * @covers TerryApiBundle\HttpApi\HttpApiReader
- * @uses TerryApiBundle\HttpApi\AnnotationNotFoundException
- * @uses TerryApiBundle\HttpApi\HttpApi
+ * @covers \TerryApiBundle\HttpApi\HttpApiReader
  */
 class HttpApiReaderTest extends TestCase
 {

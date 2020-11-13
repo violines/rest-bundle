@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Error\ValidationException;
 
 /**
- * @covers TerryApiBundle\Error\ValidationException
+ * @covers \TerryApiBundle\Error\ValidationException
  */
 class ValidationExceptionTest extends TestCase
 {

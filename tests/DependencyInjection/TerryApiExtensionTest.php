@@ -7,6 +7,9 @@ namespace TerryApiBundle\Tests\DependencyInjection;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use TerryApiBundle\DependencyInjection\TerryApiExtension;
 
+/**
+ * @covers \TerryApiBundle\DependencyInjection\TerryApiExtension
+ */
 class TerryApiExtensionTest extends AbstractExtensionTestCase
 {
     /**
@@ -70,7 +73,7 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
 
     public function providerShouldCheckServiceConfigurationArguments(): array
     {
-        return[
+        return [
             [
                 'terry_api.negotiation.content_negotiator',
                 0,

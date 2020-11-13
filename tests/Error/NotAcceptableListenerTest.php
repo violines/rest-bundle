@@ -18,11 +18,10 @@ use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Serialize\FormatException;
 
 /**
- * @covers TerryApiBundle\Error\NotAcceptableListener
- * @uses TerryApiBundle\Negotiation\MimeType
- * @uses TerryApiBundle\Negotiation\NotNegotiableException
- * @uses TerryApiBundle\Response\ResponseBuilder
- * @uses TerryApiBundle\Serialize\FormatException
+ * @covers \TerryApiBundle\Error\NotAcceptableListener
+ * @uses \TerryApiBundle\Negotiation\MimeType
+ * @uses \TerryApiBundle\Negotiation\NotNegotiableException
+ * @uses \TerryApiBundle\Serialize\FormatException
  */
 class NotAcceptableListenerTest extends TestCase
 {
