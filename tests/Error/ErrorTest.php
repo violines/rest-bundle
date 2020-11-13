@@ -7,6 +7,9 @@ namespace TerryApiBundle\Tests\Error;
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Error\Error;
 
+/**
+ * @covers TerryApiBundle\Error\Error
+ */
 class ErrorTest extends TestCase
 {
     public function testShouldCreateHttpError(): void

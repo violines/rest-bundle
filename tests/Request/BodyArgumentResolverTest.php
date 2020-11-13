@@ -24,6 +24,16 @@ use TerryApiBundle\Serialize\Serializer;
 use TerryApiBundle\Tests\Stubs\Config;
 use TerryApiBundle\Validation\Validator;
 
+/**
+ * @covers TerryApiBundle\Request\BodyArgumentResolver
+ * @uses TerryApiBundle\Error\ValidationException
+ * @uses TerryApiBundle\HttpApi\HttpApiReader
+ * @uses TerryApiBundle\Request\SupportsException
+ * @uses TerryApiBundle\Serialize\DeserializeEvent
+ * @uses TerryApiBundle\Serialize\FormatMapper
+ * @uses TerryApiBundle\Serialize\Serializer
+ * @uses TerryApiBundle\Validation\Validator
+ */
 class BodyArgumentResolverTest extends TestCase
 {
     /**
