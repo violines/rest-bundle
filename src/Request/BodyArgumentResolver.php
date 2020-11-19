@@ -57,6 +57,12 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
 
         $content = (string)$request->getContent();
         $type = $argument->isVariadic() ? $className . '[]' : $className;
+
+        if ('' === $content) {
+            yield from $argument->isVariadic() ? [] : [new $className()];
+            return;
+        }
+
         $contentType = ContentTypeHeader::fromString((string)$request->headers->get(ContentTypeHeader::NAME, ''));
 
         /** @var object[]|object $deserialized */
@@ -64,8 +70,6 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
 
         $this->validator->validate($deserialized);
 
-        $result = !is_array($deserialized) ? [$deserialized] : $deserialized;
-
-        yield from $result;
+        yield from !is_array($deserialized) ? [$deserialized] : $deserialized;;
     }
 }

@@ -9,18 +9,17 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\Request\BodyArgumentResolver;
 use TerryApiBundle\Request\SupportsException;
-use TerryApiBundle\Serialize\DeserializeEvent;
 use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
+use TerryApiBundle\Tests\Mock\Dispatcher;
+use TerryApiBundle\Tests\Mock\Serializer as MockSerializer;
 use TerryApiBundle\Tests\Stubs\Config;
 use TerryApiBundle\Validation\Validator;
 
@@ -30,18 +29,6 @@ use TerryApiBundle\Validation\Validator;
  */
 class BodyArgumentResolverTest extends TestCase
 {
-    /**
-     * @Mock
-     * @var EventDispatcherInterface
-     */
-    private \Phake_IMock $eventDispatcher;
-
-    /**
-     * @Mock
-     * @var SerializerInterface
-     */
-    private \Phake_IMock $serializerInterface;
-
     /**
      * @Mock
      * @var HttpFoundationRequest
@@ -70,7 +57,7 @@ class BodyArgumentResolverTest extends TestCase
 
         $this->resolver = new BodyArgumentResolver(
             new HttpApiReader(new AnnotationReader()),
-            new Serializer($this->eventDispatcher, $this->serializerInterface, new FormatMapper(Config::SERIALIZE_FORMATS)),
+            new Serializer(new Dispatcher(), new MockSerializer(), new FormatMapper(Config::SERIALIZE_FORMATS)),
             new Validator($this->validator)
         );
     }
@@ -134,8 +121,6 @@ class BodyArgumentResolverTest extends TestCase
         \Phake::when($this->request)->getContent->thenReturn($content);
         \Phake::when($this->argument)->isVariadic->thenReturn(is_array($expected));
         \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
-        \Phake::when($this->serializerInterface)->deserialize->thenReturn($expected);
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent($content, 'json'));
 
         $violationList = new ConstraintViolationList();
         $violationList->add(new ConstraintViolation('test', null, [], null, null, null));
@@ -167,9 +152,7 @@ class BodyArgumentResolverTest extends TestCase
         \Phake::when($this->request)->getContent->thenReturn($content);
         \Phake::when($this->argument)->isVariadic->thenReturn(is_array($expected));
         \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
-        \Phake::when($this->serializerInterface)->deserialize->thenReturn($expected);
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent($content, 'json'));
 
         $result = $this->resolver->resolve($this->request, $this->argument);
         $this->assertInstanceOf(DefaultHttpApi::class, $result->current());
@@ -188,27 +171,34 @@ class BodyArgumentResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider providerResolveShouldTypeCastEmpty
+     * @dataProvider providerResolveShouldResolveEmptyBody
      */
-    public function testResolveShouldTypeCastEmpty($content): void
+    public function testResolveShouldResolveEmptyBody($content): void
     {
         \Phake::when($this->request)->getContent->thenReturn($content);
         \Phake::when($this->argument)->isVariadic->thenReturn(false);
         \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new DeserializeEvent((string)$content, 'json'));
 
         $result = $this->resolver->resolve($this->request, $this->argument);
-        $result->current();
-
-        \Phake::verify($this->serializerInterface)->deserialize('', \Phake::ignoreRemaining());
+        $this->assertInstanceOf(DefaultHttpApi::class, $result->current());
     }
 
-    public function providerResolveShouldTypeCastEmpty(): array
+    public function providerResolveShouldResolveEmptyBody(): array
     {
         return [
             [false],
             [null],
         ];
+    }
+
+    public function testResolveShouldResolveEmptyBodyArray(): void
+    {
+        \Phake::when($this->request)->getContent->thenReturn('');
+        \Phake::when($this->argument)->isVariadic->thenReturn(true);
+        \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
+        \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
+
+        $this->assertInstanceOf(\Generator::class, $this->resolver->resolve($this->request, $this->argument));
     }
 }
