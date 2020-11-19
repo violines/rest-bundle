@@ -71,6 +71,5 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
         $this->validator->validate($deserialized);
 
         yield from !is_array($deserialized) ? [$deserialized] : $deserialized;
-        ;
     }
 }
