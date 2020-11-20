@@ -172,9 +172,9 @@ class BodyArgumentResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider providerResolveShouldResolveEmptyBody
+     * @dataProvider providerResolveShouldThrowEmptyBodyException
      */
-    public function testResolveShouldResolveEmptyBody($content): void
+    public function testResolveShouldThrowEmptyBodyException($content): void
     {
         $this->expectException(EmptyBodyException::class);
 
@@ -186,7 +186,7 @@ class BodyArgumentResolverTest extends TestCase
         $this->resolver->resolve($this->request, $this->argument)->current();
     }
 
-    public function providerResolveShouldResolveEmptyBody(): array
+    public function providerResolveShouldThrowEmptyBodyException(): array
     {
         return [
             [false],
