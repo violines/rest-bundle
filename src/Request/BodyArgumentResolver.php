@@ -59,6 +59,11 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
         $content = (string)$request->getContent();
 
         if ('' === $content) {
+            if ($argument->isNullable()) {
+                yield null;
+                return;
+            }
+
             throw EmptyBodyException::required();
         }
 
