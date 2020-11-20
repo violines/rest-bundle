@@ -47,6 +47,7 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
 
     /**
      * @return \Generator
+     * @throws EmptyBodyException when $request->getContent() is false|null|empty
      */
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
@@ -56,13 +57,12 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
         }
 
         $content = (string)$request->getContent();
-        $type = $argument->isVariadic() ? $className . '[]' : $className;
 
         if ('' === $content) {
-            yield from $argument->isVariadic() ? [] : [new $className()];
-            return;
+            throw EmptyBodyException::required();
         }
 
+        $type = $argument->isVariadic() ? $className . '[]' : $className;
         $contentType = ContentTypeHeader::fromString((string)$request->headers->get(ContentTypeHeader::NAME, ''));
 
         /** @var object[]|object $deserialized */

@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\Request\BodyArgumentResolver;
+use TerryApiBundle\Request\EmptyBodyException;
 use TerryApiBundle\Request\SupportsException;
 use TerryApiBundle\Serialize\FormatMapper;
 use TerryApiBundle\Serialize\Serializer;
@@ -175,13 +176,14 @@ class BodyArgumentResolverTest extends TestCase
      */
     public function testResolveShouldResolveEmptyBody($content): void
     {
+        $this->expectException(EmptyBodyException::class);
+
         \Phake::when($this->request)->getContent->thenReturn($content);
         \Phake::when($this->argument)->isVariadic->thenReturn(false);
         \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
 
-        $result = $this->resolver->resolve($this->request, $this->argument);
-        $this->assertInstanceOf(DefaultHttpApi::class, $result->current());
+        $this->resolver->resolve($this->request, $this->argument)->current();
     }
 
     public function providerResolveShouldResolveEmptyBody(): array
@@ -189,16 +191,7 @@ class BodyArgumentResolverTest extends TestCase
         return [
             [false],
             [null],
+            [''],
         ];
-    }
-
-    public function testResolveShouldResolveEmptyBodyArray(): void
-    {
-        \Phake::when($this->request)->getContent->thenReturn('');
-        \Phake::when($this->argument)->isVariadic->thenReturn(true);
-        \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
-        \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
-
-        $this->assertInstanceOf(\Generator::class, $this->resolver->resolve($this->request, $this->argument));
     }
 }
