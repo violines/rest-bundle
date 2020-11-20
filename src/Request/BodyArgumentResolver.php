@@ -32,7 +32,7 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         $className = $argument->getType();
-        if (null === $className || !class_exists($className)) {
+        if (null === $className || !class_exists($className) || ('' == (string)$request->getContent() && $argument->isNullable())) {
             return false;
         }
 
@@ -52,18 +52,13 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
         $className = $argument->getType();
-        if (null === $className || !class_exists($className)) {
+        $content = (string)$request->getContent();
+
+        if (null === $className || !class_exists($className) || ('' == $content && $argument->isNullable())) {
             throw SupportsException::covered();
         }
 
-        $content = (string)$request->getContent();
-
         if ('' === $content) {
-            if ($argument->isNullable()) {
-                yield null;
-                return;
-            }
-
             throw EmptyBodyException::required();
         }
 
