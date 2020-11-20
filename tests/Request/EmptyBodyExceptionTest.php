@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Error;
+namespace TerryApiBundle\Tests\Request;
 
 use PHPUnit\Framework\TestCase;
 use TerryApiBundle\Error\Error;
@@ -13,7 +13,7 @@ use TerryApiBundle\Request\EmptyBodyException;
  */
 class EmptyBodyExceptionTest extends TestCase
 {
-    public function testShouldEmptyBodyException(): void
+    public function testShouldCreateEmptyBodyException(): void
     {
         $this->assertInstanceOf(EmptyBodyException::class, EmptyBodyException::required());
     }
