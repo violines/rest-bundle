@@ -171,6 +171,15 @@ class BodyArgumentResolverTest extends TestCase
         ];
     }
 
+    public function testResolveShoulYieldNull(): void
+    {
+        \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
+        \Phake::when($this->request)->getContent->thenReturn('');
+        \Phake::when($this->argument)->isNullable->thenReturn(true);
+
+        $this->assertNull($this->resolver->resolve($this->request, $this->argument)->current());
+    }
+
     /**
      * @dataProvider providerResolveShouldThrowEmptyBodyException
      */
@@ -178,10 +187,9 @@ class BodyArgumentResolverTest extends TestCase
     {
         $this->expectException(EmptyBodyException::class);
 
-        \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isVariadic->thenReturn(false);
         \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
-        \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
+        \Phake::when($this->request)->getContent->thenReturn($content);
+        \Phake::when($this->argument)->isNullable->thenReturn(false);
 
         $this->resolver->resolve($this->request, $this->argument)->current();
     }
