@@ -66,9 +66,11 @@ class BodyArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerSupportsShouldReturnFalse
      */
-    public function testSupportsShouldReturnFalse($type): void
+    public function testSupportsShouldReturnFalse($type, $content, $isNullable): void
     {
         \Phake::when($this->argument)->getType->thenReturn($type);
+        \Phake::when($this->request)->getContent->thenReturn($content);
+        \Phake::when($this->argument)->isNullable->thenReturn($isNullable);
 
         $this->assertFalse($this->resolver->supports($this->request, $this->argument));
     }
@@ -76,9 +78,12 @@ class BodyArgumentResolverTest extends TestCase
     public function providerSupportsShouldReturnFalse(): array
     {
         return [
-            ['string'],
-            [null],
-            [WithoutHttpApi::class],
+            ['string', '{}', false],
+            [null, '{}', false],
+            [WithoutHttpApi::class, '{}', false],
+            [DefaultHttpApi::class, false, true],
+            [DefaultHttpApi::class, null, true],
+            [DefaultHttpApi::class, '', true],
         ];
     }
 
@@ -92,11 +97,13 @@ class BodyArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerResolveShouldThrowException
      */
-    public function testResolveShouldThrowException(?string $type): void
+    public function testResolveShouldThrowException($type, $content, $isNullable): void
     {
         $this->expectException(SupportsException::class);
 
         \Phake::when($this->argument)->getType->thenReturn($type);
+        \Phake::when($this->request)->getContent->thenReturn($content);
+        \Phake::when($this->argument)->isNullable->thenReturn($isNullable);
 
         $result = $this->resolver->resolve($this->request, $this->argument);
         $result->current();
@@ -105,8 +112,11 @@ class BodyArgumentResolverTest extends TestCase
     public function providerResolveShouldThrowException(): array
     {
         return [
-            ['string'],
-            [null],
+            ['string', '{}', false],
+            [null, '{}', false],
+            [DefaultHttpApi::class, false, true],
+            [DefaultHttpApi::class, null, true],
+            [DefaultHttpApi::class, '', true],
         ];
     }
 
@@ -169,15 +179,6 @@ class BodyArgumentResolverTest extends TestCase
                 new DefaultHttpApi(),
             ]
         ];
-    }
-
-    public function testResolveShoulYieldNull(): void
-    {
-        \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
-        \Phake::when($this->request)->getContent->thenReturn('');
-        \Phake::when($this->argument)->isNullable->thenReturn(true);
-
-        $this->assertNull($this->resolver->resolve($this->request, $this->argument)->current());
     }
 
     /**
