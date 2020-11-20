@@ -47,6 +47,7 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
 
     /**
      * @return \Generator
+     * @throws EmptyBodyException when $request->getContent() is false|null|empty
      */
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
@@ -56,6 +57,11 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
         }
 
         $content = (string)$request->getContent();
+
+        if ('' === $content) {
+            throw EmptyBodyException::required();
+        }
+
         $type = $argument->isVariadic() ? $className . '[]' : $className;
         $contentType = ContentTypeHeader::fromString((string)$request->headers->get(ContentTypeHeader::NAME, ''));
 
@@ -64,8 +70,6 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
 
         $this->validator->validate($deserialized);
 
-        $result = !is_array($deserialized) ? [$deserialized] : $deserialized;
-
-        yield from $result;
+        yield from !is_array($deserialized) ? [$deserialized] : $deserialized;
     }
 }

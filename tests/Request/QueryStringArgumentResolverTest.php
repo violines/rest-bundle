@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\Request\QueryStringArgumentResolver;
 use TerryApiBundle\Request\SupportsException;
-use TerryApiBundle\Tests\Serialize\SerializerMock;
+use TerryApiBundle\Tests\Mock\Serializer;
 use TerryApiBundle\Validation\Validator;
 
 /**
@@ -51,7 +51,7 @@ class QueryStringArgumentResolverTest extends TestCase
 
         $this->resolver = new QueryStringArgumentResolver(
             new HttpApiReader(new AnnotationReader()),
-            new SerializerMock(),
+            new Serializer(),
             new Validator($this->validator)
         );
     }
