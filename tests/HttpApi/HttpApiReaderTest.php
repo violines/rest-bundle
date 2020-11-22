@@ -19,7 +19,7 @@ class HttpApiReaderTest extends TestCase
 {
     private HTTPApiReader $httpApiReader;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->httpApiReader = new HttpApiReader(new AnnotationReader());
     }

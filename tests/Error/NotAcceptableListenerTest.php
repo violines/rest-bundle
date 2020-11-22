@@ -48,7 +48,7 @@ class NotAcceptableListenerTest extends TestCase
 
     private NotAcceptableListener $notAcceptableListener;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         \Phake::initAnnotations($this);

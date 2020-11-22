@@ -25,7 +25,7 @@ class ResponseBuilderTest extends TestCase
      */
     private \Phake_IMock $request;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -20,7 +20,7 @@ class ContentNegotiatorTest extends TestCase
 {
     private ContentNegotiator $contentNegotiator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

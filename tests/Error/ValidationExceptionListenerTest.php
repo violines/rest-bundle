@@ -55,7 +55,7 @@ class ValidationExceptionListenerTest extends TestCase
 
     private ValidationExceptionListener $listener;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         \Phake::initAnnotations($this);
