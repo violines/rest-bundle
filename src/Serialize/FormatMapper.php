@@ -25,6 +25,9 @@ final class FormatMapper
         }
     }
 
+    /**
+     * @throws FormatException when the mimeType was not mapped to a format in config
+     */
     public function byMimeType(MimeType $mimeType): string
     {
         if (!isset($this->map[$mimeType->toString()])) {

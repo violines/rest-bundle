@@ -8,13 +8,14 @@ use TerryApiBundle\Request\AcceptHeader;
 
 final class ContentNegotiator
 {
-    private const DEFAULT_KEYS = ['*' , '*/*', 'application/*'];
+    private const DEFAULT_KEYS = ['*', '*/*', 'application/*'];
     private array $availables = [];
     /** @var array<string,string> $defaults*/
     private array $defaults = [];
 
     /**
      * @param array<string,array<string>> $serializeformats
+     * @throws NotNegotiableException when the accept header cannot be matched with any mimeType
      */
     public function __construct(array $serializeformats, string $defaultFormat)
     {

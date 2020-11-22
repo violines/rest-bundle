@@ -47,6 +47,7 @@ final class QueryStringArgumentResolver implements ArgumentValueResolverInterfac
 
     /**
      * @return \Generator
+     * @throws SupportsException when $this->supports should have returned false
      */
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
