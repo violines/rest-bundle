@@ -47,7 +47,7 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
 
     /**
      * @return \Generator
-     * @throws SupportsException when $this->supports should have returned false 
+     * @throws SupportsException when $this->supports should have returned false
      * @throws EmptyBodyException when $request->getContent() is false|null|''
      */
     public function resolve(Request $request, ArgumentMetadata $argument)
