@@ -58,7 +58,7 @@ class ErrorListenerTest extends TestCase
 
     private ErrorListener $errorListener;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         \Phake::initAnnotations($this);

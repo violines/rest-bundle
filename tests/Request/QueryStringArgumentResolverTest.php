@@ -43,7 +43,7 @@ class QueryStringArgumentResolverTest extends TestCase
 
     private QueryStringArgumentResolver $resolver;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         \Phake::initAnnotations($this);
