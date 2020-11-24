@@ -1,5 +1,5 @@
 name: Test PHP 8.0
-on: [pull_request]
+on: []
 jobs:
   build:
     runs-on: ${{ matrix.operating-system }}
