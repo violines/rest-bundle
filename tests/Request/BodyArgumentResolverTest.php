@@ -26,24 +26,28 @@ use TerryApiBundle\Validation\Validator;
 
 /**
  * @covers \TerryApiBundle\Request\BodyArgumentResolver
+ *
  * @uses \TerryApiBundle\Serialize\DeserializeEvent
  */
 class BodyArgumentResolverTest extends TestCase
 {
     /**
      * @Mock
+     *
      * @var HttpFoundationRequest
      */
     private \Phake_IMock $request;
 
     /**
      * @Mock
+     *
      * @var ArgumentMetadata
      */
     private \Phake_IMock $argument;
 
     /**
      * @Mock
+     *
      * @var ValidatorInterface
      */
     private \Phake_IMock $validator;

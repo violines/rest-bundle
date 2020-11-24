@@ -6,24 +6,25 @@ namespace TerryApiBundle\Tests\Error;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
-use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Error\ValidationException;
 use TerryApiBundle\Error\ValidationExceptionListener;
-use TerryApiBundle\Serialize\SerializeEvent;
-use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Negotiation\ContentNegotiator;
+use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Serialize\FormatMapper;
+use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\Serialize\Serializer;
 use TerryApiBundle\Tests\Stubs\Config;
 
 /**
  * @covers \TerryApiBundle\Error\ValidationExceptionListener
+ *
  * @uses \TerryApiBundle\Error\ValidationException
  * @uses \TerryApiBundle\Serialize\SerializeEvent
  */
@@ -31,24 +32,28 @@ class ValidationExceptionListenerTest extends TestCase
 {
     /**
      * @Mock
+     *
      * @var EventDispatcherInterface
      */
     private \Phake_IMock $eventDispatcher;
 
     /**
      * @Mock
+     *
      * @var HttpKernel
      */
     private \Phake_IMock $httpKernel;
 
     /**
      * @Mock
+     *
      * @var HttpFoundationRequest
      */
     private \Phake_IMock $request;
 
     /**
      * @Mock
+     *
      * @var SerializerInterface
      */
     private \Phake_IMock $serializer;

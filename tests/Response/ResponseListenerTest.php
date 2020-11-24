@@ -13,12 +13,12 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\Response\ResponseBuilder;
-use TerryApiBundle\Response\ResponseListener;
-use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\Negotiation\ContentNegotiator;
+use TerryApiBundle\Response\ResponseBuilder;
+use TerryApiBundle\Response\ResponseListener;
 use TerryApiBundle\Serialize\FormatMapper;
+use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\Serialize\Serializer;
 use TerryApiBundle\Tests\Stubs\Config;
 use TerryApiBundle\Tests\Stubs\Gum;
@@ -26,30 +26,35 @@ use TerryApiBundle\Tests\Stubs\Ok;
 
 /**
  * @covers \TerryApiBundle\Response\ResponseListener
+ *
  * @uses \TerryApiBundle\Serialize\SerializeEvent
  */
 class ResponseListenerTest extends TestCase
 {
     /**
      * @Mock
+     *
      * @var EventDispatcherInterface
      */
     private \Phake_IMock $eventDispatcher;
 
     /**
      * @Mock
+     *
      * @var HttpKernel
      */
     private \Phake_IMock $httpKernel;
 
     /**
      * @Mock
+     *
      * @var HttpFoundationRequest
      */
     private \Phake_IMock $request;
 
     /**
      * @Mock
+     *
      * @var SerializerInterface
      */
     private \Phake_IMock $serializer;

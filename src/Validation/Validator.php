@@ -18,6 +18,7 @@ final class Validator
 
     /**
      * @param object[]|object $data
+     *
      * @throws ValidationException when the validator returns any violation
      */
     public function validate($data): void

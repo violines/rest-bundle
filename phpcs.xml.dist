@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="TerryApi" xsi:noNamespaceSchemaLocation="phpcs.xsd">
-    <description></description>
-
     <file>src</file>
     <file>tests</file>
 
@@ -10,6 +8,5 @@
     <arg name="parallel" value="75"/>
     <arg value="np"/>
 
-    <rule ref="PSR12">
-    </rule>
+    <rule ref="PSR12" />
 </ruleset>

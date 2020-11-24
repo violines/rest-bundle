@@ -17,6 +17,7 @@ class HttpApiReader
 
     /**
      * @param class-string $className
+     *
      * @throws AnnotationNotFoundException when the @HttpApi annotation was not found in the class
      */
     public function read(string $className): HttpApi

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace TerryApiBundle\Tests\Request;
 
-use TerryApiBundle\HttpApi\HttpApi;
 use Symfony\Component\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use TerryApiBundle\HttpApi\HttpApi;
 
 /**
  * @HttpApi

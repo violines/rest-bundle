@@ -15,6 +15,7 @@ final class ContentNegotiator
 
     /**
      * @param array<string,array<string>> $serializeformats
+     *
      * @throws NotNegotiableException when the accept header cannot be matched with any mimeType
      */
     public function __construct(array $serializeformats, string $defaultFormat)

@@ -9,14 +9,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Negotiation\MimeType;
 use TerryApiBundle\Serialize\DeserializeEvent;
-use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\Serialize\FormatMapper;
+use TerryApiBundle\Serialize\SerializeEvent;
 use TerryApiBundle\Serialize\Serializer;
 use TerryApiBundle\Tests\Stubs\Candy;
 use TerryApiBundle\Tests\Stubs\Config;
 
 /**
  * @covers \TerryApiBundle\Serialize\Serializer
+ *
  * @uses \TerryApiBundle\Serialize\DeserializeEvent
  * @uses \TerryApiBundle\Serialize\SerializeEvent
  */
@@ -24,12 +25,14 @@ class SerializerTest extends TestCase
 {
     /**
      * @Mock
+     *
      * @var EventDispatcherInterface
      */
     private \Phake_IMock $eventDispatcher;
 
     /**
      * @Mock
+     *
      * @var SerializerInterface
      */
     private \Phake_IMock $serializerInterface;
