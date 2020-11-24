@@ -4,7 +4,7 @@
     "description": "TerryApiBundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, TerryApiBundle handles serialization, validation and HTTP related things like headers or status codes.",
     "license": "MIT",
     "require": {
-        "php": "7.4.*",
+        "php": ">=7.4",
         "doctrine/annotations": "^1.8",
         "symfony/config": "^5.0",
         "symfony/dependency-injection": "^5.0",
