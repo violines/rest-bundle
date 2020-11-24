@@ -19,6 +19,7 @@ use TerryApiBundle\Serialize\FormatException;
 
 /**
  * @covers \TerryApiBundle\Error\NotAcceptableListener
+ *
  * @uses \TerryApiBundle\Negotiation\MimeType
  * @uses \TerryApiBundle\Negotiation\NotNegotiableException
  * @uses \TerryApiBundle\Serialize\FormatException

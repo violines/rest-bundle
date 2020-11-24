@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\HttpApi\HttpApi;
+use TerryApiBundle\HttpApi\HttpApiReader;
 use TerryApiBundle\Validation\Validator;
 
 final class QueryStringArgumentResolver implements ArgumentValueResolverInterface
@@ -47,6 +47,7 @@ final class QueryStringArgumentResolver implements ArgumentValueResolverInterfac
 
     /**
      * @return \Generator
+     *
      * @throws SupportsException when $this->supports should have returned false
      */
     public function resolve(Request $request, ArgumentMetadata $argument)

@@ -25,18 +25,21 @@ class QueryStringArgumentResolverTest extends TestCase
 {
     /**
      * @Mock
+     *
      * @var HttpFoundationRequest
      */
     private \Phake_IMock $request;
 
     /**
      * @Mock
+     *
      * @var ArgumentMetadata
      */
     private \Phake_IMock $argument;
 
     /**
      * @Mock
+     *
      * @var ValidatorInterface
      */
     private \Phake_IMock $validator;

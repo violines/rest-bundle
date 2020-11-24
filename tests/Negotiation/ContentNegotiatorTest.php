@@ -13,6 +13,7 @@ use TerryApiBundle\Tests\Stubs\MimeTypes;
 
 /**
  * @covers TerryApiBundle\Negotiation\ContentNegotiator
+ *
  * @uses \TerryApiBundle\Negotiation\NotNegotiableException
  * @uses \TerryApiBundle\Request\AcceptHeader
  */

@@ -6,13 +6,14 @@ namespace TerryApiBundle\Tests\Response;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
-use TerryApiBundle\Response\ResponseBuilder;
+use Symfony\Component\HttpFoundation\Response;
 use TerryApiBundle\Response\ContentTypeHeader;
+use TerryApiBundle\Response\ResponseBuilder;
 
 /**
  * @covers \TerryApiBundle\Response\ResponseBuilder
+ *
  * @uses \TerryApiBundle\Response\ContentTypeHeader
  */
 class ResponseBuilderTest extends TestCase
@@ -21,6 +22,7 @@ class ResponseBuilderTest extends TestCase
 
     /**
      * @Mock
+     *
      * @var HttpFoundationRequest
      */
     private \Phake_IMock $request;
