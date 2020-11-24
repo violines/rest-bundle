@@ -2,17 +2,9 @@ name: build
 on: [push, pull_request]
 jobs:
   build:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: [ubuntu-latest]
-        php-versions: ['7.4', '8.0']
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Install PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
     - name: Validate composer.json and composer.lock
       run: composer validate
     - name: Cache Composer packages
