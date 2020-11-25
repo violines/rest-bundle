@@ -1,5 +1,5 @@
 name: Test PHP 8.0
-on: []
+on: [pull_request]
 jobs:
   build:
     runs-on: ${{ matrix.operating-system }}
@@ -23,6 +23,6 @@ jobs:
           ${{ runner.os }}-php-
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer install --no-interaction --no-progress --no-suggest --ignore-platform-reqs
     - name: Run testsuite
       run: vendor/bin/phpunit
