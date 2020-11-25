@@ -17,7 +17,7 @@ jobs:
           ${{ runner.os }}-php-
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer install --no-interaction --no-progress --no-suggest
     - name: Run tests
       env:
         INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
