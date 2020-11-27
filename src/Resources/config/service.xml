@@ -24,7 +24,7 @@
                 <argument type="service" id="terry_api.serialize.serializer" />
             </service>
             <service id="terry_api.http_api.http_api_reader" class="TerryApiBundle\HttpApi\HttpApiReader">
-                <argument type="service" id="annotations.reader" />
+                <argument type="service" id="annotations.reader" on-invalid="null"/>
             </service>
             <service id="terry_api.negotiation.content_negotiator" class="TerryApiBundle\Negotiation\ContentNegotiator">
                 <argument /> <!-- serializeFormats -->

@@ -8,9 +8,9 @@ use Doctrine\Common\Annotations\Reader;
 
 class HttpApiReader
 {
-    private Reader $reader;
+    private ?Reader $reader;
 
-    public function __construct(Reader $reader)
+    public function __construct(?Reader $reader = null)
     {
         $this->reader = $reader;
     }
@@ -18,17 +18,29 @@ class HttpApiReader
     /**
      * @param class-string $className
      *
-     * @throws AnnotationNotFoundException when the @HttpApi annotation was not found in the class
+     * @throws MissingHttpApiException when the #[HttpApi] or @HttpApi was not found in the class
      */
     public function read(string $className): HttpApi
     {
+        $reflectionClass = new \ReflectionClass($className);
+
+        if (80000 <= \PHP_VERSION_ID) {
+            foreach ($reflectionClass->getAttributes(HttpApi::class) as $attribute) {
+                return $attribute->newInstance();
+            }
+        }
+
+        if (null === $this->reader) {
+            throw AnnotationReaderNotInstalledException::doctrine();
+        }
+
         /** @var HttpApi|null $annotation */
-        $annotation = $this->reader->getClassAnnotation(new \ReflectionClass($className), HttpApi::class);
+        $annotation = $this->reader->getClassAnnotation($reflectionClass, HttpApi::class);
 
         if (null !== $annotation) {
             return $annotation;
         }
 
-        throw AnnotationNotFoundException::httpApi($className);
+        throw MissingHttpApiException::className($className);
     }
 }

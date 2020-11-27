@@ -14,8 +14,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TerryApiBundle\Error\ErrorListener;
-use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\HttpApi\HttpApiReader;
+use TerryApiBundle\HttpApi\MissingHttpApiException;
 use TerryApiBundle\Negotiation\ContentNegotiator;
 use TerryApiBundle\Response\ResponseBuilder;
 use TerryApiBundle\Serialize\FormatMapper;
@@ -126,9 +126,9 @@ class ErrorListenerTest extends TestCase
         $this->assertNull($exceptionEvent->getResponse());
     }
 
-    public function testShouldThrowAnnotationNotFoundException(): void
+    public function testShouldThrowMissingHttpApiException(): void
     {
-        $this->expectException(AnnotationNotFoundException::class);
+        $this->expectException(MissingHttpApiException::class);
 
         $exception = new ErrorException();
         $exception->setContent(new Gum());
