@@ -1,0 +1,74 @@
+name: Pull request
+on: 
+  push:
+    branches:
+      - master
+  pull_request: ~
+jobs:
+  codestyle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --no-interaction --no-progress --ignore-platform-reqs  
+      - name: Run php cs fixer
+        run: vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --no-interaction --no-progress --ignore-platform-reqs    
+      - name: Run psalm
+        run: vendor/bin/psalm --show-info=true
+  testsuite:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.4', '8.0']
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --no-interaction --no-progress --ignore-platform-reqs    
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          coverage: xdebug
+      - name: Run testsuites
+        env:
+          INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
+        run: vendor/bin/phpunit --configuration=phpunit.xml.dist --coverage-clover=coverage.xml
+      - name: Send code coverage report to Codecov.io
+        if: matrix.php-versions == '8.0'
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOVIO_TOKEN }}
+        run: bash <(curl -s https://codecov.io/bash)
