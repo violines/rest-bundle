@@ -39,7 +39,7 @@ jobs:
         run: composer install --no-interaction --no-progress --ignore-platform-reqs    
       - name: Run psalm
         run: vendor/bin/psalm --show-info=true
-  testsuite:
+  tests:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
@@ -64,11 +64,13 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           coverage: xdebug
       - name: Run testsuites
-        env:
-          INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
         run: vendor/bin/phpunit --configuration=phpunit.xml.dist --coverage-clover=coverage.xml
       - name: Send code coverage report to Codecov.io
         if: matrix.php-versions == '8.0'
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOVIO_TOKEN }}
         run: bash <(curl -s https://codecov.io/bash)
+      - name: Run infection
+        env:
+          INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
+        run: vendor/bin/infection
