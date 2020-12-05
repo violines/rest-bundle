@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Serialize;
+namespace Violines\RestBundle\Tests\Serialize;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Serialize\DeserializeEvent;
+use Violines\RestBundle\Serialize\DeserializeEvent;
 
 /**
- * @covers \TerryApiBundle\Serialize\DeserializeEvent
+ * @covers \Violines\RestBundle\Serialize\DeserializeEvent
  */
 class DeserializeEventTest extends TestCase
 {

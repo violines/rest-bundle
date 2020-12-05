@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\DependencyInjection;
+namespace Violines\RestBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
-use TerryApiBundle\DependencyInjection\TerryApiExtension;
+use Violines\RestBundle\DependencyInjection\ViolinesRestExtension;
 
 /**
- * @covers \TerryApiBundle\DependencyInjection\TerryApiExtension
+ * @covers \Violines\RestBundle\DependencyInjection\ViolinesRestExtension
  */
-class TerryApiExtensionTest extends AbstractExtensionTestCase
+class ViolinesRestExtensionTest extends AbstractExtensionTestCase
 {
     /**
      * @dataProvider providerForEntryPointServiceIds
@@ -26,37 +26,37 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
     {
         return [
             [
-                'terry_api.error.validation_exception_listener'
+                'violines_rest.error.validation_exception_listener'
             ],
             [
-                'terry_api.error.error_listener'
+                'violines_rest.error.error_listener'
             ],
             [
-                'terry_api.http_api.http_api_reader'
+                'violines_rest.http_api.http_api_reader'
             ],
             [
-                'terry_api.negotiation.content_negotiator'
+                'violines_rest.negotiation.content_negotiator'
             ],
             [
-                'terry_api.response.response_builder'
+                'violines_rest.response.response_builder'
             ],
             [
-                'terry_api.response.response_listener'
+                'violines_rest.response.response_listener'
             ],
             [
-                'terry_api.request.body_argument_resolver'
+                'violines_rest.request.body_argument_resolver'
             ],
             [
-                'terry_api.request.query_string_argument_resolver'
+                'violines_rest.request.query_string_argument_resolver'
             ],
             [
-                'terry_api.serialize.format_mapper'
+                'violines_rest.serialize.format_mapper'
             ],
             [
-                'terry_api.serialize.serializer'
+                'violines_rest.serialize.serializer'
             ],
             [
-                'terry_api.validation.validator'
+                'violines_rest.validation.validator'
             ]
         ];
     }
@@ -75,7 +75,7 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
     {
         return [
             [
-                'terry_api.negotiation.content_negotiator',
+                'violines_rest.negotiation.content_negotiator',
                 0,
                 [
                     'json' => ['application/json'],
@@ -83,12 +83,12 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
                 ]
             ],
             [
-                'terry_api.negotiation.content_negotiator',
+                'violines_rest.negotiation.content_negotiator',
                 1,
                 'application/json',
             ],
             [
-                'terry_api.serialize.format_mapper',
+                'violines_rest.serialize.format_mapper',
                 0,
                 [
                     'json' => ['application/json'],
@@ -100,6 +100,6 @@ class TerryApiExtensionTest extends AbstractExtensionTestCase
 
     protected function getContainerExtensions(): array
     {
-        return [new TerryApiExtension()];
+        return [new ViolinesRestExtension()];
     }
 }

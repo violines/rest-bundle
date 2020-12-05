@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Error;
+namespace Violines\RestBundle\Tests\Error;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Error\ValidationException;
+use Violines\RestBundle\Error\ValidationException;
 
 /**
- * @covers \TerryApiBundle\Error\ValidationException
+ * @covers \Violines\RestBundle\Error\ValidationException
  */
 class ValidationExceptionTest extends TestCase
 {

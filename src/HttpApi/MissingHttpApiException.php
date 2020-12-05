@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\HttpApi;
+namespace Violines\RestBundle\HttpApi;
 
 final class MissingHttpApiException extends \RuntimeException implements \Throwable
 {

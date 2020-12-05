@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Serialize;
+namespace Violines\RestBundle\Tests\Serialize;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\Negotiation\MimeType;
-use TerryApiBundle\Serialize\DeserializeEvent;
-use TerryApiBundle\Serialize\FormatMapper;
-use TerryApiBundle\Serialize\SerializeEvent;
-use TerryApiBundle\Serialize\Serializer;
-use TerryApiBundle\Tests\Stubs\Candy;
-use TerryApiBundle\Tests\Stubs\Config;
+use Violines\RestBundle\Negotiation\MimeType;
+use Violines\RestBundle\Serialize\DeserializeEvent;
+use Violines\RestBundle\Serialize\FormatMapper;
+use Violines\RestBundle\Serialize\SerializeEvent;
+use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Tests\Stubs\Candy;
+use Violines\RestBundle\Tests\Stubs\Config;
 
 /**
- * @covers \TerryApiBundle\Serialize\Serializer
+ * @covers \Violines\RestBundle\Serialize\Serializer
  *
- * @uses \TerryApiBundle\Serialize\DeserializeEvent
- * @uses \TerryApiBundle\Serialize\SerializeEvent
+ * @uses \Violines\RestBundle\Serialize\DeserializeEvent
+ * @uses \Violines\RestBundle\Serialize\SerializeEvent
  */
 class SerializerTest extends TestCase
 {
@@ -64,7 +64,7 @@ class SerializerTest extends TestCase
     public function testShouldDeserialize(): void
     {
         $data = '{"weight": 100, "name": "Bonbon", "tastesGood": true}';
-        $type = 'TerryApiBundle\Tests\Stubs\CandyStructStub';
+        $type = 'Violines\RestBundle\Tests\Stubs\CandyStructStub';
         $context = ['ctxkey' => 'ctxValue'];
         $mimeType = MimeType::fromString('application/json');
 

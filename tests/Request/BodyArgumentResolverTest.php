@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Request;
+namespace Violines\RestBundle\Tests\Request;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
@@ -12,22 +12,22 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use TerryApiBundle\Error\ValidationException;
-use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\Request\BodyArgumentResolver;
-use TerryApiBundle\Request\EmptyBodyException;
-use TerryApiBundle\Request\SupportsException;
-use TerryApiBundle\Serialize\FormatMapper;
-use TerryApiBundle\Serialize\Serializer;
-use TerryApiBundle\Tests\Mock\Dispatcher;
-use TerryApiBundle\Tests\Mock\Serializer as MockSerializer;
-use TerryApiBundle\Tests\Stubs\Config;
-use TerryApiBundle\Validation\Validator;
+use Violines\RestBundle\Error\ValidationException;
+use Violines\RestBundle\HttpApi\HttpApiReader;
+use Violines\RestBundle\Request\BodyArgumentResolver;
+use Violines\RestBundle\Request\EmptyBodyException;
+use Violines\RestBundle\Request\SupportsException;
+use Violines\RestBundle\Serialize\FormatMapper;
+use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Tests\Mock\Dispatcher;
+use Violines\RestBundle\Tests\Mock\Serializer as MockSerializer;
+use Violines\RestBundle\Tests\Stubs\Config;
+use Violines\RestBundle\Validation\Validator;
 
 /**
- * @covers \TerryApiBundle\Request\BodyArgumentResolver
+ * @covers \Violines\RestBundle\Request\BodyArgumentResolver
  *
- * @uses \TerryApiBundle\Serialize\DeserializeEvent
+ * @uses \Violines\RestBundle\Serialize\DeserializeEvent
  */
 class BodyArgumentResolverTest extends TestCase
 {

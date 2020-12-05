@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Request;
+namespace Violines\RestBundle\Tests\Request;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\Request\QueryStringArgumentResolver;
-use TerryApiBundle\Request\SupportsException;
-use TerryApiBundle\Tests\Mock\Serializer;
-use TerryApiBundle\Validation\Validator;
+use Violines\RestBundle\HttpApi\HttpApiReader;
+use Violines\RestBundle\Request\QueryStringArgumentResolver;
+use Violines\RestBundle\Request\SupportsException;
+use Violines\RestBundle\Tests\Mock\Serializer;
+use Violines\RestBundle\Validation\Validator;
 
 /**
- * @covers \TerryApiBundle\Request\QueryStringArgumentResolver
+ * @covers \Violines\RestBundle\Request\QueryStringArgumentResolver
  */
 class QueryStringArgumentResolverTest extends TestCase
 {

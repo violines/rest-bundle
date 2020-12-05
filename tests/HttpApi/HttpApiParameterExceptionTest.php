@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\HttpApi;
+namespace Violines\RestBundle\Tests\HttpApi;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\HttpApi\HttpApiParameterException;
+use Violines\RestBundle\HttpApi\HttpApiParameterException;
 
 /**
- * @covers \TerryApiBundle\HttpApi\HttpApiParameterException
+ * @covers \Violines\RestBundle\HttpApi\HttpApiParameterException
  */
 class HttpApiParameterExceptionTest extends TestCase
 {

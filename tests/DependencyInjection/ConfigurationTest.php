@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\DependencyInjection;
+namespace Violines\RestBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\DependencyInjection\Configuration;
+use Violines\RestBundle\DependencyInjection\Configuration;
 
 /**
- * @covers \TerryApiBundle\DependencyInjection\Configuration
+ * @covers \Violines\RestBundle\DependencyInjection\Configuration
  */
 class ConfigurationTest extends TestCase
 {

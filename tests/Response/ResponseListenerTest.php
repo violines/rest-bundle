@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Response;
+namespace Violines\RestBundle\Tests\Response;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
@@ -13,21 +13,21 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\Negotiation\ContentNegotiator;
-use TerryApiBundle\Response\ResponseBuilder;
-use TerryApiBundle\Response\ResponseListener;
-use TerryApiBundle\Serialize\FormatMapper;
-use TerryApiBundle\Serialize\SerializeEvent;
-use TerryApiBundle\Serialize\Serializer;
-use TerryApiBundle\Tests\Stubs\Config;
-use TerryApiBundle\Tests\Stubs\Gum;
-use TerryApiBundle\Tests\Stubs\Ok;
+use Violines\RestBundle\HttpApi\HttpApiReader;
+use Violines\RestBundle\Negotiation\ContentNegotiator;
+use Violines\RestBundle\Response\ResponseBuilder;
+use Violines\RestBundle\Response\ResponseListener;
+use Violines\RestBundle\Serialize\FormatMapper;
+use Violines\RestBundle\Serialize\SerializeEvent;
+use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Tests\Stubs\Config;
+use Violines\RestBundle\Tests\Stubs\Gum;
+use Violines\RestBundle\Tests\Stubs\Ok;
 
 /**
- * @covers \TerryApiBundle\Response\ResponseListener
+ * @covers \Violines\RestBundle\Response\ResponseListener
  *
- * @uses \TerryApiBundle\Serialize\SerializeEvent
+ * @uses \Violines\RestBundle\Serialize\SerializeEvent
  */
 class ResponseListenerTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Request;
+namespace Violines\RestBundle\Tests\Request;
 
 final class WithoutHttpApi
 {

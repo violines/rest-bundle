@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Error;
+namespace Violines\RestBundle\Tests\Error;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
@@ -13,22 +13,22 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\Error\ErrorListener;
-use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\HttpApi\MissingHttpApiException;
-use TerryApiBundle\Negotiation\ContentNegotiator;
-use TerryApiBundle\Response\ResponseBuilder;
-use TerryApiBundle\Serialize\FormatMapper;
-use TerryApiBundle\Serialize\SerializeEvent;
-use TerryApiBundle\Serialize\Serializer;
-use TerryApiBundle\Tests\Stubs\Config;
-use TerryApiBundle\Tests\Stubs\Error;
-use TerryApiBundle\Tests\Stubs\Gum;
+use Violines\RestBundle\Error\ErrorListener;
+use Violines\RestBundle\HttpApi\HttpApiReader;
+use Violines\RestBundle\HttpApi\MissingHttpApiException;
+use Violines\RestBundle\Negotiation\ContentNegotiator;
+use Violines\RestBundle\Response\ResponseBuilder;
+use Violines\RestBundle\Serialize\FormatMapper;
+use Violines\RestBundle\Serialize\SerializeEvent;
+use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Tests\Stubs\Config;
+use Violines\RestBundle\Tests\Stubs\Error;
+use Violines\RestBundle\Tests\Stubs\Gum;
 
 /**
- * @covers \TerryApiBundle\Error\ErrorListener
+ * @covers \Violines\RestBundle\Error\ErrorListener
  *
- * @uses \TerryApiBundle\Serialize\SerializeEvent
+ * @uses \Violines\RestBundle\Serialize\SerializeEvent
  */
 class ErrorListenerTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Mock;
+namespace Violines\RestBundle\Tests\Mock;
 
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

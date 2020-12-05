@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\HttpApi;
+namespace Violines\RestBundle\Tests\HttpApi;
 
-use TerryApiBundle\HttpApi\HttpApi;
+use Violines\RestBundle\HttpApi\HttpApi;
 
 #[HttpApi(requestInfoSource: 'query_string')]
 class HttpApiQueryString

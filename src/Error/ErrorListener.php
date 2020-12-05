@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Error;
+namespace Violines\RestBundle\Error;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\Negotiation\ContentNegotiator;
-use TerryApiBundle\Request\AcceptHeader;
-use TerryApiBundle\Response\ContentTypeHeader;
-use TerryApiBundle\Response\ResponseBuilder;
-use TerryApiBundle\Serialize\Serializer;
+use Violines\RestBundle\HttpApi\HttpApiReader;
+use Violines\RestBundle\Negotiation\ContentNegotiator;
+use Violines\RestBundle\Request\AcceptHeader;
+use Violines\RestBundle\Response\ContentTypeHeader;
+use Violines\RestBundle\Response\ResponseBuilder;
+use Violines\RestBundle\Serialize\Serializer;
 
 final class ErrorListener
 {

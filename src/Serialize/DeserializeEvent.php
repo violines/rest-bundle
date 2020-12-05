@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Serialize;
+namespace Violines\RestBundle\Serialize;
 
 final class DeserializeEvent
 {
-    public const NAME = 'terry_api.event.deserialize';
+    public const NAME = 'violines_rest.event.deserialize';
     private string $data;
     private string $format;
     private array $context = [];

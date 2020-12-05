@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Negotiation;
+namespace Violines\RestBundle\Negotiation;
 
-use TerryApiBundle\Request\AcceptHeader;
+use Violines\RestBundle\Request\AcceptHeader;
 
 final class ContentNegotiator
 {

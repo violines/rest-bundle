@@ -1,7 +1,7 @@
 {
     "name": "simon-schubert/terry-api",
     "type": "symfony-bundle",
-    "description": "TerryApiBundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, TerryApiBundle handles serialization, validation and HTTP related things like headers or status codes.",
+    "description": "violines/rest-bundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, the bundle handles serialization, validation and HTTP related things like headers or status codes.",
     "license": "MIT",
     "require": {
         "php": ">=7.4",
@@ -26,12 +26,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TerryApiBundle\\": "src/"
+            "Violines\\RestBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TerryApiBundle\\Tests\\": "tests/"
+            "Violines\\RestBundle\\Tests\\": "tests/"
         }
     },
     "scripts": {

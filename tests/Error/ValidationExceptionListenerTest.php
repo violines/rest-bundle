@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Error;
+namespace Violines\RestBundle\Tests\Error;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
@@ -13,20 +13,20 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use TerryApiBundle\Error\ValidationException;
-use TerryApiBundle\Error\ValidationExceptionListener;
-use TerryApiBundle\Negotiation\ContentNegotiator;
-use TerryApiBundle\Response\ResponseBuilder;
-use TerryApiBundle\Serialize\FormatMapper;
-use TerryApiBundle\Serialize\SerializeEvent;
-use TerryApiBundle\Serialize\Serializer;
-use TerryApiBundle\Tests\Stubs\Config;
+use Violines\RestBundle\Error\ValidationException;
+use Violines\RestBundle\Error\ValidationExceptionListener;
+use Violines\RestBundle\Negotiation\ContentNegotiator;
+use Violines\RestBundle\Response\ResponseBuilder;
+use Violines\RestBundle\Serialize\FormatMapper;
+use Violines\RestBundle\Serialize\SerializeEvent;
+use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Tests\Stubs\Config;
 
 /**
- * @covers \TerryApiBundle\Error\ValidationExceptionListener
+ * @covers \Violines\RestBundle\Error\ValidationExceptionListener
  *
- * @uses \TerryApiBundle\Error\ValidationException
- * @uses \TerryApiBundle\Serialize\SerializeEvent
+ * @uses \Violines\RestBundle\Error\ValidationException
+ * @uses \Violines\RestBundle\Serialize\SerializeEvent
  */
 class ValidationExceptionListenerTest extends TestCase
 {

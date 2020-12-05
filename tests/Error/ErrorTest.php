@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Error;
+namespace Violines\RestBundle\Tests\Error;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Error\Error;
+use Violines\RestBundle\Error\Error;
 
 /**
- * @covers \TerryApiBundle\Error\Error
+ * @covers \Violines\RestBundle\Error\Error
  */
 class ErrorTest extends TestCase
 {

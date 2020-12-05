@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Response;
+namespace Violines\RestBundle\Tests\Response;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
-use TerryApiBundle\Response\ContentTypeHeader;
-use TerryApiBundle\Response\ResponseBuilder;
+use Violines\RestBundle\Response\ContentTypeHeader;
+use Violines\RestBundle\Response\ResponseBuilder;
 
 /**
- * @covers \TerryApiBundle\Response\ResponseBuilder
+ * @covers \Violines\RestBundle\Response\ResponseBuilder
  *
- * @uses \TerryApiBundle\Response\ContentTypeHeader
+ * @uses \Violines\RestBundle\Response\ContentTypeHeader
  */
 class ResponseBuilderTest extends TestCase
 {

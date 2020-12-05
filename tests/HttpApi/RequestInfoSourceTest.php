@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\HttpApi;
+namespace Violines\RestBundle\Tests\HttpApi;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\HttpApi\HttpApi;
-use TerryApiBundle\HttpApi\HttpApiParameterException;
-use TerryApiBundle\HttpApi\RequestInfoSource;
+use Violines\RestBundle\HttpApi\HttpApi;
+use Violines\RestBundle\HttpApi\HttpApiParameterException;
+use Violines\RestBundle\HttpApi\RequestInfoSource;
 
 /**
- * @covers \TerryApiBundle\HttpApi\RequestInfoSource
+ * @covers \Violines\RestBundle\HttpApi\RequestInfoSource
  */
 class RequestInfoSourceTest extends TestCase
 {
