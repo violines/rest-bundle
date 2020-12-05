@@ -7,9 +7,9 @@ namespace TerryApiBundle\Request;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\HttpApi\HttpApi;
 use TerryApiBundle\HttpApi\HttpApiReader;
+use TerryApiBundle\HttpApi\MissingHttpApiException;
 use TerryApiBundle\Serialize\Serializer;
 use TerryApiBundle\Validation\Validator;
 
@@ -38,11 +38,11 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
 
         try {
             $httpApi = $this->httpApiReader->read($className);
-        } catch (AnnotationNotFoundException $e) {
+        } catch (MissingHttpApiException $e) {
             return false;
         }
 
-        return HttpApi::BODY === $httpApi->requestInfoSource;
+        return HttpApi::BODY === $httpApi->getRequestInfoSource();
     }
 
     /**

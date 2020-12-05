@@ -6,9 +6,10 @@ namespace TerryApiBundle\Tests\HttpApi;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\HttpApi\AnnotationNotFoundException;
+use TerryApiBundle\HttpApi\AnnotationReaderNotInstalledException;
 use TerryApiBundle\HttpApi\HttpApi;
 use TerryApiBundle\HttpApi\HttpApiReader;
+use TerryApiBundle\HttpApi\MissingHttpApiException;
 use TerryApiBundle\Tests\Stubs\Brownie;
 use TerryApiBundle\Tests\Stubs\Candy;
 
@@ -17,22 +18,38 @@ use TerryApiBundle\Tests\Stubs\Candy;
  */
 class HttpApiReaderTest extends TestCase
 {
-    private HTTPApiReader $httpApiReader;
-
-    protected function setUp(): void
+    public function testShouldReturnHttpApiAnnotation(): void
     {
-        $this->httpApiReader = new HttpApiReader(new AnnotationReader());
+        $httpApiReader = new HttpApiReader(new AnnotationReader());
+
+        $this->assertInstanceOf(HttpApi::class, $httpApiReader->read(Candy::class));
     }
 
-    public function testShouldReturnStructAnnotation(): void
+    public function testShouldThrowAnnotationReaderNotInstalledException(): void
     {
-        $this->assertInstanceOf(HttpApi::class, $this->httpApiReader->read(Candy::class));
+        $this->expectException(AnnotationReaderNotInstalledException::class);
+
+        $httpApiReader = new HttpApiReader();
+
+        $httpApiReader->read(Brownie::class);
     }
 
-    public function testShouldThrowAnnotationNotFoundException(): void
+    public function testShouldThrowMissingHttpApiException(): void
     {
-        $this->expectException(AnnotationNotFoundException::class);
+        $httpApiReader = new HttpApiReader(new AnnotationReader());
 
-        $this->httpApiReader->read(Brownie::class);
+        $this->expectException(MissingHttpApiException::class);
+
+        $httpApiReader->read(Brownie::class);
+    }
+
+    /**
+     * @requires PHP >= 8.0
+     */
+    public function testShouldReturnHttpApiAttribute(): void
+    {
+        $httpApiReader = new HttpApiReader();
+
+        $this->assertInstanceOf(HttpApi::class, $httpApiReader->read(HttpApiQueryString::class));
     }
 }

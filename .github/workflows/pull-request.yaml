@@ -1,4 +1,4 @@
-name: Pull request
+name: Pull Request
 on: 
   push:
     branches:
@@ -47,6 +47,11 @@ jobs:
         php-versions: ['7.4', '8.0']
     steps:
       - uses: actions/checkout@v1
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          coverage: xdebug
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v2
@@ -58,11 +63,6 @@ jobs:
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --no-interaction --no-progress --ignore-platform-reqs    
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          coverage: xdebug
       - name: Run testsuites
         run: vendor/bin/phpunit --configuration=phpunit.xml.dist --coverage-clover=coverage.xml
       - name: Send code coverage report to Codecov.io
@@ -71,6 +71,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOVIO_TOKEN }}
         run: bash <(curl -s https://codecov.io/bash)
       - name: Run infection
+        if: matrix.php-versions == '8.0'
         env:
           INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
         run: vendor/bin/infection

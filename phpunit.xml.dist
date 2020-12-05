@@ -16,9 +16,11 @@
       <xml outputDirectory="/tmp/infection/coverage-xml"/>
     </report>
   </coverage>
-  <testsuite name="PHPUnit Skeleton Generator">
-    <directory suffix="Test.php">tests</directory>
-  </testsuite>
+  <testsuites>
+    <testsuite name="tests">
+      <directory phpVersion="7.4" phpVersionOperator=">=" suffix="Test.php">tests</directory>
+    </testsuite>
+  </testsuites>
   <php>
     <ini name="serialize_precision" value="14"/>
   </php>

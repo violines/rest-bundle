@@ -7,8 +7,8 @@ namespace TerryApiBundle\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
-use TerryApiBundle\HttpApi\AnnotationNotFoundException;
 use TerryApiBundle\HttpApi\HttpApiReader;
+use TerryApiBundle\HttpApi\MissingHttpApiException;
 use TerryApiBundle\Negotiation\ContentNegotiator;
 use TerryApiBundle\Request\AcceptHeader;
 use TerryApiBundle\Serialize\Serializer;
@@ -62,7 +62,7 @@ final class ResponseListener
 
         try {
             $this->httpApiReader->read(get_class($object));
-        } catch (AnnotationNotFoundException $e) {
+        } catch (MissingHttpApiException $e) {
             return false;
         }
 
