@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Negotiation;
+namespace Violines\RestBundle\Tests\Negotiation;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Negotiation\ContentNegotiator;
-use TerryApiBundle\Negotiation\NotNegotiableException;
-use TerryApiBundle\Request\AcceptHeader;
-use TerryApiBundle\Tests\Stubs\Config;
-use TerryApiBundle\Tests\Stubs\MimeTypes;
+use Violines\RestBundle\Negotiation\ContentNegotiator;
+use Violines\RestBundle\Negotiation\NotNegotiableException;
+use Violines\RestBundle\Request\AcceptHeader;
+use Violines\RestBundle\Tests\Stubs\Config;
+use Violines\RestBundle\Tests\Stubs\MimeTypes;
 
 /**
- * @covers TerryApiBundle\Negotiation\ContentNegotiator
+ * @covers Violines\RestBundle\Negotiation\ContentNegotiator
  *
- * @uses \TerryApiBundle\Negotiation\NotNegotiableException
- * @uses \TerryApiBundle\Request\AcceptHeader
+ * @uses \Violines\RestBundle\Negotiation\NotNegotiableException
+ * @uses \Violines\RestBundle\Request\AcceptHeader
  */
 class ContentNegotiatorTest extends TestCase
 {

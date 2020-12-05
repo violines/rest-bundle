@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Stubs;
+namespace Violines\RestBundle\Tests\Stubs;
 
 use Symfony\Component\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
-use TerryApiBundle\HttpApi\HttpApi;
+use Violines\RestBundle\HttpApi\HttpApi;
 
 /**
  * @HttpApi

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Negotiation;
+namespace Violines\RestBundle\Negotiation;
 
 final class MimeType
 {

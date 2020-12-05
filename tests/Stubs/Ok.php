@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Stubs;
+namespace Violines\RestBundle\Tests\Stubs;
 
-use TerryApiBundle\HttpApi\HttpApi;
+use Violines\RestBundle\HttpApi\HttpApi;
 
 /**
  * @HttpApi

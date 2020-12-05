@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Request;
+namespace Violines\RestBundle\Tests\Request;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Request\AcceptHeader;
+use Violines\RestBundle\Request\AcceptHeader;
 
 /**
- * @covers \TerryApiBundle\Request\AcceptHeader
+ * @covers \Violines\RestBundle\Request\AcceptHeader
  */
 class AcceptHeaderTest extends TestCase
 {

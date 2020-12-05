@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Response;
+namespace Violines\RestBundle\Response;
 
-use TerryApiBundle\Negotiation\MimeType;
+use Violines\RestBundle\Negotiation\MimeType;
 
 final class ContentTypeHeader
 {

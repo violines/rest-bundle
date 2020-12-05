@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Serialize;
+namespace Violines\RestBundle\Serialize;
 
 final class SerializeEvent
 {
-    public const NAME = 'terry_api.event.serialize';
+    public const NAME = 'violines_rest.event.serialize';
+
     /**
      * @var object[]|object|array $data
      */

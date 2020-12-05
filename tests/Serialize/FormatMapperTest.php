@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Serialize;
+namespace Violines\RestBundle\Tests\Serialize;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Negotiation\MimeType;
-use TerryApiBundle\Serialize\FormatException;
-use TerryApiBundle\Serialize\FormatMapper;
-use TerryApiBundle\Tests\Stubs\MimeTypes;
+use Violines\RestBundle\Negotiation\MimeType;
+use Violines\RestBundle\Serialize\FormatException;
+use Violines\RestBundle\Serialize\FormatMapper;
+use Violines\RestBundle\Tests\Stubs\MimeTypes;
 
 /**
- * @covers \TerryApiBundle\Serialize\FormatMapper
+ * @covers \Violines\RestBundle\Serialize\FormatMapper
  */
 class FormatMapperTest extends TestCase
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Request;
+namespace Violines\RestBundle\Tests\Request;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Error\Error;
-use TerryApiBundle\Request\EmptyBodyException;
+use Violines\RestBundle\Error\Error;
+use Violines\RestBundle\Request\EmptyBodyException;
 
 /**
- * @covers \TerryApiBundle\Request\EmptyBodyException
+ * @covers \Violines\RestBundle\Request\EmptyBodyException
  */
 class EmptyBodyExceptionTest extends TestCase
 {

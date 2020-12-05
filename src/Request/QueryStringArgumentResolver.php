@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Request;
+namespace Violines\RestBundle\Request;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use TerryApiBundle\HttpApi\HttpApi;
-use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\HttpApi\MissingHttpApiException;
-use TerryApiBundle\Validation\Validator;
+use Violines\RestBundle\HttpApi\HttpApi;
+use Violines\RestBundle\HttpApi\HttpApiReader;
+use Violines\RestBundle\HttpApi\MissingHttpApiException;
+use Violines\RestBundle\Validation\Validator;
 
 final class QueryStringArgumentResolver implements ArgumentValueResolverInterface
 {

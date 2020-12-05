@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Error;
+namespace Violines\RestBundle\Tests\Error;
 
-use TerryApiBundle\Error\ErrorInterface;
+use Violines\RestBundle\Error\ErrorInterface;
 
 class ErrorException extends \LogicException implements \Throwable, ErrorInterface
 {

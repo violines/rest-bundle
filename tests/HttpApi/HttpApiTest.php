@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\HttpApi;
+namespace Violines\RestBundle\Tests\HttpApi;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\HttpApi\HttpApi;
+use Violines\RestBundle\HttpApi\HttpApi;
 
 /**
- * @covers \TerryApiBundle\HttpApi\HttpApi
+ * @covers \Violines\RestBundle\HttpApi\HttpApi
  */
 class HttpApiTest extends TestCase
 {
@@ -51,22 +51,22 @@ class HttpApiTest extends TestCase
     public function testShouldGenerateFromStringParams($expected, $requestInfoSource)
     {
         $httpApi = new HttpApi(null, $requestInfoSource);
- 
+
         $this->assertInstanceOf(HttpApi::class, $httpApi);
         $this->assertEquals($expected, $httpApi->getRequestInfoSource());
     }
- 
+
     public function providerShouldGenerateFromStringParams(): array
     {
         return [
-             [
-                 'body',
-                 'body'
-             ],
-             [
-                 'query_string',
-                 'query_string'
-             ]
-         ];
+            [
+                'body',
+                'body'
+            ],
+            [
+                'query_string',
+                'query_string'
+            ]
+        ];
     }
 }

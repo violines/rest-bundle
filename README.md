@@ -1,5 +1,5 @@
 ## About
-TerryApiBundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, TerryApiBundle handles serialization, validation and HTTP related things like headers or status codes.
+ViolinesRestBundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, ViolinesRestBundle handles serialization, validation and HTTP related things like headers or status codes.
 
 [![build](https://github.com/simon-schubert/terry-api/workflows/build/badge.svg)](https://github.com/simon-schubert/terry-api)
 [![Code Coverage](https://codecov.io/gh/simon-schubert/terry-api/branch/master/graph/badge.svg)](https://codecov.io/gh/simon-schubert/terry-api)
@@ -26,7 +26,7 @@ composer require simon-schubert/terry-api
 ```
 
 ### How does it work?
-1. Create a DTO (normal PHP class) and add the `@TerryApiBundle\HttpApi\HttpApi` annotation
+1. Create a DTO (normal PHP class) and add the `@Violines\RestBundle\HttpApi\HttpApi` annotation
 1. Use any property annotations from symfony/serializer or symfony/validator inside your DTO
 1. Declare your DTO as type of a controller argument 
 1. Return an instance of your DTO in the controller
@@ -44,7 +44,7 @@ declare(strict_types=1);
 namespace App\DTO;
 
 /**
- * @TerryApiBundle\HttpApi\HttpApi
+ * @Violines\RestBundle\HttpApi\HttpApi
  */
 final class Order
 {
@@ -128,7 +128,7 @@ class OrderController
 ```
 
 ### Wiki
-For more details please check [TerryApiBundle Wiki](https://github.com/simon-schubert/terry-api/wiki).
+For more details please check [ViolinesRestBundle Wiki](https://github.com/simon-schubert/terry-api/wiki).
 
 ## Development setup
 1. copy docker/.env.dist to docker/.env and adjust to your needs

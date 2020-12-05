@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Validation;
+namespace Violines\RestBundle\Validation;
 
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use TerryApiBundle\Error\ValidationException;
+use Violines\RestBundle\Error\ValidationException;
 
 final class Validator
 {

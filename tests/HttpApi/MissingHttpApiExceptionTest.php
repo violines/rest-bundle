@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\HttpApi;
+namespace Violines\RestBundle\Tests\HttpApi;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\HttpApi\MissingHttpApiException;
+use Violines\RestBundle\HttpApi\MissingHttpApiException;
 
 /**
- * @covers \TerryApiBundle\HttpApi\MissingHttpApiException
+ * @covers \Violines\RestBundle\HttpApi\MissingHttpApiException
  */
 class MissingHttpApiExceptionTest extends TestCase
 {

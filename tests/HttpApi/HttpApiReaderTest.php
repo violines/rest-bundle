@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\HttpApi;
+namespace Violines\RestBundle\Tests\HttpApi;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\HttpApi\AnnotationReaderNotInstalledException;
-use TerryApiBundle\HttpApi\HttpApi;
-use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\HttpApi\MissingHttpApiException;
-use TerryApiBundle\Tests\Stubs\Brownie;
-use TerryApiBundle\Tests\Stubs\Candy;
+use Violines\RestBundle\HttpApi\AnnotationReaderNotInstalledException;
+use Violines\RestBundle\HttpApi\HttpApi;
+use Violines\RestBundle\HttpApi\HttpApiReader;
+use Violines\RestBundle\HttpApi\MissingHttpApiException;
+use Violines\RestBundle\Tests\Stubs\Brownie;
+use Violines\RestBundle\Tests\Stubs\Candy;
 
 /**
- * @covers \TerryApiBundle\HttpApi\HttpApiReader
+ * @covers \Violines\RestBundle\HttpApi\HttpApiReader
  */
 class HttpApiReaderTest extends TestCase
 {

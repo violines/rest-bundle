@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Serialize;
+namespace Violines\RestBundle\Serialize;
 
-use TerryApiBundle\Negotiation\MimeType;
+use Violines\RestBundle\Negotiation\MimeType;
 
 final class FormatMapper
 {

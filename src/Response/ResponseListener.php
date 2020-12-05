@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Response;
+namespace Violines\RestBundle\Response;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
-use TerryApiBundle\HttpApi\HttpApiReader;
-use TerryApiBundle\HttpApi\MissingHttpApiException;
-use TerryApiBundle\Negotiation\ContentNegotiator;
-use TerryApiBundle\Request\AcceptHeader;
-use TerryApiBundle\Serialize\Serializer;
+use Violines\RestBundle\HttpApi\HttpApiReader;
+use Violines\RestBundle\HttpApi\MissingHttpApiException;
+use Violines\RestBundle\Negotiation\ContentNegotiator;
+use Violines\RestBundle\Request\AcceptHeader;
+use Violines\RestBundle\Serialize\Serializer;
 
 final class ResponseListener
 {

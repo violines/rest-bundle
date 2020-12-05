@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle;
+namespace Violines\RestBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class TerryApiBundle extends Bundle
+final class ViolinesRestBundle extends Bundle
 {
 }

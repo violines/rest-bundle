@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Error;
+namespace Violines\RestBundle\Tests\Error;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -11,18 +11,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use TerryApiBundle\Error\NotAcceptableListener;
-use TerryApiBundle\Negotiation\MimeType;
-use TerryApiBundle\Negotiation\NotNegotiableException;
-use TerryApiBundle\Response\ResponseBuilder;
-use TerryApiBundle\Serialize\FormatException;
+use Violines\RestBundle\Error\NotAcceptableListener;
+use Violines\RestBundle\Negotiation\MimeType;
+use Violines\RestBundle\Negotiation\NotNegotiableException;
+use Violines\RestBundle\Response\ResponseBuilder;
+use Violines\RestBundle\Serialize\FormatException;
 
 /**
- * @covers \TerryApiBundle\Error\NotAcceptableListener
+ * @covers \Violines\RestBundle\Error\NotAcceptableListener
  *
- * @uses \TerryApiBundle\Negotiation\MimeType
- * @uses \TerryApiBundle\Negotiation\NotNegotiableException
- * @uses \TerryApiBundle\Serialize\FormatException
+ * @uses \Violines\RestBundle\Negotiation\MimeType
+ * @uses \Violines\RestBundle\Negotiation\NotNegotiableException
+ * @uses \Violines\RestBundle\Serialize\FormatException
  */
 class NotAcceptableListenerTest extends TestCase
 {

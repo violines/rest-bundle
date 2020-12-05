@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Request;
+namespace Violines\RestBundle\Request;
 
 final class AcceptHeader
 {

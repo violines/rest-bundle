@@ -5,60 +5,60 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
         <services>
             <defaults public="false" />
-            <service id="terry_api.error.error_listener" class="TerryApiBundle\Error\ErrorListener">
+            <service id="violines_rest.error.error_listener" class="Violines\RestBundle\Error\ErrorListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
-                <argument type="service" id="terry_api.http_api.http_api_reader" />
-                <argument type="service" id="terry_api.negotiation.content_negotiator" />
-                <argument type="service" id="terry_api.response.response_builder" />
-                <argument type="service" id="terry_api.serialize.serializer" />
+                <argument type="service" id="violines_rest.http_api.http_api_reader" />
+                <argument type="service" id="violines_rest.negotiation.content_negotiator" />
+                <argument type="service" id="violines_rest.response.response_builder" />
+                <argument type="service" id="violines_rest.serialize.serializer" />
             </service>
-            <service id="terry_api.error.not_acceptable_listener" class="TerryApiBundle\Error\NotAcceptableListener">
+            <service id="violines_rest.error.not_acceptable_listener" class="Violines\RestBundle\Error\NotAcceptableListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
-                <argument type="service" id="terry_api.response.response_builder" />
+                <argument type="service" id="violines_rest.response.response_builder" />
                 <argument type="service" id="logger" on-invalid="null"/>
             </service>
-            <service id="terry_api.error.validation_exception_listener" class="TerryApiBundle\Error\ValidationExceptionListener">
+            <service id="violines_rest.error.validation_exception_listener" class="Violines\RestBundle\Error\ValidationExceptionListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
-                <argument type="service" id="terry_api.negotiation.content_negotiator" />
-                <argument type="service" id="terry_api.response.response_builder" />
-                <argument type="service" id="terry_api.serialize.serializer" />
+                <argument type="service" id="violines_rest.negotiation.content_negotiator" />
+                <argument type="service" id="violines_rest.response.response_builder" />
+                <argument type="service" id="violines_rest.serialize.serializer" />
             </service>
-            <service id="terry_api.http_api.http_api_reader" class="TerryApiBundle\HttpApi\HttpApiReader">
+            <service id="violines_rest.http_api.http_api_reader" class="Violines\RestBundle\HttpApi\HttpApiReader">
                 <argument type="service" id="annotations.reader" on-invalid="null"/>
             </service>
-            <service id="terry_api.negotiation.content_negotiator" class="TerryApiBundle\Negotiation\ContentNegotiator">
+            <service id="violines_rest.negotiation.content_negotiator" class="Violines\RestBundle\Negotiation\ContentNegotiator">
                 <argument /> <!-- serializeFormats -->
                 <argument /> <!-- serializeFormatDefault -->
             </service>
-            <service id="terry_api.response.response_builder" class="TerryApiBundle\Response\ResponseBuilder" shared="false"/>
-            <service id="terry_api.response.response_listener" class="TerryApiBundle\Response\ResponseListener">
+            <service id="violines_rest.response.response_builder" class="Violines\RestBundle\Response\ResponseBuilder" shared="false"/>
+            <service id="violines_rest.response.response_listener" class="Violines\RestBundle\Response\ResponseListener">
                 <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="10" />
-                <argument type="service" id="terry_api.http_api.http_api_reader" />
-                <argument type="service" id="terry_api.negotiation.content_negotiator" />
-                <argument type="service" id="terry_api.response.response_builder" />
-                <argument type="service" id="terry_api.serialize.serializer" />
+                <argument type="service" id="violines_rest.http_api.http_api_reader" />
+                <argument type="service" id="violines_rest.negotiation.content_negotiator" />
+                <argument type="service" id="violines_rest.response.response_builder" />
+                <argument type="service" id="violines_rest.serialize.serializer" />
             </service>
-            <service id="terry_api.request.body_argument_resolver" class="TerryApiBundle\Request\BodyArgumentResolver">
+            <service id="violines_rest.request.body_argument_resolver" class="Violines\RestBundle\Request\BodyArgumentResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
-                <argument type="service" id="terry_api.http_api.http_api_reader" />
-                <argument type="service" id="terry_api.serialize.serializer" />
-                <argument type="service" id="terry_api.validation.validator" />
+                <argument type="service" id="violines_rest.http_api.http_api_reader" />
+                <argument type="service" id="violines_rest.serialize.serializer" />
+                <argument type="service" id="violines_rest.validation.validator" />
             </service>
-            <service id="terry_api.request.query_string_argument_resolver" class="TerryApiBundle\Request\QueryStringArgumentResolver">
+            <service id="violines_rest.request.query_string_argument_resolver" class="Violines\RestBundle\Request\QueryStringArgumentResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
-                <argument type="service" id="terry_api.http_api.http_api_reader" />
+                <argument type="service" id="violines_rest.http_api.http_api_reader" />
                 <argument type="service" id="serializer" />
-                <argument type="service" id="terry_api.validation.validator" />
+                <argument type="service" id="violines_rest.validation.validator" />
             </service>
-            <service id="terry_api.serialize.format_mapper" class="TerryApiBundle\Serialize\FormatMapper">
+            <service id="violines_rest.serialize.format_mapper" class="Violines\RestBundle\Serialize\FormatMapper">
                 <argument /> <!-- serializeFormats -->
             </service>
-            <service id="terry_api.serialize.serializer" class="TerryApiBundle\Serialize\Serializer">
+            <service id="violines_rest.serialize.serializer" class="Violines\RestBundle\Serialize\Serializer">
                 <argument type="service" id="event_dispatcher" />
                 <argument type="service" id="serializer" />
-                <argument type="service" id="terry_api.serialize.format_mapper" />
+                <argument type="service" id="violines_rest.serialize.format_mapper" />
             </service>
-            <service id="terry_api.validation.validator" class="TerryApiBundle\Validation\Validator">
+            <service id="violines_rest.validation.validator" class="Violines\RestBundle\Validation\Validator">
                  <argument type="service" id="validator" />
             </service>
         </services>

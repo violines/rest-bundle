@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Request;
+namespace Violines\RestBundle\Request;
 
 use Symfony\Component\HttpFoundation\Response;
-use TerryApiBundle\Error\Error;
-use TerryApiBundle\Error\ErrorInterface;
+use Violines\RestBundle\Error\Error;
+use Violines\RestBundle\Error\ErrorInterface;
 
 final class EmptyBodyException extends \RuntimeException implements \Throwable, ErrorInterface
 {

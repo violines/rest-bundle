@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TerryApiBundle\Tests\Request;
+namespace Violines\RestBundle\Tests\Request;
 
 use PHPUnit\Framework\TestCase;
-use TerryApiBundle\Request\SupportsException;
+use Violines\RestBundle\Request\SupportsException;
 
 /**
- * @covers \TerryApiBundle\Request\EmptyBodyException
+ * @covers \Violines\RestBundle\Request\EmptyBodyException
  */
 class SupportsExceptionTest extends TestCase
 {
