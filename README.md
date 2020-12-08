@@ -1,5 +1,5 @@
 ## About
-ViolinesRestBundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, ViolinesRestBundle handles serialization, validation and HTTP related things like headers or status codes.
+violines/rest-bundle is a Symfony Bundle to create REST APIs. It focusses on HTTP standards and integrates the serializer and validator.
 
 [![build](https://github.com/simon-schubert/terry-api/workflows/build/badge.svg)](https://github.com/simon-schubert/terry-api)
 [![Code Coverage](https://codecov.io/gh/simon-schubert/terry-api/branch/master/graph/badge.svg)](https://codecov.io/gh/simon-schubert/terry-api)
@@ -17,24 +17,26 @@ ViolinesRestBundle is a Symfony Bundle to create REST APIs. While you can focus 
 * Error Handling
 * Optional Logging
 
-### Who should use TerryApi?
-Symfony Developers who want to have full controll over what happens inside the controller: after the Arguments of the Controller are resolved and before the Controller returns. This makes it a perfect fit if you want to apply principles like DDD or hexagonal architecture.
+### Designed for...
+modern architectures that apply Domain Driven Design principles, hexagonal architecture or similar concepts.
 
 ### Install
 ```sh
-composer require simon-schubert/terry-api
+composer require violines/rest-bundle
 ```
 
 ### How does it work?
-1. Create a DTO (normal PHP class) and add the `@Violines\RestBundle\HttpApi\HttpApi` annotation
+1. Create a DTO (normal PHP class) and add the `#[Violines\RestBundle\HttpApi\HttpApi]` attribute
 1. Use any property annotations from symfony/serializer or symfony/validator inside your DTO
-1. Declare your DTO as type of a controller argument 
+1. Declare your DTO as type of a controller argument
 1. Return an instance of your DTO in the controller
 
 ### Show Case
 You can find a sample of usage under: https://github.com/simon-schubert/terry-api-show.
 
-### Example of a Controller in your project
+## Example
+
+With PHP8 Attributes
 
 ```php
 <?php
@@ -42,6 +44,15 @@ You can find a sample of usage under: https://github.com/simon-schubert/terry-ap
 declare(strict_types=1);
 
 namespace App\DTO;
+
+#[Violines\RestBundle\HttpApi\HttpApi]
+final class Order
+{
+    public $amount;
+    public $articles;
+}
+
+// Or use Doctrine Annotations (requires separate install):
 
 /**
  * @Violines\RestBundle\HttpApi\HttpApi
@@ -128,7 +139,7 @@ class OrderController
 ```
 
 ### Wiki
-For more details please check [ViolinesRestBundle Wiki](https://github.com/simon-schubert/terry-api/wiki).
+For more details please check [ViolinesRestBundle Wiki](https://github.com/violines/rest-bundle/wiki).
 
 ## Development setup
 1. copy docker/.env.dist to docker/.env and adjust to your needs

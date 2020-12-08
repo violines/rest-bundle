@@ -2,8 +2,8 @@ version: "3.1"
 services:
     php:
       build: ./docker
-      image: terry-api-php
-      container_name: terry-api
+      image: rest-php74
+      container_name: rest-php74
       working_dir: /app
       env_file:
         - ./docker/.env
@@ -14,8 +14,8 @@ services:
       build:
         context: ./docker
         dockerfile: Dockerfile.php8
-      image: terry-api-php8
-      container_name: terry-api-php8
+      image: rest-php80
+      container_name: rest-php80
       working_dir: /app
       env_file:
         - ./docker/.env

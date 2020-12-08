@@ -1,7 +1,7 @@
 {
-    "name": "simon-schubert/terry-api",
+    "name": "violines/rest-bundle",
     "type": "symfony-bundle",
-    "description": "violines/rest-bundle is a Symfony Bundle to create REST APIs. While you can focus on your data model, business logic and persistance layer implementations, the bundle handles serialization, validation and HTTP related things like headers or status codes.",
+    "description": "violines/rest-bundle is a Symfony Bundle to create REST APIs. It focusses on HTTP standards and integrates the serializer and validator.",
     "license": "MIT",
     "require": {
         "php": ">=7.4",
