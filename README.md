@@ -1,12 +1,12 @@
 ## About
-violines/rest-bundle is a Symfony Bundle to create REST APIs. It focusses on HTTP standards and integrates the serializer and validator.
+violines/rest-bundle is a Symfony Bundle to create REST APIs. It focusses on HTTP standards and integrates the symfony/serializer and symfony/validator.
 
-[![build](https://github.com/simon-schubert/terry-api/workflows/build/badge.svg)](https://github.com/simon-schubert/terry-api)
+[![build](https://github.com/violines/rest-bundle/workflows/build/badge.svg)](https://github.com/violines/rest-bundle)
 [![Code Coverage](https://codecov.io/gh/simon-schubert/terry-api/branch/master/graph/badge.svg)](https://codecov.io/gh/simon-schubert/terry-api)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fsimon-schubert%2Fterry-api%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/simon-schubert/terry-api/master)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=simon-schubert_terry-api&metric=sqale_index)](https://sonarcloud.io/dashboard?id=simon-schubert_terry-api)
 [![Software License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Wiki Docs](https://img.shields.io/badge/wiki-docs-B29700)](https://github.com/simon-schubert/terry-api/wiki)
+[![Wiki Docs](https://img.shields.io/badge/wiki-docs-B29700)](https://github.com/violines/rest-bundle/wiki)
 
 ### Features
 * Request body or query string to object conversion
@@ -26,8 +26,8 @@ composer require violines/rest-bundle
 ```
 
 ### How does it work?
-1. Create a DTO (normal PHP class) and add the `#[Violines\RestBundle\HttpApi\HttpApi]` attribute
-1. Use any property annotations from symfony/serializer or symfony/validator inside your DTO
+1. Create a DTO (normal PHP class) and add the `#[HttpApi]` attribute or `@HttpApi` annotation
+1. Use any property attributes/annotations from symfony/serializer or symfony/validator
 1. Declare your DTO as type of a controller argument
 1. Return an instance of your DTO in the controller
 
@@ -35,8 +35,6 @@ composer require violines/rest-bundle
 You can find a sample of usage under: https://github.com/simon-schubert/terry-api-show.
 
 ## Example
-
-With PHP8 Attributes
 
 ```php
 <?php
@@ -57,11 +55,7 @@ final class Order
 /**
  * @Violines\RestBundle\HttpApi\HttpApi
  */
-final class Order
-{
-    public $amount;
-    public $articles;
-}
+final class Order {}
 ```
 
 
@@ -139,7 +133,7 @@ class OrderController
 ```
 
 ### Wiki
-For more details please check [ViolinesRestBundle Wiki](https://github.com/violines/rest-bundle/wiki).
+For more details please check [violines/rest-bundle Wiki](https://github.com/violines/rest-bundle/wiki).
 
 ## Development setup
 1. copy docker/.env.dist to docker/.env and adjust to your needs

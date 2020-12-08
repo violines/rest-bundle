@@ -1,7 +1,7 @@
 {
     "name": "violines/rest-bundle",
     "type": "symfony-bundle",
-    "description": "violines/rest-bundle is a Symfony Bundle to create REST APIs. It focusses on HTTP standards and integrates the serializer and validator.",
+    "description": "violines/rest-bundle is a Symfony Bundle to create REST APIs. It focusses on HTTP standards and integrates the symfony/serializer and symfony/validator.",
     "license": "MIT",
     "require": {
         "php": ">=7.4",
