@@ -2,9 +2,9 @@
 violines/rest-bundle is a Symfony Bundle to create REST APIs. It focusses on HTTP standards and integrates the symfony/serializer and symfony/validator.
 
 [![build](https://github.com/violines/rest-bundle/workflows/build/badge.svg)](https://github.com/violines/rest-bundle)
-[![Code Coverage](https://codecov.io/gh/simon-schubert/terry-api/branch/master/graph/badge.svg)](https://codecov.io/gh/simon-schubert/terry-api)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fsimon-schubert%2Fterry-api%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/simon-schubert/terry-api/master)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=simon-schubert_terry-api&metric=sqale_index)](https://sonarcloud.io/dashboard?id=simon-schubert_terry-api)
+[![Code Coverage](https://codecov.io/gh/violines/rest-bundle/branch/master/graph/badge.svg)](https://codecov.io/gh/violines/rest-bundle/)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fviolines%2Frest-bundle%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/violines/rest-bundle/master)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=violines_rest-bundle&metric=sqale_index)](https://sonarcloud.io/dashboard?id=violines_rest-bundle)
 [![Software License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Wiki Docs](https://img.shields.io/badge/wiki-docs-B29700)](https://github.com/violines/rest-bundle/wiki)
 
