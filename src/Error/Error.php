@@ -9,6 +9,7 @@ use Violines\RestBundle\HttpApi\HttpApi;
 /**
  * @HttpApi
  */
+#[HttpApi]
 final class Error
 {
     private const DEFAULT_TYPE = "about:blank";
