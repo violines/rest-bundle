@@ -32,7 +32,7 @@ composer require violines/rest-bundle
 1. Return an instance of your DTO in the controller
 
 ### Show Case
-You can find a sample of usage under: https://github.com/simon-schubert/terry-api-show.
+You can find a sample of usage under: https://github.com/violines/rest-bundle-showcase.
 
 ## Example
 
