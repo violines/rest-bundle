@@ -8,24 +8,24 @@ final class RequestInfoSource
 {
     private const ENUM_VALUES = [HttpApi::BODY, HttpApi::QUERY_STRING];
 
-    private string $value;
+    private string $requestInfoSource;
 
-    private function __construct(string $value)
+    private function __construct(string $requestInfoSource)
     {
-        $this->value = $value;
+        $this->requestInfoSource = $requestInfoSource;
     }
 
-    public static function fromString(string $value): self
+    public static function fromString(string $requestInfoSource): self
     {
-        if (!\in_array($value, self::ENUM_VALUES)) {
-            throw HttpApiParameterException::enum('requestInfoSource', $value, self::ENUM_VALUES);
+        if (!\in_array($requestInfoSource, self::ENUM_VALUES)) {
+            throw HttpApiParameterException::enum('requestInfoSource', $requestInfoSource, self::ENUM_VALUES);
         }
 
-        return new self($value);
+        return new self($requestInfoSource);
     }
 
     public function toString(): string
     {
-        return $this->value;
+        return $this->requestInfoSource;
     }
 }

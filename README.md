@@ -58,7 +58,6 @@ final class Order
 final class Order {}
 ```
 
-
 ```php
 <?php
 
@@ -75,43 +74,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderController
 {
     /**
-     * @Route("/orders", methods={"GET"}, name="orders")
      * @return Order[]
      */
-    public function orders(): array
+    #[Route('/orders', methods: ['GET'], name: 'find_orders')]
+    public function findOrders(): array
     {
         return $this->orderRepository->findOrders();
     }
 
-    /**
-     * @Route("/order/{id}", methods={"GET"}, name="order")
-     */
-    public function order(int $id): Order
+    #[Route('/order/{id}', methods: ['GET'], name: 'find_order')]
+    public function findOrder(int $id): Order
     {
         $order = $this->orderRepository->find($id);
 
         if (null === $order) {
-            throw NotFoundException::new();
+            throw NotFoundException::id($id);
         }
 
         return $order;
     }
 
-
     /**
-     * @Route("/create_order", methods={"POST"}, name="create_order")
-     */
-    public function createOrder(Order $order): Ok
-    {
-        // create order
-
-        return Ok::new();
-    }
-
-    /**
-     * @Route("/create_orders", methods={"POST"}, name="create_orders")
      * @param Order[] $orders
      */
+    #[Route('/orders/create', methods: ['POST'], name: 'create_orders')]
     public function createOrders(Order ...$orders): Ok
     {
          // create orders
@@ -119,15 +105,12 @@ class OrderController
         return Ok::new();
     }
 
-
-    /**
-     * @Route("/admin", methods={"POST"}, name="admin")
-     */
-    public function admin(User $user)
+    #[Route('/order/create', methods: ['POST'], name: 'create_order')]
+    public function createOrder(Order $order): Ok
     {
-        // verify user
+        // create order
 
-        throw AuthenticationFailedException::create();
+        return Ok::new();
     }
 }
 ```
