@@ -35,7 +35,7 @@ final class Serializer
     }
 
     /**
-     * @return mixed[]|object
+     * @return object[]|object
      */
     public function deserialize(string $data, string $type, MimeType $mimeType)
     {
@@ -44,6 +44,9 @@ final class Serializer
         /** @var DeserializeEvent $deserializeEvent */
         $deserializeEvent = $this->eventDispatcher->dispatch(new DeserializeEvent($data, $format), DeserializeEvent::NAME);
 
-        return $this->serializer->deserialize($data, $type, $format, $deserializeEvent->getContext());
+        /** @var object[]|object $deserialized */
+        $deserialized = $this->serializer->deserialize($data, $type, $format, $deserializeEvent->getContext());
+
+        return $deserialized;
     }
 }

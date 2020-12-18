@@ -8,7 +8,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Dispatcher implements EventDispatcherInterface
 {
-    public function dispatch(object $event, ?string $eventName = null): object
+    public function dispatch($event, string $eventName = null): object
     {
         return $event;
     }
