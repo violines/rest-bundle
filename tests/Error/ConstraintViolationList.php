@@ -23,22 +23,22 @@ class ConstraintViolationList implements \Iterator, ConstraintViolationListInter
         // test
     }
 
-    public function get(int $offset)
+    public function get($offset)
     {
         return $this->violations[$offset];
     }
 
-    public function has(int $offset)
+    public function has($offset)
     {
         return isset($this->violations[$offset]);
     }
 
-    public function set(int $offset, ConstraintViolationInterface $violation)
+    public function set($offset, ConstraintViolationInterface $violation)
     {
         $this->violations[$offset] = $violation;
     }
 
-    public function remove(int $offset)
+    public function remove($offset)
     {
         unset($this->violations[$offset]);
     }

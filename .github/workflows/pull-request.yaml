@@ -1,5 +1,5 @@
 name: Pull Request
-on: 
+on:
   push:
     branches:
       - master
@@ -9,17 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v2
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php7.4-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-
+            ${{ runner.os }}-php7.4-
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --no-interaction --no-progress --ignore-platform-reqs  
+        run: composer update --no-interaction --no-progress --prefer-stable
       - name: Run php cs fixer
         run: vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run
   static-analysis:
@@ -31,47 +35,59 @@ jobs:
         uses: actions/cache@v2
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php8.0-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-
+            ${{ runner.os }}-php8.0-
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --no-interaction --no-progress --ignore-platform-reqs    
+        run: composer update --no-interaction --no-progress --prefer-stable
       - name: Run psalm
         run: vendor/bin/psalm --show-info=true
   tests:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        operating-system: [ubuntu-latest]
-        php-versions: ['7.4', '8.0']
+        include:
+          - php-version: 7.4
+            composer-flags: "--prefer-stable"
+            symfony-require: "4.4.*"
+          - php-version: 7.4
+            composer-flags: "--prefer-stable"
+            symfony-require: ""
+          - php-version: 8.0
+            composer-flags: "--ignore-platform-req=php"
+            symfony-require: ""
     steps:
       - uses: actions/checkout@v1
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           coverage: xdebug
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v2
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php${{ matrix.php-version }}-symfony${{ matrix.symfony-require }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-
+            ${{ runner.os }}-php${{ matrix.php-version }}-symfony${{ matrix.symfony-require }}-
       - name: Install dependencies
+        env:
+          SYMFONY_REQUIRE: ${{ matrix.symfony-require }}
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --no-interaction --no-progress --ignore-platform-reqs    
+        run: |
+          composer global require --no-progress --no-scripts --no-plugins symfony/flex
+          composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
       - name: Run testsuites
         run: vendor/bin/phpunit --configuration=phpunit.xml.dist --coverage-clover=coverage.xml
       - name: Send code coverage report to Codecov.io
-        if: matrix.php-versions == '8.0'
+        if: matrix.php-version == '8.0'
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOVIO_TOKEN }}
         run: bash <(curl -s https://codecov.io/bash)
       - name: Run infection
-        if: matrix.php-versions == '8.0'
+        if: matrix.php-version == '8.0'
         env:
           INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
         run: vendor/bin/infection

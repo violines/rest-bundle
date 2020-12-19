@@ -30,32 +30,32 @@ class Serializer implements DenormalizerInterface, SerializerInterface, Normaliz
         );
     }
 
-    public function serialize($data, string $format, array $context = [])
+    public function serialize($data, $format, $context = [])
     {
         return $this->serializer->serialize($data, $format, $context);
     }
 
-    public function deserialize($data, string $type, string $format, array $context = [])
+    public function deserialize($data, $type, $format, $context = [])
     {
         return $this->serializer->deserialize($data, $type, $format, $context);
     }
 
-    public function normalize($object, ?string $format = null, array $context = [])
+    public function normalize($object, $format = null, $context = [])
     {
         return $this->serializer->normalize($object, $format, $context);
     }
 
-    public function supportsNormalization($data, ?string $format = null)
+    public function supportsNormalization($data, $format = null)
     {
         return true;
     }
 
-    public function denormalize($data, string $type, ?string $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, $context = [])
     {
         return $this->serializer->denormalize($data, $type, $format, $context);
     }
 
-    public function supportsDenormalization($data, string $type, ?string $format = null)
+    public function supportsDenormalization($data, $type, $format = null)
     {
         return true;
     }
