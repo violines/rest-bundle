@@ -18,7 +18,7 @@ class DeserializeEventTest extends TestCase
         $format = 'json';
         $context = ['firstKey' => 'firstVal', 'secondkey' => 'secondVal'];
 
-        $serializeContextEvent = new DeserializeEvent($data, $format);
+        $serializeContextEvent = DeserializeEvent::from($data, $format);
 
         $serializeContextEvent->mergeToContext(['firstKey' => 'firstVal']);
         $serializeContextEvent->mergeToContext(['secondkey' => 'secondVal']);

@@ -11,10 +11,20 @@ final class DeserializeEvent
     private string $format;
     private array $context = [];
 
-    public function __construct(string $data, string $format)
+    private function __construct(string $data, string $format)
     {
         $this->data = $data;
         $this->format = $format;
+    }
+
+    /**
+     * @param string $data
+     *
+     * @internal
+     */
+    public static function from(string $data, string $format): self
+    {
+        return new self($data, $format);
     }
 
     public function getData(): string

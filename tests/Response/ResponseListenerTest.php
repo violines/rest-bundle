@@ -85,7 +85,7 @@ class ResponseListenerTest extends TestCase
     public function testShouldPassControllerResultToSerializer($controllerResult, string $expected): void
     {
         \Phake::when($this->serializer)->serialize($controllerResult, 'json', [])->thenReturn($expected);
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent($controllerResult, 'json'));
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(SerializeEvent::from($controllerResult, 'json'));
 
         $viewEvent = new ViewEvent(
             $this->httpKernel,

@@ -18,13 +18,13 @@ class SerializeEventTest extends TestCase
         $format = 'json';
         $context = ['firstKey' => 'firstVal', 'secondkey' => 'secondVal'];
 
-        $serializeContextEvent = new SerializeEvent($data, $format);
+        $serializeEvent = SerializeEvent::from($data, $format);
 
-        $serializeContextEvent->mergeToContext(['firstKey' => 'firstVal']);
-        $serializeContextEvent->mergeToContext(['secondkey' => 'secondVal']);
+        $serializeEvent->mergeToContext(['firstKey' => 'firstVal']);
+        $serializeEvent->mergeToContext(['secondkey' => 'secondVal']);
 
-        $this->assertEquals($data, $serializeContextEvent->getData());
-        $this->assertEquals($format, $serializeContextEvent->getFormat());
-        $this->assertEquals($context, $serializeContextEvent->getContext());
+        $this->assertEquals($data, $serializeEvent->getData());
+        $this->assertEquals($format, $serializeEvent->getFormat());
+        $this->assertEquals($context, $serializeEvent->getContext());
     }
 }
