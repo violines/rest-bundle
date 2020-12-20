@@ -14,6 +14,9 @@ use Violines\RestBundle\Response\ContentTypeHeader;
 use Violines\RestBundle\Response\ResponseBuilder;
 use Violines\RestBundle\Serialize\Serializer;
 
+/**
+ * @internal
+ */
 final class ErrorListener
 {
     private HttpApiReader $httpApiReader;

@@ -7,7 +7,7 @@ namespace Violines\RestBundle\Error;
 interface ErrorInterface
 {
     /**
-     * must return an Object with Violines\RestBundle\HttpApi\HttpApi annotation.
+     * must return an Object with Violines\RestBundle\HttpApi\HttpApi attribute or annotation.
      */
     public function getContent(): object;
 

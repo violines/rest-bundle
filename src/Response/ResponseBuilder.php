@@ -6,6 +6,9 @@ namespace Violines\RestBundle\Response;
 
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ */
 final class ResponseBuilder
 {
     private string $content = '';

@@ -6,6 +6,9 @@ namespace Violines\RestBundle\HttpApi;
 
 use Doctrine\Common\Annotations\Reader;
 
+/**
+ * @internal
+ */
 class HttpApiReader
 {
     private ?Reader $reader;

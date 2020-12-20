@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Violines\RestBundle\Negotiation;
 
+/**
+ * @internal
+ */
 final class NotNegotiableException extends \RuntimeException implements \Throwable
 {
     private function __construct(string $message)

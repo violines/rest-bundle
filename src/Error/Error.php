@@ -8,6 +8,8 @@ use Violines\RestBundle\HttpApi\HttpApi;
 
 /**
  * @HttpApi
+ *
+ * @internal
  */
 #[HttpApi]
 final class Error
