@@ -7,6 +7,9 @@ namespace Violines\RestBundle\Error;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
+/**
+ * @internal
+ */
 final class ValidationException extends \RuntimeException implements \Throwable
 {
     private ConstraintViolationListInterface $violationList;

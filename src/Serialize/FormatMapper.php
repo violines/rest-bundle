@@ -6,6 +6,9 @@ namespace Violines\RestBundle\Serialize;
 
 use Violines\RestBundle\Negotiation\MimeType;
 
+/**
+ * @internal
+ */
 final class FormatMapper
 {
     /**

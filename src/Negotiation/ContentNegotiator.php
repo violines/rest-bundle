@@ -6,6 +6,9 @@ namespace Violines\RestBundle\Negotiation;
 
 use Violines\RestBundle\Request\AcceptHeader;
 
+/**
+ * @internal
+ */
 final class ContentNegotiator
 {
     private const DEFAULT_KEYS = ['*', '*/*', 'application/*'];

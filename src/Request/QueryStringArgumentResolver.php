@@ -13,6 +13,9 @@ use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\HttpApi\MissingHttpApiException;
 use Violines\RestBundle\Validation\Validator;
 
+/**
+ * @internal
+ */
 final class QueryStringArgumentResolver implements ArgumentValueResolverInterface
 {
     private HttpApiReader $httpApiReader;

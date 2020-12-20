@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Violines\RestBundle\Error\Error;
 use Violines\RestBundle\Error\ErrorInterface;
 
+/**
+ * @internal
+ */
 final class EmptyBodyException extends \RuntimeException implements \Throwable, ErrorInterface
 {
     public function getContent(): object

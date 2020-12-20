@@ -8,6 +8,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Violines\RestBundle\Negotiation\MimeType;
 
+/**
+ * @internal
+ */
 final class Serializer
 {
     private EventDispatcherInterface $eventDispatcher;

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Violines\RestBundle\HttpApi;
 
+/**
+ * @internal
+ */
 final class HttpApiParameterException extends \RuntimeException implements \Throwable
 {
     private function __construct(string $message)

@@ -13,6 +13,9 @@ use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Request\AcceptHeader;
 use Violines\RestBundle\Serialize\Serializer;
 
+/**
+ * @internal
+ */
 final class ResponseListener
 {
     private HttpApiReader $httpApiReader;

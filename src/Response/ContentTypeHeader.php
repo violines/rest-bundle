@@ -6,6 +6,9 @@ namespace Violines\RestBundle\Response;
 
 use Violines\RestBundle\Negotiation\MimeType;
 
+/**
+ * @internal
+ */
 final class ContentTypeHeader
 {
     public const NAME = 'Content-Type';

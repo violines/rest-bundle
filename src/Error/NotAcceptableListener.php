@@ -13,6 +13,9 @@ use Violines\RestBundle\Negotiation\NotNegotiableException;
 use Violines\RestBundle\Response\ResponseBuilder;
 use Violines\RestBundle\Serialize\FormatException;
 
+/**
+ * @internal
+ */
 final class NotAcceptableListener
 {
     private LoggerInterface $logger;

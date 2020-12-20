@@ -7,6 +7,9 @@ namespace Violines\RestBundle\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Violines\RestBundle\Error\ValidationException;
 
+/**
+ * @internal
+ */
 final class Validator
 {
     private ValidatorInterface $validator;
