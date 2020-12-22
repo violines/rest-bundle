@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Violines\RestBundle\Tests\Error;
+namespace Violines\RestBundle\Tests\Mock;
 
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Violines\RestBundle\HttpApi\HttpApi;
 use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Response\ResponseBuilder;
@@ -21,8 +22,6 @@ use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\SerializeEvent;
 use Violines\RestBundle\Serialize\Serializer;
 use Violines\RestBundle\Tests\Stubs\Config;
-use Violines\RestBundle\Tests\Stubs\Gum;
-use Violines\RestBundle\Tests\Stubs\Ok;
 
 /**
  * @covers \Violines\RestBundle\Response\ResponseListener
@@ -132,4 +131,24 @@ class ResponseListenerTest extends TestCase
             [['key' => 'value']]
         ];
     }
+}
+
+/**
+ * @HttpApi
+ */
+class Ok
+{
+    public $message = "Everything is fine.";
+
+    public static function create(): self
+    {
+        return new self();
+    }
+}
+
+class Gum
+{
+    public int $weight;
+
+    public bool $tastesGood;
 }

@@ -6,6 +6,7 @@ namespace Violines\RestBundle\Tests\Error;
 
 use PHPUnit\Framework\TestCase;
 use Violines\RestBundle\Error\ValidationException;
+use Violines\RestBundle\Tests\Mock\ConstraintViolationList;
 
 /**
  * @covers \Violines\RestBundle\Error\ValidationException

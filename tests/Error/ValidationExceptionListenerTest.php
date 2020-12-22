@@ -20,6 +20,7 @@ use Violines\RestBundle\Response\ResponseBuilder;
 use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\SerializeEvent;
 use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Tests\Mock\ConstraintViolationList;
 use Violines\RestBundle\Tests\Stubs\Config;
 
 /**

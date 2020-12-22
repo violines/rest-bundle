@@ -12,7 +12,6 @@ use Violines\RestBundle\Serialize\DeserializeEvent;
 use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\SerializeEvent;
 use Violines\RestBundle\Serialize\Serializer;
-use Violines\RestBundle\Tests\Stubs\Candy;
 use Violines\RestBundle\Tests\Stubs\Config;
 
 /**
@@ -79,4 +78,14 @@ class SerializerTest extends TestCase
 
         \Phake::verify($this->serializerInterface)->deserialize($data, $type, 'json', $context);
     }
+}
+
+/**
+ * @HttpApi
+ */
+class Candy
+{
+    public int $weight = 100;
+    public string $name = 'Bonbon';
+    public bool $tastes_good = true;
 }
