@@ -12,6 +12,8 @@ use Violines\RestBundle\HttpApi\MissingHttpApiException;
 use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Request\AcceptHeader;
 use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Type\ObjectCollection;
+use Violines\RestBundle\Type\TypeException;
 
 /**
  * @internal
@@ -37,43 +39,35 @@ final class ResponseListener
 
     public function transform(ViewEvent $viewEvent): void
     {
-        /** @var object[]|object|array $controllerResult */
+        /** @var mixed $controllerResult */
         $controllerResult = $viewEvent->getControllerResult();
 
-        if ([] !== $controllerResult && !$this->hasHttpApi($controllerResult)) {
-            return;
+        if (\is_object($controllerResult)) {
+            try {
+                $this->httpApiReader->read(get_class($controllerResult));
+            } catch (MissingHttpApiException $e) {
+                return;
+            }
+
+            $viewEvent->setResponse($this->createResponse($controllerResult, $viewEvent->getRequest()));
         }
 
-        $viewEvent->setResponse($this->createResponse($controllerResult, $viewEvent->getRequest()));
+        if (\is_array($controllerResult)) {
+            try {
+                $collection = ObjectCollection::fromArray($controllerResult);
+                if (false !== $firstElement = $collection->first()) {
+                    $this->httpApiReader->read(get_class($firstElement));
+                }
+            } catch (TypeException | MissingHttpApiException $e) {
+                return;
+            }
+
+            $viewEvent->setResponse($this->createResponse($collection->toArray(), $viewEvent->getRequest()));
+        }
     }
 
     /**
-     * @param object[]|object|array $controllerResult
-     */
-    private function hasHttpApi($controllerResult): bool
-    {
-        $object = $controllerResult;
-
-        if (is_array($controllerResult)) {
-            /** @var object|mixed $object */
-            $object = current($controllerResult);
-        }
-
-        if (!is_object($object)) {
-            return false;
-        }
-
-        try {
-            $this->httpApiReader->read(get_class($object));
-        } catch (MissingHttpApiException $e) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param object[]|object|array $data
+     * @param object[]|object $data
      */
     private function createResponse($data, Request $request): Response
     {

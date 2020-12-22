@@ -81,7 +81,7 @@ class ValidationExceptionListenerTest extends TestCase
     {
         $exception = ValidationException::fromViolationList(new ConstraintViolationList());
         \Phake::when($this->serializer)->serialize->thenReturn('string');
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(SerializeEvent::from(
             $exception,
             'json'
         ));

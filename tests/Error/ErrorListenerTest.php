@@ -86,7 +86,7 @@ class ErrorListenerTest extends TestCase
         $exception = new ErrorException();
         $exception->setContent(new Error("Test 400"));
 
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(new SerializeEvent(
+        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(SerializeEvent::from(
             $exception->getContent(),
             'json'
         ));

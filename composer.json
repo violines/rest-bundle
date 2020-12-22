@@ -42,8 +42,7 @@
     },
     "scripts": {
         "test": [
-            "php-cs-fixer fix --allow-risky=yes --dry-run",
-            "phpunit",
+            "XDEBUG_MODE=coverage phpunit",
             "psalm --show-info=true",
             "infection"
         ]

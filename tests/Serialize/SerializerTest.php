@@ -49,7 +49,7 @@ class SerializerTest extends TestCase
         $context = ['ctxkey' => 'ctxValue'];
         $mimeType = MimeType::fromString('application/json');
 
-        $serializeContextEvent = new SerializeEvent($data, 'json');
+        $serializeContextEvent = SerializeEvent::from($data, 'json');
         $serializeContextEvent->mergeToContext($context);
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn($serializeContextEvent);
@@ -68,7 +68,7 @@ class SerializerTest extends TestCase
         $context = ['ctxkey' => 'ctxValue'];
         $mimeType = MimeType::fromString('application/json');
 
-        $deserializeEvent = new DeserializeEvent($data, 'json');
+        $deserializeEvent = DeserializeEvent::from($data, 'json');
         $deserializeEvent->mergeToContext($context);
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn($deserializeEvent);

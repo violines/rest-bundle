@@ -9,23 +9,33 @@ final class SerializeEvent
     public const NAME = 'violines_rest.event.serialize';
 
     /**
-     * @var object[]|object|array $data
+     * @var object[]|object $data
      */
     private $data;
     private string $format;
     private array $context = [];
 
     /**
-     * @param object[]|object|array $data
+     * @param object[]|object $data
      */
-    public function __construct($data, string $format)
+    private function __construct($data, string $format)
     {
         $this->data = $data;
         $this->format = $format;
     }
 
     /**
-     * @return object[]|object|array
+     * @param object[]|object $data
+     *
+     * @internal
+     */
+    public static function from($data, string $format): self
+    {
+        return new self($data, $format);
+    }
+
+    /**
+     * @return object[]|object
      */
     public function getData()
     {
