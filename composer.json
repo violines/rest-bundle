@@ -8,6 +8,7 @@
         "psr/log": "^1.1",
         "symfony/config": "^4.4 || ^5.0",
         "symfony/dependency-injection": "^4.4 || ^5.0",
+        "symfony/contracts": "^1.1 || ^2.0",
         "symfony/http-kernel": "^4.4 || ^5.0",
         "symfony/http-foundation": "^4.4 || ^5.0",
         "symfony/serializer": "^4.4 || ^5.0",
@@ -24,11 +25,12 @@
         "symfony/property-access": "^4.4 || ^5.0",
         "vimeo/psalm": "^4.0"
     },
-    "provide": {
-        "symfony/event-dispatcher-implementation": "^1.1 || ^2.0"
-    },
     "conflict": {
         "symfony/event-dispatcher": "<4.4"
+    },
+    "suggest": {
+        "doctrine/annotations": "^1.11",
+        "symfony/property-access": "^4.4 || ^5.0"
     },
     "autoload": {
         "psr-4": {
