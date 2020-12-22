@@ -10,8 +10,6 @@ use Violines\RestBundle\HttpApi\AnnotationReaderNotInstalledException;
 use Violines\RestBundle\HttpApi\HttpApi;
 use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\HttpApi\MissingHttpApiException;
-use Violines\RestBundle\Tests\Stubs\Brownie;
-use Violines\RestBundle\Tests\Stubs\Candy;
 
 /**
  * @covers \Violines\RestBundle\HttpApi\HttpApiReader
@@ -22,7 +20,7 @@ class HttpApiReaderTest extends TestCase
     {
         $httpApiReader = new HttpApiReader(new AnnotationReader());
 
-        $this->assertInstanceOf(HttpApi::class, $httpApiReader->read(Candy::class));
+        $this->assertInstanceOf(HttpApi::class, $httpApiReader->read(HttpApiDefault::class));
     }
 
     public function testShouldThrowAnnotationReaderNotInstalledException(): void
@@ -31,7 +29,7 @@ class HttpApiReaderTest extends TestCase
 
         $httpApiReader = new HttpApiReader();
 
-        $httpApiReader->read(Brownie::class);
+        $httpApiReader->read(AnnotationOnly::class);
     }
 
     public function testShouldThrowMissingHttpApiException(): void
@@ -40,7 +38,7 @@ class HttpApiReaderTest extends TestCase
 
         $this->expectException(MissingHttpApiException::class);
 
-        $httpApiReader->read(Brownie::class);
+        $httpApiReader->read(FakeAnnotation::class);
     }
 
     /**
@@ -52,4 +50,51 @@ class HttpApiReaderTest extends TestCase
 
         $this->assertInstanceOf(HttpApi::class, $httpApiReader->read(HttpApiQueryString::class));
     }
+}
+
+/**
+ * @HttpApi
+ * @AnyAnnotation
+ */
+class HttpApiDefault
+{
+    public int $weight;
+
+    public string $name;
+}
+
+/**
+ * @AnyAnnotation
+ */
+class FakeAnnotation
+{
+    public int $weight;
+
+    public bool $tastesGood;
+}
+
+/**
+ * @HttpApi
+ */
+class AnnotationOnly
+{
+    public int $weight;
+
+    public bool $tastesGood;
+}
+
+#[HttpApi(requestInfoSource: 'query_string')]
+class HttpApiQueryString
+{
+    public int $id;
+
+    public string $name;
+}
+
+/**
+ * @Annotation
+ * @Target("CLASS")
+ */
+class AnyAnnotation
+{
 }

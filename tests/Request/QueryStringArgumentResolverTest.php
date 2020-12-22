@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Violines\RestBundle\HttpApi\HttpApi;
 use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\Request\QueryStringArgumentResolver;
 use Violines\RestBundle\Request\SupportsException;
@@ -118,4 +119,17 @@ class QueryStringArgumentResolverTest extends TestCase
         $this->assertEquals(1000, $resolved->priceFrom);
         $this->assertEquals(9000, $resolved->priceTo);
     }
+}
+
+/**
+ * @HttpApi(requestInfoSource=HttpApi::QUERY_STRING)
+ */
+class QueryStringHttpApi
+{
+    public $priceFrom;
+    public $priceTo;
+}
+
+class WithoutHttpApi
+{
 }

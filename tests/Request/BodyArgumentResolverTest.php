@@ -13,6 +13,7 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Violines\RestBundle\Error\ValidationException;
+use Violines\RestBundle\HttpApi\HttpApi;
 use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\Request\BodyArgumentResolver;
 use Violines\RestBundle\Request\EmptyBodyException;
@@ -207,4 +208,14 @@ class BodyArgumentResolverTest extends TestCase
             [''],
         ];
     }
+}
+
+/**
+ * @HttpApi
+ */
+class DefaultHttpApi
+{
+    public int $int = 1;
+    public string $name = 'name';
+    public bool $is_true = true;
 }

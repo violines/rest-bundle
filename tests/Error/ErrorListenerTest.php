@@ -13,7 +13,9 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Violines\RestBundle\Error\ErrorInterface;
 use Violines\RestBundle\Error\ErrorListener;
+use Violines\RestBundle\HttpApi\HttpApi;
 use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\HttpApi\MissingHttpApiException;
 use Violines\RestBundle\Negotiation\ContentNegotiator;
@@ -22,8 +24,6 @@ use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\SerializeEvent;
 use Violines\RestBundle\Serialize\Serializer;
 use Violines\RestBundle\Tests\Stubs\Config;
-use Violines\RestBundle\Tests\Stubs\Error;
-use Violines\RestBundle\Tests\Stubs\Gum;
 
 /**
  * @covers \Violines\RestBundle\Error\ErrorListener
@@ -142,4 +142,44 @@ class ErrorListenerTest extends TestCase
 
         $this->errorListener->handle($exceptionEvent);
     }
+}
+
+class ErrorException extends \LogicException implements \Throwable, ErrorInterface
+{
+    private $content;
+
+    public function getContent(): object
+    {
+        return $this->content;
+    }
+
+    public function getStatusCode(): int
+    {
+        return 400;
+    }
+
+    public function setContent(object $content): void
+    {
+        $this->content = $content;
+    }
+}
+
+/**
+ * @HttpApi
+ */
+class Error
+{
+    public $message;
+
+    public function __construct(string $message)
+    {
+        $this->message = $message;
+    }
+}
+
+class Gum
+{
+    public int $weight;
+
+    public bool $tastesGood;
 }
