@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Violines\RestBundle\Response;
 
-use Violines\RestBundle\Negotiation\MimeType;
-
 /**
  * @internal
  */
@@ -33,11 +31,6 @@ final class ContentTypeHeader
     public function toStringWithProblem(): string
     {
         return $this->withProblem($this->contentType);
-    }
-
-    public function toMimeType(): MimeType
-    {
-        return MimeType::fromString($this->contentType);
     }
 
     private function withProblem(string $contentType): string
