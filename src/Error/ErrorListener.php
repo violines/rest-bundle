@@ -8,11 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Violines\RestBundle\HttpApi\HttpApiReader;
-use Violines\RestBundle\Negotiation\ContentNegotiator;
-use Violines\RestBundle\Request\AcceptHeader;
-use Violines\RestBundle\Response\ContentTypeHeader;
-use Violines\RestBundle\Response\ResponseBuilder;
-use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Response\ErrorResponseResolver;
 
 /**
  * @internal
@@ -20,20 +16,12 @@ use Violines\RestBundle\Serialize\Serializer;
 final class ErrorListener
 {
     private HttpApiReader $httpApiReader;
-    private ContentNegotiator $contentNegotiator;
-    private ResponseBuilder $responseBuilder;
-    private Serializer $serializer;
+    private ErrorResponseResolver $errorResponseResolver;
 
-    public function __construct(
-        HttpApiReader $httpApiReader,
-        ContentNegotiator $contentNegotiator,
-        ResponseBuilder $responseBuilder,
-        Serializer $serializer
-    ) {
+    public function __construct(HttpApiReader $httpApiReader, ErrorResponseResolver $errorResponseResolver)
+    {
         $this->httpApiReader = $httpApiReader;
-        $this->contentNegotiator = $contentNegotiator;
-        $this->responseBuilder = $responseBuilder;
-        $this->serializer = $serializer;
+        $this->errorResponseResolver = $errorResponseResolver;
     }
 
     public function handle(ExceptionEvent $event): void
@@ -44,23 +32,13 @@ final class ErrorListener
             return;
         }
 
-        $event->setResponse($this->createResponse($event->getRequest(), $exception));
+        $this->httpApiReader->read(get_class($exception->getContent()));
+
+        $event->setResponse($this->createResponse($exception, $event->getRequest()));
     }
 
-
-    private function createResponse(Request $request, ErrorInterface $exception): Response
+    private function createResponse(ErrorInterface $exception, Request $request): Response
     {
-        $acceptHeader = AcceptHeader::fromString((string) $request->headers->get(AcceptHeader::NAME, ''));
-        $preferredMimeType = $this->contentNegotiator->negotiate($acceptHeader);
-
-        $object = $exception->getContent();
-
-        $this->httpApiReader->read(get_class($object));
-
-        return $this->responseBuilder
-            ->setContent($this->serializer->serialize($object, $preferredMimeType))
-            ->setStatus($exception->getStatusCode())
-            ->setContentType(ContentTypeHeader::fromString($preferredMimeType->toString()))
-            ->getResponse();
+        return $this->errorResponseResolver->resolve($exception, $request);
     }
 }
