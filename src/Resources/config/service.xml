@@ -8,9 +8,7 @@
             <service id="violines_rest.error.error_listener" class="Violines\RestBundle\Error\ErrorListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
                 <argument type="service" id="violines_rest.http_api.http_api_reader" />
-                <argument type="service" id="violines_rest.negotiation.content_negotiator" />
-                <argument type="service" id="violines_rest.response.response_builder" />
-                <argument type="service" id="violines_rest.serialize.serializer" />
+                <argument type="service" id="violines_rest.response.error_response_resolver" />
             </service>
             <service id="violines_rest.error.not_acceptable_listener" class="Violines\RestBundle\Error\NotAcceptableListener">
                 <tag name="kernel.event_listener" event="kernel.exception" method="handle" priority="10" />
@@ -31,9 +29,17 @@
                 <argument /> <!-- serializeFormatDefault -->
             </service>
             <service id="violines_rest.response.response_builder" class="Violines\RestBundle\Response\ResponseBuilder" shared="false"/>
+            <service id="violines_rest.response.error_response_resolver" class="Violines\RestBundle\Response\ErrorResponseResolver">
+                <argument type="service" id="violines_rest.negotiation.content_negotiator" />
+                <argument type="service" id="violines_rest.response.response_builder" />
+                <argument type="service" id="violines_rest.serialize.serializer" />
+            </service>
             <service id="violines_rest.response.response_listener" class="Violines\RestBundle\Response\ResponseListener">
                 <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="10" />
                 <argument type="service" id="violines_rest.http_api.http_api_reader" />
+                <argument type="service" id="violines_rest.response.success_response_resolver" />
+            </service>
+            <service id="violines_rest.response.success_response_resolver" class="Violines\RestBundle\Response\SuccessResponseResolver">
                 <argument type="service" id="violines_rest.negotiation.content_negotiator" />
                 <argument type="service" id="violines_rest.response.response_builder" />
                 <argument type="service" id="violines_rest.serialize.serializer" />

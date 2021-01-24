@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Violines\RestBundle\Error\ErrorInterface;
 use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Request\AcceptHeader;
-use Violines\RestBundle\Response\ContentTypeHeader;
-use Violines\RestBundle\Response\ResponseBuilder;
 use Violines\RestBundle\Serialize\Serializer;
 
 final class ErrorResponseResolver

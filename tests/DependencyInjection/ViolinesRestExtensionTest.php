@@ -38,10 +38,16 @@ class ViolinesRestExtensionTest extends AbstractExtensionTestCase
                 'violines_rest.negotiation.content_negotiator'
             ],
             [
+                'violines_rest.response.error_response_resolver'
+            ],
+            [
                 'violines_rest.response.response_builder'
             ],
             [
                 'violines_rest.response.response_listener'
+            ],
+            [
+                'violines_rest.response.success_response_resolver'
             ],
             [
                 'violines_rest.request.body_argument_resolver'

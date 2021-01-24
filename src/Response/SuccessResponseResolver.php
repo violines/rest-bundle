@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Request\AcceptHeader;
-use Violines\RestBundle\Response\ContentTypeHeader;
-use Violines\RestBundle\Response\ResponseBuilder;
 use Violines\RestBundle\Serialize\Serializer;
 
 final class SuccessResponseResolver
