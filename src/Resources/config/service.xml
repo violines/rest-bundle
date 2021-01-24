@@ -34,6 +34,7 @@
                 <argument type="service" id="violines_rest.response.response_builder" />
                 <argument type="service" id="violines_rest.serialize.serializer" />
             </service>
+            <service id="Violines\RestBundle\Response\ErrorResponseResolver" alias="violines_rest.response.error_response_resolver" />
             <service id="violines_rest.response.response_listener" class="Violines\RestBundle\Response\ResponseListener">
                 <tag name="kernel.event_listener" event="kernel.view" method="transform" priority="10" />
                 <argument type="service" id="violines_rest.http_api.http_api_reader" />
@@ -44,6 +45,7 @@
                 <argument type="service" id="violines_rest.response.response_builder" />
                 <argument type="service" id="violines_rest.serialize.serializer" />
             </service>
+            <service id="Violines\RestBundle\Response\SuccessResponseResolver" alias="violines_rest.response.success_response_resolver" />
             <service id="violines_rest.request.body_argument_resolver" class="Violines\RestBundle\Request\BodyArgumentResolver">
                 <tag name="controller.argument_value_resolver" priority="50" />
                 <argument type="service" id="violines_rest.http_api.http_api_reader" />
