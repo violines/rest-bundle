@@ -19,6 +19,7 @@ use Violines\RestBundle\HttpApi\HttpApi;
 use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\HttpApi\MissingHttpApiException;
 use Violines\RestBundle\Negotiation\ContentNegotiator;
+use Violines\RestBundle\Response\ErrorResponseResolver;
 use Violines\RestBundle\Response\ResponseBuilder;
 use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\SerializeEvent;
@@ -27,6 +28,7 @@ use Violines\RestBundle\Tests\Stubs\Config;
 
 /**
  * @covers \Violines\RestBundle\Error\ErrorListener
+ * @covers \Violines\RestBundle\Response\ErrorResponseResolver
  *
  * @uses \Violines\RestBundle\Serialize\SerializeEvent
  */
@@ -74,9 +76,11 @@ class ErrorListenerTest extends TestCase
 
         $this->errorListener = new ErrorListener(
             new HttpApiReader(new AnnotationReader()),
-            new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
-            new ResponseBuilder(),
-            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS))
+            new ErrorResponseResolver(
+                new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
+                new ResponseBuilder(),
+                new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS))
+            )
         );
     }
 

@@ -18,6 +18,7 @@ use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Response\ResponseBuilder;
 use Violines\RestBundle\Response\ResponseListener;
+use Violines\RestBundle\Response\SuccessResponseResolver;
 use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\SerializeEvent;
 use Violines\RestBundle\Serialize\Serializer;
@@ -25,6 +26,7 @@ use Violines\RestBundle\Tests\Stubs\Config;
 
 /**
  * @covers \Violines\RestBundle\Response\ResponseListener
+ * @covers \Violines\RestBundle\Response\SuccessResponseResolver
  *
  * @uses \Violines\RestBundle\Serialize\SerializeEvent
  */
@@ -72,9 +74,11 @@ class ResponseListenerTest extends TestCase
 
         $this->listener = new ResponseListener(
             new HttpApiReader(new AnnotationReader()),
-            new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
-            new ResponseBuilder(),
-            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS))
+            new SuccessResponseResolver(
+                new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
+                new ResponseBuilder(),
+                new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS))
+            )
         );
     }
 
