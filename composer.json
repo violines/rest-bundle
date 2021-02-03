@@ -47,6 +47,9 @@
             "XDEBUG_MODE=coverage phpunit",
             "psalm --show-info=true",
             "infection"
+        ],
+        "test-debug": [
+            "XDEBUG_MODE=debug,coverage phpunit"
         ]
     }
 }

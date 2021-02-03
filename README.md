@@ -125,6 +125,6 @@ For more details please check [violines/rest-bundle Wiki](https://github.com/vio
 
 ## Development setup
 1. copy docker/.env.dist to docker/.env and adjust to your needs
+1. cd docker/
 1. pull latest image(s): docker-compose pull
-1. build the image(s): docker-compose build
 1. create the container(s): docker-compose up -d
