@@ -1,0 +1,20 @@
+version: "3.1"
+services:
+    php74:
+        image: webdevops/php-dev:7.4
+        container_name: rest-php74
+        working_dir: /app
+        env_file:
+            - ./.env
+        volumes:
+            - ..:/app
+            - ../vendor:/app/vendor:cached
+    php80:
+        image: webdevops/php-dev:8.0
+        container_name: rest-php80
+        working_dir: /app
+        env_file:
+            - ./.env
+        volumes:
+            - ..:/app
+            - ../vendor:/app/vendor:cached
