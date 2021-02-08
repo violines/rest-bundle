@@ -51,10 +51,5 @@
         "test-debug": [
             "XDEBUG_MODE=debug,coverage phpunit"
         ]
-    },
-    "extra": {
-        "branch-alias": {
-            "0.x-dev": "dev-master"
-        }
     }
 }
