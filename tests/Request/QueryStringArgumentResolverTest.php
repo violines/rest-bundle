@@ -63,9 +63,12 @@ class QueryStringArgumentResolverTest extends TestCase
     /**
      * @dataProvider providerSupportsShouldReturnFalse
      */
-    public function testSupportsShouldReturnFalse($type): void
+    public function testSupportsShouldReturnFalse($type, array $query, bool $isNullable): void
     {
         \Phake::when($this->argument)->getType->thenReturn($type);
+        \Phake::when($this->argument)->isNullable->thenReturn($isNullable);
+
+        $this->request->query = new ParameterBag($query);
 
         $this->assertFalse($this->resolver->supports($this->request, $this->argument));
     }
@@ -73,15 +76,18 @@ class QueryStringArgumentResolverTest extends TestCase
     public function providerSupportsShouldReturnFalse(): array
     {
         return [
-            ['string'],
-            [null],
-            [WithoutHttpApi::class],
+            ['string', ['param1' => 'value1'], false],
+            [null, ['param1' => 'value1'], false],
+            [WithoutHttpApi::class, ['param1' => 'value1'], false],
+            [QueryStringHttpApi::class, [], true],
         ];
     }
 
     public function testSupportsShouldReturnTrue(): void
     {
         \Phake::when($this->argument)->getType->thenReturn(QueryStringHttpApi::class);
+
+        $this->request->query = new ParameterBag([]);
 
         $this->assertTrue($this->resolver->supports($this->request, $this->argument));
     }
