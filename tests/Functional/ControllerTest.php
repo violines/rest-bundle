@@ -18,7 +18,7 @@ use Violines\RestBundle\Tests\Stubs\MimeTypes;
 use Violines\RestBundle\ViolinesRestBundle;
 
 /**
- * @covers \Violines\RestBundle\ViolinesRestBundle
+ * @coversNothing
  */
 final class ControllerTest extends TestCase
 {
