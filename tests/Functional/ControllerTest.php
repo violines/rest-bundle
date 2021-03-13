@@ -47,7 +47,7 @@ final class ControllerTest extends TestCase
 
         self::assertSame(MimeTypes::APPLICATION_JSON, $response->headers->get('Content-Type'));
         self::assertJsonStringEqualsJsonString(<<<JSON
-            {"from":"Forest"}
+            {"to":"Forest"}
        JSON, $response->getContent());
     }
 
@@ -61,16 +61,16 @@ final class ControllerTest extends TestCase
         self::assertSame(MimeTypes::APPLICATION_JSON, $response->headers->get('Content-Type'));
         self::assertJsonStringEqualsJsonString(<<<JSON
             [
-                {"from":"Jenny"},
-                {"from":"Forest"}
+                {"to":"Jenny"},
+                {"to":"Forest"}
             ]
        JSON, $response->getContent());
     }
 
-    public function testReconstitutesOneFromRequest(): void
+    public function testReconstitutesOnetoRequest(): void
     {
         $submitted = <<<JSON
-            {"from":"Jenny"}
+            {"to":"Jenny"}
         JSON;
 
         $request = Request::create('/reconstitutesOne', Request::METHOD_POST, [], [], [], [], $submitted);
@@ -82,12 +82,12 @@ final class ControllerTest extends TestCase
         self::assertJsonStringEqualsJsonString($submitted, $response->getContent());
     }
 
-    public function testReconstitutesMultipleFromRequest(): void
+    public function testReconstitutesMultipletoRequest(): void
     {
         $submitted = <<<JSON
             [
-                {"from":"Jenny"},
-                {"from":"Forest"}
+                {"to":"Jenny"},
+                {"to":"Forest"}
             ]
         JSON;
 
@@ -181,23 +181,14 @@ final class HugController
 {
     public function returnsOne(): Hug
     {
-        $fromForest = new Hug();
-        $fromForest->from = 'Forest';
-
-        return $fromForest;
+        return new Hug('Forest');
     }
 
     public function returnsMany(): array
     {
-        $fromJenny = new Hug();
-        $fromJenny->from = 'Jenny';
-
-        $fromForest = new Hug();
-        $fromForest->from = 'Forest';
-
         return [
-            $fromJenny,
-            $fromForest,
+            new Hug('Jenny'),
+            new Hug('Forest'),
         ];
     }
 
@@ -221,5 +212,13 @@ final class HugController
  */
 final class Hug
 {
-    public string $from;
+    /**
+     * @psalm-readonly
+     */
+    public string $to;
+
+    public function __construct(string $to)
+    {
+        $this->to = $to;
+    }
 }
