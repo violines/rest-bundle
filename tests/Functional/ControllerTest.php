@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use Violines\RestBundle\Tests\Stubs\MimeTypes;
 use Violines\RestBundle\ViolinesRestBundle;
+use function sys_get_temp_dir;
 
 /**
  * @coversNothing
@@ -99,14 +100,16 @@ final class ControllerTest extends TestCase
         self::assertJsonStringEqualsJsonString($submitted, $response->getContent());
     }
 
-    private function deleteTempDir()
+    private function deleteTempDir(): void
     {
-        if (!file_exists($dir = sys_get_temp_dir() . '/' . Kernel::VERSION . '/CrudControllerTestKernel')) {
+        $tempDir = TestKernel::getTempDir();
+
+        if (!file_exists($tempDir)) {
             return;
         }
 
         $fs = new Filesystem();
-        $fs->remove($dir);
+        $fs->remove($tempDir);
     }
 }
 
@@ -154,12 +157,23 @@ final class TestKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return sys_get_temp_dir() . '/' . Kernel::VERSION . '/CrudControllerTestKernel/cache/' . $this->environment;
+        return self::getTempDir() . '/cache/';
     }
 
     public function getLogDir(): string
     {
-        return sys_get_temp_dir() . '/' . Kernel::VERSION . '/CrudControllerTestKernel/logs';
+        return self::getTempDir() . '/logs';
+    }
+
+    public static function getTempDir(): string
+    {
+        $parts = [
+            sys_get_temp_dir(),
+            ControllerTest::class,
+            Kernel::VERSION,
+        ];
+
+        return implode('/', $parts);
     }
 }
 
