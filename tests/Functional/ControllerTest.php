@@ -67,22 +67,19 @@ final class ControllerTest extends TestCase
        JSON, $response->getContent());
     }
 
-    public function testReconstitutesOnetoRequest(): void
+    public function testReconstitutesOne(): void
     {
         $submitted = <<<JSON
             {"to":"Jenny"}
         JSON;
 
-        $request = Request::create('/reconstitutesOne', Request::METHOD_POST, [], [], [], [], $submitted);
-        $request->headers->set('Content-Type', MimeTypes::APPLICATION_JSON);
-        $request->headers->set('Accept', MimeTypes::APPLICATION_JSON);
-
+        $request = $this->createPostRequest('/reconstitutesOne', $submitted);
         $response = $this->app->handle($request);
 
         self::assertJsonStringEqualsJsonString($submitted, $response->getContent());
     }
 
-    public function testReconstitutesMultipletoRequest(): void
+    public function testReconstitutesMultiple(): void
     {
         $submitted = <<<JSON
             [
@@ -91,9 +88,7 @@ final class ControllerTest extends TestCase
             ]
         JSON;
 
-        $request = Request::create('reconstitutesMany', Request::METHOD_POST, [], [], [], [], $submitted);
-        $request->headers->set('Content-Type', MimeTypes::APPLICATION_JSON);
-        $request->headers->set('Accept', MimeTypes::APPLICATION_JSON);
+        $request = $this->createPostRequest('reconstitutesMany', $submitted);
 
         $response = $this->app->handle($request);
 
@@ -110,6 +105,15 @@ final class ControllerTest extends TestCase
 
         $fs = new Filesystem();
         $fs->remove($tempDir);
+    }
+
+    private function createPostRequest(string $uri, string $body): Request
+    {
+        $request = Request::create($uri, Request::METHOD_POST, [], [], [], [], $body);
+        $request->headers->set('Content-Type', MimeTypes::APPLICATION_JSON);
+        $request->headers->set('Accept', MimeTypes::APPLICATION_JSON);
+
+        return $request;
     }
 }
 
