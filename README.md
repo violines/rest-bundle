@@ -56,6 +56,7 @@ final class Order
 }
 
 // Or use Doctrine Annotations (requires separate install):
+// In order to use Annotations you have to install `doctrine/annotations` via `composer require doctrine/annotations`
 
 /**
  * @Violines\RestBundle\HttpApi\HttpApi
@@ -128,3 +129,4 @@ For more details please check [violines/rest-bundle Wiki](https://github.com/vio
 1. cd docker/
 1. pull latest image(s): docker-compose pull
 1. create the container(s): docker-compose up -d
+    - To run the tests in one of the containers, use `docker-compose exec php80 composer run test`
