@@ -10,8 +10,7 @@
     failOnRisky="true"
     failOnWarning="true"
     failOnEmptyTestSuite="true"
-    stopOnFailure="true"
-    cacheResult="false"
+    stopOnFailure="false"
     stderr="false"
     verbose="true"
 >
