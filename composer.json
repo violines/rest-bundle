@@ -25,7 +25,8 @@
         "symfony/property-access": "^4.4 || ^5.0",
         "vimeo/psalm": "^4.0",
         "symfony/framework-bundle": "^4.4 || ^5.2",
-        "symfony/filesystem": "^4.4 || ^5.2"
+        "symfony/filesystem": "^4.4 || ^5.2",
+        "mikey179/vfsstream": "^1.6"
     },
     "conflict": {
         "symfony/event-dispatcher": "<4.4"

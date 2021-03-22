@@ -4,38 +4,30 @@ declare(strict_types=1);
 
 namespace Violines\RestBundle\Tests\Functional;
 
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use Violines\RestBundle\Tests\Stubs\MimeTypes;
 use Violines\RestBundle\ViolinesRestBundle;
-use function sys_get_temp_dir;
 
 /**
  * @coversNothing
  */
 final class ControllerTest extends TestCase
 {
-    private TestKernel $app;
+    private static TestKernel $app;
 
-    protected function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        $this->deleteTempDir();
-
-        $this->app = new TestKernel();
-        $this->app->boot();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->deleteTempDir();
+        static::$app = new TestKernel();
+        static::$app->boot();
     }
 
     public function testReturnsOne(): void
@@ -43,7 +35,7 @@ final class ControllerTest extends TestCase
         $request = Request::create('/returnsOne');
         $request->headers->set('Accept', MimeTypes::APPLICATION_JSON);
 
-        $response = $this->app->handle($request);
+        $response = static::$app->handle($request);
 
         self::assertSame(MimeTypes::APPLICATION_JSON, $response->headers->get('Content-Type'));
         self::assertJsonStringEqualsJsonString(<<<JSON
@@ -56,7 +48,7 @@ final class ControllerTest extends TestCase
         $request = Request::create('/returnsMany');
         $request->headers->set('Accept', MimeTypes::APPLICATION_JSON);
 
-        $response = $this->app->handle($request);
+        $response = static::$app->handle($request);
 
         self::assertSame(MimeTypes::APPLICATION_JSON, $response->headers->get('Content-Type'));
         self::assertJsonStringEqualsJsonString(<<<JSON
@@ -74,7 +66,7 @@ final class ControllerTest extends TestCase
         JSON;
 
         $request = $this->createPostRequest('/reconstitutesOne', $submitted);
-        $response = $this->app->handle($request);
+        $response = static::$app->handle($request);
 
         self::assertJsonStringEqualsJsonString($submitted, $response->getContent());
     }
@@ -90,21 +82,9 @@ final class ControllerTest extends TestCase
 
         $request = $this->createPostRequest('reconstitutesMany', $submitted);
 
-        $response = $this->app->handle($request);
+        $response = static::$app->handle($request);
 
         self::assertJsonStringEqualsJsonString($submitted, $response->getContent());
-    }
-
-    private function deleteTempDir(): void
-    {
-        $tempDir = TestKernel::getTempDir();
-
-        if (!file_exists($tempDir)) {
-            return;
-        }
-
-        $fs = new Filesystem();
-        $fs->remove($tempDir);
     }
 
     private function createPostRequest(string $uri, string $body): Request
@@ -121,11 +101,12 @@ final class ControllerTest extends TestCase
 final class TestKernel extends Kernel
 {
     use MicroKernelTrait;
-
+    private vfsStreamDirectory $fileStreamRoot;
 
     public function __construct()
     {
         parent::__construct('test', false);
+        $this->fileStreamRoot = vfsStream::setup();
     }
 
     public function registerBundles(): array
@@ -138,21 +119,16 @@ final class TestKernel extends Kernel
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $routes->addRoute(new Route('/returnsOne', [
-            '_controller' => HugController::class . '::returnsOne',
-        ]));
+        $pathControllerMap = [
+            '/returnsOne' => HugController::class . '::returnsOne',
+            '/returnsMany' => HugController::class . '::returnsMany',
+            '/reconstitutesOne' => HugController::class . '::reconstitutesOne',
+            '/reconstitutesMany' => HugController::class . '::reconstitutesMany'
+        ];
 
-        $routes->addRoute(new Route('/returnsMany', [
-            '_controller' => HugController::class . '::returnsMany',
-        ]));
-
-        $routes->addRoute(new Route('/reconstitutesOne', [
-            '_controller' => HugController::class . '::reconstitutesOne',
-        ]));
-
-        $routes->addRoute(new Route('reconstitutesMany', [
-            '_controller' => HugController::class . '::reconstitutesMany',
-        ]));
+        foreach ($pathControllerMap as $path => $controller) {
+            $routes->add($path, $controller);
+        }
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
@@ -161,23 +137,12 @@ final class TestKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return self::getTempDir() . '/cache/';
+        return $this->fileStreamRoot->url() . '/cache/';
     }
 
     public function getLogDir(): string
     {
-        return self::getTempDir() . '/logs';
-    }
-
-    public static function getTempDir(): string
-    {
-        $parts = [
-            sys_get_temp_dir(),
-            ControllerTest::class,
-            Kernel::VERSION,
-        ];
-
-        return implode('/', $parts);
+        return $this->fileStreamRoot->url() . '/logs';
     }
 }
 
