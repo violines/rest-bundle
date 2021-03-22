@@ -73,8 +73,8 @@ namespace App\Controller;
 
 use App\Exception\AuthenticationFailedException;
 use App\DTO\Order;
-use App\DTO\Ok;
 use App\DTO\User;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class OrderController
@@ -104,19 +104,19 @@ class OrderController
      * @param Order[] $orders
      */
     #[Route('/orders/create', methods: ['POST'], name: 'create_orders')]
-    public function createOrders(Order ...$orders): Ok
+    public function createOrders(Order ...$orders): Response
     {
          // create orders
 
-        return Ok::new();
+        return new Response(null, Response::HTTP_CREATED);
     }
 
     #[Route('/order/create', methods: ['POST'], name: 'create_order')]
-    public function createOrder(Order $order): Ok
+    public function createOrder(Order $order): Response
     {
-        // create order
+        $this->orderRepository->create($order);
 
-        return Ok::new();
+        return new Response(null, Response::HTTP_CREATED);
     }
 }
 ```
