@@ -33,11 +33,11 @@ composer require violines/rest-bundle
 ### How does it work?
 1. Create any PHP class (Entity, DTO, Command, Query, etc) and add the `#[HttpApi]` attribute or `@HttpApi` annotation
 1. Use any property attributes/annotations from symfony/serializer or symfony/validator
-1. Declare your DTO as type of a controller argument
-1. Return an instance of your DTO in the controller
+1. Declare this PHP class as type of a controller argument
+1. Return an instance of this PHP class in the controller
 
 ### Show Case
-You can find a sample of usage under: https://github.com/violines/rest-bundle-showcase.
+Find a sample of usage under: https://github.com/violines/rest-bundle-showcase.
 
 ## Example
 
