@@ -31,7 +31,7 @@ composer require violines/rest-bundle
 ```
 
 ### How does it work?
-1. Create a DTO (normal PHP class) and add the `#[HttpApi]` attribute or `@HttpApi` annotation
+1. Create any PHP class (Entity, DTO, Command, Query, etc) and add the `#[HttpApi]` attribute or `@HttpApi` annotation
 1. Use any property attributes/annotations from symfony/serializer or symfony/validator
 1. Declare your DTO as type of a controller argument
 1. Return an instance of your DTO in the controller
@@ -46,7 +46,7 @@ You can find a sample of usage under: https://github.com/violines/rest-bundle-sh
 
 declare(strict_types=1);
 
-namespace App\DTO;
+namespace App\Entity;
 
 #[Violines\RestBundle\HttpApi\HttpApi]
 final class Order
@@ -72,8 +72,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\AuthenticationFailedException;
-use App\DTO\Order;
-use App\DTO\User;
+use App\Entity\Order;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -106,7 +105,7 @@ class OrderController
     #[Route('/orders/create', methods: ['POST'], name: 'create_orders')]
     public function createOrders(Order ...$orders): Response
     {
-         // create orders
+        $this->orderRepository->createOrders($orders);
 
         return new Response(null, Response::HTTP_CREATED);
     }
@@ -129,4 +128,4 @@ For more details please check [violines/rest-bundle Wiki](https://github.com/vio
 1. cd docker/
 1. pull latest image(s): docker-compose pull
 1. create the container(s): docker-compose up -d
-    - To run the tests in one of the containers, use `docker-compose exec php80 composer run test`
+1. run tests with `docker-compose exec php80 composer run test`
