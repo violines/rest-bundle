@@ -22,7 +22,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-php7.4-
       - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer update --no-interaction --no-progress --prefer-stable
       - name: Run php cs fixer
         run: vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run
@@ -39,7 +38,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-php8.0-
       - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer update --no-interaction --no-progress --prefer-stable
       - name: Run psalm
         run: vendor/bin/psalm --show-info=true --shepherd
@@ -75,7 +73,6 @@ jobs:
       - name: Install dependencies
         env:
           SYMFONY_REQUIRE: ${{ matrix.symfony-require }}
-        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: |
           composer global require --no-progress --no-scripts --no-plugins symfony/flex
           composer update --no-interaction --no-progress ${{ matrix.composer-flags }}

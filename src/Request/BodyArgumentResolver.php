@@ -70,7 +70,6 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
         $type = $argument->isVariadic() ? $className . '[]' : $className;
         $contentType = ContentTypeHeader::fromString((string)$request->headers->get(ContentTypeHeader::NAME, ''));
 
-        /** @var object[]|object $deserialized */
         $deserialized = $this->serializer->deserialize($content, $type, $contentType->toMimeType());
 
         $this->validator->validate($deserialized);
