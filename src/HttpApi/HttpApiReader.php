@@ -37,7 +37,6 @@ class HttpApiReader
             throw AnnotationReaderNotInstalledException::doctrine();
         }
 
-        /** @var HttpApi|null $annotation */
         $annotation = $this->reader->getClassAnnotation($reflectionClass, HttpApi::class);
 
         if (null !== $annotation) {
