@@ -16,6 +16,6 @@ final class MissingHttpApiException extends \RuntimeException implements \Throwa
 
     public static function className(string $className): self
     {
-        return new self(sprintf('\'#[HttpApi]\' or \'@HttpApi\' for %s not found.', $className));
+        return new self(\sprintf('\'#[HttpApi]\' or \'@HttpApi\' for %s not found.', $className));
     }
 }

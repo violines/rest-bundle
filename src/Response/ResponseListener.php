@@ -33,7 +33,7 @@ final class ResponseListener
 
         if (\is_object($controllerResult)) {
             try {
-                $this->httpApiReader->read(get_class($controllerResult));
+                $this->httpApiReader->read(\get_class($controllerResult));
             } catch (MissingHttpApiException $e) {
                 return;
             }
@@ -45,7 +45,7 @@ final class ResponseListener
             try {
                 $collection = ObjectCollection::fromArray($controllerResult);
                 if (false !== $firstElement = $collection->first()) {
-                    $this->httpApiReader->read(get_class($firstElement));
+                    $this->httpApiReader->read(\get_class($firstElement));
                 }
             } catch (TypeException | MissingHttpApiException $e) {
                 return;

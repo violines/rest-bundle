@@ -14,8 +14,8 @@ use Violines\RestBundle\HttpApi\HttpApi;
 #[HttpApi]
 final class Error
 {
-    private const DEFAULT_TYPE = "about:blank";
-    private const DEFAULT_TITLE = "General Error";
+    private const DEFAULT_TYPE = 'about:blank';
+    private const DEFAULT_TITLE = 'General Error';
     private string $type;
     private string $title;
     private string $detail;

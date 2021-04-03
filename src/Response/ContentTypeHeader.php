@@ -37,11 +37,11 @@ final class ContentTypeHeader
     {
         $problemContentType = '';
 
-        $parts = explode('/', $contentType);
+        $parts = \explode('/', $contentType);
 
-        $limit = count($parts) - 1;
+        $limit = \count($parts) - 1;
 
-        for ($i = $limit; $i >= 0; $i--) {
+        for ($i = $limit; $i >= 0; --$i) {
             if ($i !== $limit) {
                 $problemContentType = '/' . $problemContentType;
             }

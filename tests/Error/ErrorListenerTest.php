@@ -71,7 +71,7 @@ class ErrorListenerTest extends TestCase
 
         $this->request->headers = new HeaderBag([
             'Accept' => 'application/pdf, application/json, application/xml',
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ]);
 
         $this->errorListener = new ErrorListener(
@@ -88,7 +88,7 @@ class ErrorListenerTest extends TestCase
     {
         $expectedJson = '{"message": "Test 400"}';
         $exception = new ErrorException();
-        $exception->setContent(new Error("Test 400"));
+        $exception->setContent(new Error('Test 400'));
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn(SerializeEvent::from(
             $exception->getContent(),

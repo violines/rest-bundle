@@ -9,7 +9,7 @@ final class SerializeEvent
     public const NAME = 'violines_rest.event.serialize';
 
     /**
-     * @var object[]|object $data
+     * @var object[]|object
      */
     private $data;
     private string $format;
@@ -54,6 +54,6 @@ final class SerializeEvent
 
     public function mergeToContext(array $context): void
     {
-        $this->context = array_merge($this->context, $context);
+        $this->context = \array_merge($this->context, $context);
     }
 }

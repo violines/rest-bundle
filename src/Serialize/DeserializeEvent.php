@@ -18,8 +18,6 @@ final class DeserializeEvent
     }
 
     /**
-     * @param string $data
-     *
      * @internal
      */
     public static function from(string $data, string $format): self
@@ -44,6 +42,6 @@ final class DeserializeEvent
 
     public function mergeToContext(array $context): void
     {
-        $this->context = array_merge($this->context, $context);
+        $this->context = \array_merge($this->context, $context);
     }
 }

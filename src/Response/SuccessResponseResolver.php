@@ -25,12 +25,13 @@ final class SuccessResponseResolver
         $this->responseBuilder = $responseBuilder;
         $this->serializer = $serializer;
     }
+
     /**
      * @param object[]|object $data
      */
     public function resolve($data, Request $request): Response
     {
-        $acceptHeader = AcceptHeader::fromString((string) $request->headers->get(AcceptHeader::NAME, ''));
+        $acceptHeader = AcceptHeader::fromString((string)$request->headers->get(AcceptHeader::NAME, ''));
         $preferredMimeType = $this->contentNegotiator->negotiate($acceptHeader);
 
         return $this->responseBuilder

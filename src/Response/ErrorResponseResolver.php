@@ -29,7 +29,7 @@ final class ErrorResponseResolver
 
     public function resolve(ErrorInterface $e, Request $request): Response
     {
-        $acceptHeader = AcceptHeader::fromString((string) $request->headers->get(AcceptHeader::NAME, ''));
+        $acceptHeader = AcceptHeader::fromString((string)$request->headers->get(AcceptHeader::NAME, ''));
         $preferredMimeType = $this->contentNegotiator->negotiate($acceptHeader);
 
         return $this->responseBuilder

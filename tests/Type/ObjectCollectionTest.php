@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Violines\RestBundle\Tests\Type;
 
-use \stdClass;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use Violines\RestBundle\Type\ObjectCollection;
 use Violines\RestBundle\Type\TypeException;
 
@@ -48,7 +48,7 @@ class ObjectCollectionTest extends TestCase
                     'a' => new stdClass(),
                     'b' => new stdClass(),
                 ],
-            ]
+            ],
         ];
     }
 
@@ -69,8 +69,8 @@ class ObjectCollectionTest extends TestCase
                 [
                     CollectionItem::from(0),
                     CollectionItem::from(1),
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -78,7 +78,6 @@ class ObjectCollectionTest extends TestCase
     {
         self::assertFalse(ObjectCollection::fromArray([])->first());
     }
-
 
     /**
      * @dataProvider providerShouldThrowTypeExceptions
@@ -94,20 +93,20 @@ class ObjectCollectionTest extends TestCase
     {
         return [
             [
-                ['test' => 'test']
+                ['test' => 'test'],
             ],
             [
                 [
                     new stdClass(),
                     'test' => 'test',
-                ]
+                ],
             ],
             [
                 [
                     CollectionItem::from(0),
-                    new stdClass()
-                ]
-            ]
+                    new stdClass(),
+                ],
+            ],
         ];
     }
 }

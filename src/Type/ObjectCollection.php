@@ -24,8 +24,6 @@ final class ObjectCollection
 
     /**
      * @param array<mixed> $array
-     *
-     * @return self
      */
     public static function fromArray(array $array): self
     {

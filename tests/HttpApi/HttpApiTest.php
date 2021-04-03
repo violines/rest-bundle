@@ -28,12 +28,12 @@ class HttpApiTest extends TestCase
         return [
             [
                 'body',
-                []
+                [],
             ],
             [
                 'body',
-                ['requestInfoSource' => 'body']
-            ]
+                ['requestInfoSource' => 'body'],
+            ],
         ];
     }
 
@@ -61,12 +61,12 @@ class HttpApiTest extends TestCase
         return [
             [
                 'body',
-                'body'
+                'body',
             ],
             [
                 'query_string',
-                'query_string'
-            ]
+                'query_string',
+            ],
         ];
     }
 }

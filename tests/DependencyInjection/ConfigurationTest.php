@@ -37,7 +37,7 @@ class ConfigurationTest extends TestCase
                     'serialize' => [
                         'formats' => [
                             'json' => ['application/json'],
-                            'xml' => ['application/xml']
+                            'xml' => ['application/xml'],
                         ],
                         'format_default' => 'application/json',
                     ],
@@ -49,27 +49,27 @@ class ConfigurationTest extends TestCase
                         'formats' => [
                             'json' => [
                                 'application/json',
-                                'application/json+ld'
+                                'application/json+ld',
                             ],
                             'xml' => [
                                 'application/xml',
-                                'text/html'
-                            ]
+                                'text/html',
+                            ],
                         ],
                         'format_default' => 'application/json',
-                    ]
+                    ],
                 ],
                 [
                     'serialize' => [
                         'formats' => [
                             'json' => [
                                 'application/json',
-                                'application/json+ld'
+                                'application/json+ld',
                             ],
                             'xml' => [
                                 'application/xml',
-                                'text/html'
-                            ]
+                                'text/html',
+                            ],
                         ],
                         'format_default' => 'application/json',
                     ],

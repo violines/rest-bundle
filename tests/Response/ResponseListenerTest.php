@@ -69,7 +69,7 @@ class ResponseListenerTest extends TestCase
 
         $this->request->headers = new HeaderBag([
             'Accept' => 'application/pdf, application/json, application/xml',
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ]);
 
         $this->listener = new ResponseListener(
@@ -105,7 +105,7 @@ class ResponseListenerTest extends TestCase
     public function providerShouldPassControllerResultToSerializer(): array
     {
         return [
-            [[new Ok()], '[{"message": "Everything is fine."}]']
+            [[new Ok()], '[{"message": "Everything is fine."}]'],
         ];
     }
 
@@ -132,7 +132,7 @@ class ResponseListenerTest extends TestCase
             [null],
             [new Gum()],
             ['key' => 'value'],
-            [['key' => 'value']]
+            [['key' => 'value']],
         ];
     }
 }
@@ -142,7 +142,7 @@ class ResponseListenerTest extends TestCase
  */
 class Ok
 {
-    public $message = "Everything is fine.";
+    public $message = 'Everything is fine.';
 
     public static function create(): self
     {

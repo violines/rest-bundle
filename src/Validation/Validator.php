@@ -28,7 +28,7 @@ final class Validator
     {
         $violations = $this->validator->validate($data);
 
-        if (0 < count($violations)) {
+        if (0 < \count($violations)) {
             throw ValidationException::fromViolationList($violations);
         }
     }

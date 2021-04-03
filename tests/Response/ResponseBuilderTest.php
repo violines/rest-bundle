@@ -37,7 +37,7 @@ class ResponseBuilderTest extends TestCase
 
         $this->request->headers = new HeaderBag([
             'Accept' => 'application/json, plain/html',
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ]);
     }
 
@@ -93,7 +93,7 @@ class ResponseBuilderTest extends TestCase
         return [
             [400, 'application/problem+json'],
             [403, 'application/problem+json'],
-            [500, 'application/json']
+            [500, 'application/json'],
         ];
     }
 }
