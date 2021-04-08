@@ -132,10 +132,10 @@ class BodyArgumentResolverTest extends TestCase
     {
         $this->expectException(ValidationException::class);
 
-        $content = json_encode($expected);
+        $content = \json_encode($expected);
 
         \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isVariadic->thenReturn(is_array($expected));
+        \Phake::when($this->argument)->isVariadic->thenReturn(\is_array($expected));
         \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
 
         $violationList = new ConstraintViolationList();
@@ -154,7 +154,7 @@ class BodyArgumentResolverTest extends TestCase
             ],
             [
                 new DefaultHttpApi(),
-            ]
+            ],
         ];
     }
 
@@ -163,10 +163,10 @@ class BodyArgumentResolverTest extends TestCase
      */
     public function testResolveShouldYield($expected): void
     {
-        $content = json_encode($expected);
+        $content = \json_encode($expected);
 
         \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isVariadic->thenReturn(is_array($expected));
+        \Phake::when($this->argument)->isVariadic->thenReturn(\is_array($expected));
         \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
         \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
 
@@ -182,7 +182,7 @@ class BodyArgumentResolverTest extends TestCase
             ],
             [
                 new DefaultHttpApi(),
-            ]
+            ],
         ];
     }
 

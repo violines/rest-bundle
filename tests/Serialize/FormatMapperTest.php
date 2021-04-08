@@ -31,22 +31,22 @@ class FormatMapperTest extends TestCase
             [
                 [
                     'json' => [
-                        MimeTypes::APPLICATION_JSON
-                    ]
+                        MimeTypes::APPLICATION_JSON,
+                    ],
                 ],
                 MimeTypes::APPLICATION_JSON,
-                'json'
+                'json',
             ],
             [
                 [
                     'xml' => [
                         MimeTypes::APPLICATION_XML,
-                        'application/atom+xml'
-                    ]
+                        'application/atom+xml',
+                    ],
                 ],
                 MimeTypes::APPLICATION_XML,
-                'xml'
-            ]
+                'xml',
+            ],
         ];
     }
 
@@ -68,15 +68,15 @@ class FormatMapperTest extends TestCase
             [
                 [
                     'json' => [
-                        MimeTypes::APPLICATION_JSON
-                    ]
+                        MimeTypes::APPLICATION_JSON,
+                    ],
                 ],
-                MimeTypes::APPLICATION_XML
+                MimeTypes::APPLICATION_XML,
             ],
             [
                 [],
-                MimeTypes::APPLICATION_XML
-            ]
+                MimeTypes::APPLICATION_XML,
+            ],
         ];
     }
 }

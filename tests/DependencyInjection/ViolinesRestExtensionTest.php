@@ -26,44 +26,44 @@ class ViolinesRestExtensionTest extends AbstractExtensionTestCase
     {
         return [
             [
-                'violines_rest.error.validation_exception_listener'
+                'violines_rest.error.validation_exception_listener',
             ],
             [
-                'violines_rest.error.error_listener'
+                'violines_rest.error.error_listener',
             ],
             [
-                'violines_rest.http_api.http_api_reader'
+                'violines_rest.http_api.http_api_reader',
             ],
             [
-                'violines_rest.negotiation.content_negotiator'
+                'violines_rest.negotiation.content_negotiator',
             ],
             [
-                'violines_rest.response.error_response_resolver'
+                'violines_rest.response.error_response_resolver',
             ],
             [
-                'violines_rest.response.response_builder'
+                'violines_rest.response.response_builder',
             ],
             [
-                'violines_rest.response.response_listener'
+                'violines_rest.response.response_listener',
             ],
             [
-                'violines_rest.response.success_response_resolver'
+                'violines_rest.response.success_response_resolver',
             ],
             [
-                'violines_rest.request.body_argument_resolver'
+                'violines_rest.request.body_argument_resolver',
             ],
             [
-                'violines_rest.request.query_string_argument_resolver'
+                'violines_rest.request.query_string_argument_resolver',
             ],
             [
-                'violines_rest.serialize.format_mapper'
+                'violines_rest.serialize.format_mapper',
             ],
             [
-                'violines_rest.serialize.serializer'
+                'violines_rest.serialize.serializer',
             ],
             [
-                'violines_rest.validation.validator'
-            ]
+                'violines_rest.validation.validator',
+            ],
         ];
     }
 
@@ -85,8 +85,8 @@ class ViolinesRestExtensionTest extends AbstractExtensionTestCase
                 0,
                 [
                     'json' => ['application/json'],
-                    'xml' => ['application/xml']
-                ]
+                    'xml' => ['application/xml'],
+                ],
             ],
             [
                 'violines_rest.negotiation.content_negotiator',
@@ -98,9 +98,9 @@ class ViolinesRestExtensionTest extends AbstractExtensionTestCase
                 0,
                 [
                     'json' => ['application/json'],
-                    'xml' => ['application/xml']
-                ]
-            ]
+                    'xml' => ['application/xml'],
+                ],
+            ],
         ];
     }
 

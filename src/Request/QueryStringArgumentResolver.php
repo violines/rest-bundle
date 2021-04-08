@@ -35,7 +35,7 @@ final class QueryStringArgumentResolver implements ArgumentValueResolverInterfac
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         $className = $argument->getType();
-        if (null === $className || !class_exists($className) || ([] === $request->query->all() && $argument->isNullable())) {
+        if (null === $className || !\class_exists($className) || ([] === $request->query->all() && $argument->isNullable())) {
             return false;
         }
 
@@ -56,7 +56,7 @@ final class QueryStringArgumentResolver implements ArgumentValueResolverInterfac
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
         $className = $argument->getType();
-        if (null === $className || !class_exists($className)) {
+        if (null === $className || !\class_exists($className)) {
             throw SupportsException::covered();
         }
 

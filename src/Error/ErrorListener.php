@@ -32,7 +32,7 @@ final class ErrorListener
             return;
         }
 
-        $this->httpApiReader->read(get_class($exception->getContent()));
+        $this->httpApiReader->read(\get_class($exception->getContent()));
 
         $event->setResponse($this->createResponse($exception, $event->getRequest()));
     }

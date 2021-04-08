@@ -77,10 +77,12 @@ class ConstraintViolationList implements \Iterator, ConstraintViolationListInter
     {
         // test
     }
+
     public function offsetSet($offset, $value): void
     {
         // test
     }
+
     public function offsetUnset($offset): void
     {
         // test
@@ -88,6 +90,6 @@ class ConstraintViolationList implements \Iterator, ConstraintViolationListInter
 
     public function count()
     {
-        return count($this->violations);
+        return \count($this->violations);
     }
 }

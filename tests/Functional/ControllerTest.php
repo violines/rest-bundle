@@ -123,7 +123,7 @@ final class TestKernel extends Kernel
             '/returnsOne' => HugController::class . '::returnsOne',
             '/returnsMany' => HugController::class . '::returnsMany',
             '/reconstitutesOne' => HugController::class . '::reconstitutesOne',
-            '/reconstitutesMany' => HugController::class . '::reconstitutesMany'
+            '/reconstitutesMany' => HugController::class . '::reconstitutesMany',
         ];
 
         foreach ($pathControllerMap as $path => $controller) {

@@ -13,7 +13,7 @@ final class ContentNegotiator
 {
     private const DEFAULT_KEYS = ['*', '*/*', 'application/*'];
     private array $availables = [];
-    /** @var array<string,string> $defaults*/
+    /** @var array<string,string> */
     private array $defaults = [];
 
     /**
@@ -38,19 +38,19 @@ final class ContentNegotiator
     {
         $headerString = '' !== $header->toString() ? $header->toString() : $this->defaults['*'];
 
-        $headerMimeTypes = explode(
+        $headerMimeTypes = \explode(
             ',',
-            strtr(
-                preg_replace("@[ 　]@u", '', $headerString),
+            \strtr(
+                \preg_replace('@[ 　]@u', '', $headerString),
                 $this->defaults
             )
         );
 
         $resultMimeTypes = [];
         foreach ($headerMimeTypes as $mimeType) {
-            $splited = explode(';', $mimeType);
+            $splited = \explode(';', $mimeType);
             $key = $splited[1] ?? 'q=1.0';
-            if (in_array($splited[0], $this->availables) && !array_key_exists($key, $resultMimeTypes)) {
+            if (\in_array($splited[0], $this->availables) && !\array_key_exists($key, $resultMimeTypes)) {
                 $resultMimeTypes[$key] = $splited[0];
             }
         }
@@ -59,8 +59,8 @@ final class ContentNegotiator
             throw NotNegotiableException::notConfigured($header->toString());
         }
 
-        krsort($resultMimeTypes);
+        \krsort($resultMimeTypes);
 
-        return MimeType::fromString(current($resultMimeTypes));
+        return MimeType::fromString(\current($resultMimeTypes));
     }
 }

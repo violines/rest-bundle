@@ -16,6 +16,6 @@ final class HttpApiParameterException extends \RuntimeException implements \Thro
 
     public static function enum(string $parameterName, string $value, array $expected): self
     {
-        return new self(sprintf('The value %s for the parameter \'%s\' for \'#[HttpApi]\' or \'@HttpApi\' is not allowed. Expected values: %s.', $value, $parameterName, \json_encode($expected)));
+        return new self(\sprintf('The value %s for the parameter \'%s\' for \'#[HttpApi]\' or \'@HttpApi\' is not allowed. Expected values: %s.', $value, $parameterName, \json_encode($expected)));
     }
 }

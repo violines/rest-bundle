@@ -18,6 +18,6 @@ final class FormatException extends \RuntimeException implements \Throwable
 
     public static function notConfigured(MimeType $mimeType): self
     {
-        return new self(sprintf('MimeType %s was not configured for any Format. Check configuration under serialize > formats', $mimeType->toString()));
+        return new self(\sprintf('MimeType %s was not configured for any Format. Check configuration under serialize > formats', $mimeType->toString()));
     }
 }

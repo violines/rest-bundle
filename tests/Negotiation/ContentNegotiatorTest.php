@@ -12,7 +12,7 @@ use Violines\RestBundle\Tests\Stubs\Config;
 use Violines\RestBundle\Tests\Stubs\MimeTypes;
 
 /**
- * @covers Violines\RestBundle\Negotiation\ContentNegotiator
+ * @covers \Violines\RestBundle\Negotiation\ContentNegotiator
  *
  * @uses \Violines\RestBundle\Negotiation\NotNegotiableException
  * @uses \Violines\RestBundle\Request\AcceptHeader
@@ -68,7 +68,7 @@ class ContentNegotiatorTest extends TestCase
     {
         return [
             ['randomstringButNotEmpty'],
-            ['application/random']
+            ['application/random'],
         ];
     }
 }

@@ -68,7 +68,7 @@ class ValidationExceptionListenerTest extends TestCase
 
         $this->request->headers = new HeaderBag([
             'Accept' => 'application/pdf, application/json, application/xml',
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ]);
 
         $this->listener = new ValidationExceptionListener(

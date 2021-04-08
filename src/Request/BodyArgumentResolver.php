@@ -35,7 +35,7 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         $className = $argument->getType();
-        if (null === $className || !class_exists($className) || ('' == (string)$request->getContent() && $argument->isNullable())) {
+        if (null === $className || !\class_exists($className) || ('' == (string)$request->getContent() && $argument->isNullable())) {
             return false;
         }
 
@@ -51,7 +51,7 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
     /**
      * @return \Generator
      *
-     * @throws SupportsException when $this->supports should have returned false
+     * @throws SupportsException  when $this->supports should have returned false
      * @throws EmptyBodyException when $request->getContent() is false|null|''
      */
     public function resolve(Request $request, ArgumentMetadata $argument)
@@ -59,7 +59,7 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
         $className = $argument->getType();
         $content = (string)$request->getContent();
 
-        if (null === $className || !class_exists($className) || ('' == $content && $argument->isNullable())) {
+        if (null === $className || !\class_exists($className) || ('' == $content && $argument->isNullable())) {
             throw SupportsException::covered();
         }
 
@@ -74,6 +74,6 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
 
         $this->validator->validate($deserialized);
 
-        yield from !is_array($deserialized) ? [$deserialized] : $deserialized;
+        yield from !\is_array($deserialized) ? [$deserialized] : $deserialized;
     }
 }
