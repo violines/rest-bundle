@@ -12,7 +12,7 @@
     "logs": {
         "text": "infection.log",
         "badge": {
-            "branch": "master"
+            "branch": "0.x"
         }
     },
     "mutators": {
