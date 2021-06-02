@@ -42,7 +42,7 @@ class SerializerTest extends TestCase
         \Phake::initAnnotations($this);
     }
 
-    public function testShouldSerialize(): void
+    public function testShouldVerifyContextMergeOnSerialize(): void
     {
         $data = [];
         $context = ['ctxkey' => 'ctxValue'];
@@ -60,10 +60,10 @@ class SerializerTest extends TestCase
         \Phake::verify($this->serializerInterface)->serialize($data, 'json', $context);
     }
 
-    public function testShouldDeserialize(): void
+    public function testShouldVerifyContextMergeOnDeserialize(): void
     {
         $data = '{"weight": 100, "name": "Bonbon", "tastesGood": true}';
-        $type = 'Violines\RestBundle\Tests\Stubs\CandyStructStub';
+        $type = 'Violines\RestBundle\Tests\Serialize\Product';
         $context = ['ctxkey' => 'ctxValue'];
         $mimeType = MimeType::fromString('application/json');
 
@@ -71,7 +71,7 @@ class SerializerTest extends TestCase
         $deserializeEvent->mergeToContext($context);
 
         \Phake::when($this->eventDispatcher)->dispatch->thenReturn($deserializeEvent);
-        \Phake::when($this->serializerInterface)->serialize->thenReturn(new Candy());
+        \Phake::when($this->serializerInterface)->deserialize->thenReturn(new Product(100, 'Bonbon', true));
 
         $serializer = new Serializer($this->eventDispatcher, $this->serializerInterface, new FormatMapper(Config::SERIALIZE_FORMATS));
         $serializer->deserialize($data, $type, $mimeType);
@@ -83,9 +83,16 @@ class SerializerTest extends TestCase
 /**
  * @HttpApi
  */
-class Candy
+final class Product
 {
-    public int $weight = 100;
-    public string $name = 'Bonbon';
-    public bool $tastes_good = true;
+    public int $weight;
+    public string $name;
+    public bool $tastes_good;
+
+    public function __construct(int $weight, string $name, bool $tastesGood)
+    {
+        $this->weight = $weight;
+        $this->name = $name;
+        $this->tastes_good = $tastesGood;
+    }
 }
