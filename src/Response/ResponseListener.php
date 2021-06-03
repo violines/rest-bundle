@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\HttpApi\MissingHttpApiException;
-use Violines\RestBundle\Type\ObjectCollection;
+use Violines\RestBundle\Type\ObjectList;
 use Violines\RestBundle\Type\TypeException;
 
 /**
@@ -43,7 +43,7 @@ final class ResponseListener
 
         if (\is_array($controllerResult)) {
             try {
-                $collection = ObjectCollection::fromArray($controllerResult);
+                $collection = ObjectList::fromArray($controllerResult);
                 if (false !== $firstElement = $collection->first()) {
                     $this->httpApiReader->read(\get_class($firstElement));
                 }
