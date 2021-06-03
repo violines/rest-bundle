@@ -9,19 +9,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Violines\RestBundle\Error\ErrorInterface;
 use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Request\AcceptHeader;
-use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Serialize\SerializerInterface;
 
 final class ErrorResponseResolver
 {
     private ContentNegotiator $contentNegotiator;
     private ResponseBuilder $responseBuilder;
-    private Serializer $serializer;
+    private SerializerInterface $serializer;
 
-    public function __construct(
-        ContentNegotiator $contentNegotiator,
-        ResponseBuilder $responseBuilder,
-        Serializer $serializer
-    ) {
+    public function __construct(ContentNegotiator $contentNegotiator, ResponseBuilder $responseBuilder, SerializerInterface $serializer)
+    {
         $this->contentNegotiator = $contentNegotiator;
         $this->responseBuilder = $responseBuilder;
         $this->serializer = $serializer;

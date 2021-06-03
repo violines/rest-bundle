@@ -10,7 +10,8 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Violines\RestBundle\HttpApi\HttpApi;
 use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\HttpApi\MissingHttpApiException;
-use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Serialize\DeserializerType;
+use Violines\RestBundle\Serialize\SerializerInterface;
 use Violines\RestBundle\Validation\Validator;
 
 /**
@@ -19,14 +20,11 @@ use Violines\RestBundle\Validation\Validator;
 final class BodyArgumentResolver implements ArgumentValueResolverInterface
 {
     private HttpApiReader $httpApiReader;
-    private Serializer $serializer;
+    private SerializerInterface $serializer;
     private Validator $validator;
 
-    public function __construct(
-        HttpApiReader $httpApiReader,
-        Serializer $serializer,
-        Validator $validator
-    ) {
+    public function __construct(HttpApiReader $httpApiReader, SerializerInterface $serializer, Validator $validator)
+    {
         $this->httpApiReader = $httpApiReader;
         $this->serializer = $serializer;
         $this->validator = $validator;
@@ -67,7 +65,7 @@ final class BodyArgumentResolver implements ArgumentValueResolverInterface
             throw EmptyBodyException::required();
         }
 
-        $type = $argument->isVariadic() ? $className . '[]' : $className;
+        $type = $argument->isVariadic() ? DeserializerType::array($className) : DeserializerType::object($className);
         $contentType = ContentTypeHeader::fromString((string)$request->headers->get(ContentTypeHeader::NAME, ''));
 
         $deserialized = $this->serializer->deserialize($content, $type, $contentType->toMimeType());
