@@ -9,6 +9,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Violines\RestBundle\Negotiation\MimeType;
 use Violines\RestBundle\Serialize\DeserializeEvent;
+use Violines\RestBundle\Serialize\DeserializerType;
 use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\SerializeEvent;
 use Violines\RestBundle\Serialize\Serializer;
@@ -17,6 +18,7 @@ use Violines\RestBundle\Tests\Stubs\Config;
 /**
  * @covers \Violines\RestBundle\Serialize\Serializer
  *
+ * @uses \Violines\RestBundle\Serialize\DeserializerType
  * @uses \Violines\RestBundle\Serialize\DeserializeEvent
  * @uses \Violines\RestBundle\Serialize\SerializeEvent
  */
@@ -63,7 +65,7 @@ class SerializerTest extends TestCase
     public function testShouldVerifyContextMergeOnDeserialize(): void
     {
         $data = '{"weight": 100, "name": "Bonbon", "tastesGood": true}';
-        $type = 'Violines\RestBundle\Tests\Serialize\Product';
+        $type = DeserializerType::object(Product::class);
         $context = ['ctxkey' => 'ctxValue'];
         $mimeType = MimeType::fromString('application/json');
 
@@ -76,7 +78,7 @@ class SerializerTest extends TestCase
         $serializer = new Serializer($this->eventDispatcher, $this->serializerInterface, new FormatMapper(Config::SERIALIZE_FORMATS));
         $serializer->deserialize($data, $type, $mimeType);
 
-        \Phake::verify($this->serializerInterface)->deserialize($data, $type, 'json', $context);
+        \Phake::verify($this->serializerInterface)->deserialize($data, $type->toString(), 'json', $context);
     }
 }
 

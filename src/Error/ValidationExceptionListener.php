@@ -11,7 +11,7 @@ use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Request\AcceptHeader;
 use Violines\RestBundle\Response\ContentTypeHeader;
 use Violines\RestBundle\Response\ResponseBuilder;
-use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Serialize\SerializerInterface;
 
 /**
  * @internal
@@ -20,13 +20,10 @@ final class ValidationExceptionListener
 {
     private ContentNegotiator $contentNegotiator;
     private ResponseBuilder $responseBuilder;
-    private Serializer $serializer;
+    private SerializerInterface $serializer;
 
-    public function __construct(
-        ContentNegotiator $contentNegotiator,
-        ResponseBuilder $responseBuilder,
-        Serializer $serializer
-    ) {
+    public function __construct(ContentNegotiator $contentNegotiator, ResponseBuilder $responseBuilder, SerializerInterface $serializer)
+    {
         $this->contentNegotiator = $contentNegotiator;
         $this->responseBuilder = $responseBuilder;
         $this->serializer = $serializer;
