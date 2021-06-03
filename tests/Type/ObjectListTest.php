@@ -6,23 +6,23 @@ namespace Violines\RestBundle\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Violines\RestBundle\Type\ObjectCollection;
+use Violines\RestBundle\Type\ObjectList;
 use Violines\RestBundle\Type\TypeException;
 
 /**
- * @covers \Violines\RestBundle\Type\ObjectCollection
+ * @covers \Violines\RestBundle\Type\ObjectList
  */
-class ObjectCollectionTest extends TestCase
+class ObjectListTest extends TestCase
 {
     /**
-     * @dataProvider providerShouldReturnObjectCollection
+     * @dataProvider providerShouldReturnObjectList
      */
-    public function testShouldReturnObjectCollection(array $expectedArray, array $givenArray): void
+    public function testShouldReturnObjectList(array $expectedArray, array $givenArray): void
     {
-        self::assertEquals($expectedArray, ObjectCollection::fromArray($givenArray)->toArray());
+        self::assertEquals($expectedArray, ObjectList::fromArray($givenArray)->toArray());
     }
 
-    public function providerShouldReturnObjectCollection(): array
+    public function providerShouldReturnObjectList(): array
     {
         return [
             [
@@ -53,22 +53,22 @@ class ObjectCollectionTest extends TestCase
     }
 
     /**
-     * @dataProvider providerShouldReturnObjectCollectionsFirstItem
+     * @dataProvider providerShouldReturnObjectListsFirstItem
      */
-    public function testShouldReturnObjectCollectionsFirstItem(array $givenArray): void
+    public function testShouldReturnObjectListsFirstItem(array $givenArray): void
     {
-        $collection = ObjectCollection::fromArray($givenArray);
+        $list = ObjectList::fromArray($givenArray);
 
-        self::assertEquals(0, $collection->first()->number);
+        self::assertEquals(0, $list->first()->number);
     }
 
-    public function providerShouldReturnObjectCollectionsFirstItem()
+    public function providerShouldReturnObjectListsFirstItem()
     {
         return [
             [
                 [
-                    CollectionItem::from(0),
-                    CollectionItem::from(1),
+                    ListItem::from(0),
+                    ListItem::from(1),
                 ],
             ],
         ];
@@ -76,7 +76,7 @@ class ObjectCollectionTest extends TestCase
 
     public function testShouldReturnFalseOnFirst(): void
     {
-        self::assertFalse(ObjectCollection::fromArray([])->first());
+        self::assertFalse(ObjectList::fromArray([])->first());
     }
 
     /**
@@ -86,7 +86,7 @@ class ObjectCollectionTest extends TestCase
     {
         $this->expectException(TypeException::class);
 
-        ObjectCollection::fromArray($givenArray);
+        ObjectList::fromArray($givenArray);
     }
 
     public function providerShouldThrowTypeExceptions(): array
@@ -103,7 +103,7 @@ class ObjectCollectionTest extends TestCase
             ],
             [
                 [
-                    CollectionItem::from(0),
+                    ListItem::from(0),
                     new stdClass(),
                 ],
             ],
@@ -111,7 +111,7 @@ class ObjectCollectionTest extends TestCase
     }
 }
 
-class CollectionItem
+class ListItem
 {
     public $number;
 

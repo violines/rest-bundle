@@ -7,19 +7,19 @@ namespace Violines\RestBundle\Type;
 /**
  * @internal
  */
-final class ObjectCollection
+final class ObjectList
 {
     /**
      * @var object[]
      */
-    private $collection;
+    private $list;
 
     /**
      * @param object[] $array
      */
     private function __construct(array $array)
     {
-        $this->collection = $array;
+        $this->list = $array;
     }
 
     /**
@@ -60,7 +60,7 @@ final class ObjectCollection
      */
     public function toArray(): array
     {
-        return $this->collection;
+        return $this->list;
     }
 
     /**
@@ -68,10 +68,10 @@ final class ObjectCollection
      */
     public function first()
     {
-        if ([] === $this->collection) {
+        if ([] === $this->list) {
             return false;
         }
 
-        return $this->collection[0];
+        return $this->list[0];
     }
 }
