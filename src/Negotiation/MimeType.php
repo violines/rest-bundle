@@ -9,7 +9,7 @@ namespace Violines\RestBundle\Negotiation;
  */
 final class MimeType
 {
-    private $mimeType;
+    private string $mimeType;
 
     public function __construct(string $mimeType)
     {

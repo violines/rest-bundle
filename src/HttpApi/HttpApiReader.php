@@ -21,7 +21,8 @@ class HttpApiReader
     /**
      * @param class-string $className
      *
-     * @throws MissingHttpApiException when the #[HttpApi] or @HttpApi was not found in the class
+     * @throws AnnotationReaderNotInstalledException when PHP < 8.0 and annotation reader not installed
+     * @throws MissingHttpApiException               when the #[HttpApi] or @HttpApi was not found in the class
      */
     public function read(string $className): HttpApi
     {

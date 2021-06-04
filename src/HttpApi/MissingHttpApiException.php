@@ -7,11 +7,11 @@ namespace Violines\RestBundle\HttpApi;
 /**
  * @internal
  */
-final class MissingHttpApiException extends \RuntimeException implements \Throwable
+final class MissingHttpApiException extends \RuntimeException
 {
     private function __construct(string $message)
     {
-        $this->message = $message;
+        parent::__construct($message);
     }
 
     public static function className(string $className): self

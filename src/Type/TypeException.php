@@ -7,11 +7,11 @@ namespace Violines\RestBundle\Type;
 /**
  * @internal
  */
-final class TypeException extends \RuntimeException implements \Throwable
+final class TypeException extends \RuntimeException
 {
     private function __construct(string $message)
     {
-        $this->message = $message;
+        parent::__construct($message);
     }
 
     public static function notObject(): self
