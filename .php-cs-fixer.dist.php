@@ -3,13 +3,14 @@
 $finder = PhpCsFixer\Finder::create()
     ->in([__DIR__ . '/src', __DIR__ . '/tests']);
 
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+$config
     ->setRules([
         '@PSR2' => true,
         '@Symfony' => true,
         'cast_spaces' => ['space' => 'none'],
         'concat_space' => ['spacing' => 'one'],
-        'native_function_invocation' => true,
+        'native_function_invocation' => ['include' => ['@all']],
         'php_unit_set_up_tear_down_visibility' => true,
         'ordered_imports' => [
             'sort_algorithm' => 'alpha',
@@ -17,3 +18,5 @@ return PhpCsFixer\Config::create()
         ]
     ])
     ->setFinder($finder);
+
+return $config;
