@@ -10,12 +10,13 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 /**
  * @internal
  */
-final class ValidationException extends \RuntimeException implements \Throwable
+final class ValidationException extends \RuntimeException
 {
     private ConstraintViolationListInterface $violationList;
 
     private function __construct(ConstraintViolationListInterface $violationList)
     {
+        parent::__construct();
         $this->violationList = $violationList;
     }
 

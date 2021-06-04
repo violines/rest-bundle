@@ -7,11 +7,11 @@ namespace Violines\RestBundle\HttpApi;
 /**
  * @internal
  */
-final class HttpApiParameterException extends \RuntimeException implements \Throwable
+final class HttpApiParameterException extends \RuntimeException
 {
     private function __construct(string $message)
     {
-        $this->message = $message;
+        parent::__construct($message);
     }
 
     public static function enum(string $parameterName, string $value, array $expected): self

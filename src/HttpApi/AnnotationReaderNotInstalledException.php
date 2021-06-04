@@ -7,11 +7,11 @@ namespace Violines\RestBundle\HttpApi;
 /**
  * @internal
  */
-final class AnnotationReaderNotInstalledException extends \RuntimeException implements \Throwable
+final class AnnotationReaderNotInstalledException extends \RuntimeException
 {
     private function __construct(string $message)
     {
-        $this->message = $message;
+        parent::__construct($message);
     }
 
     public static function doctrine(): self

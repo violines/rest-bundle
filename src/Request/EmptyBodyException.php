@@ -11,7 +11,7 @@ use Violines\RestBundle\Error\ErrorInterface;
 /**
  * @internal
  */
-final class EmptyBodyException extends \RuntimeException implements \Throwable, ErrorInterface
+final class EmptyBodyException extends \RuntimeException implements ErrorInterface
 {
     public function getContent(): object
     {

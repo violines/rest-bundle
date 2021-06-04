@@ -7,11 +7,11 @@ namespace Violines\RestBundle\Negotiation;
 /**
  * @internal
  */
-final class NotNegotiableException extends \RuntimeException implements \Throwable
+final class NotNegotiableException extends \RuntimeException
 {
     private function __construct(string $message)
     {
-        $this->message = $message;
+        parent::__construct($message);
     }
 
     public static function notConfigured(string $mimeTypes): self

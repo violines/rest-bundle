@@ -9,11 +9,11 @@ use Violines\RestBundle\Negotiation\MimeType;
 /**
  * @internal
  */
-final class FormatException extends \RuntimeException implements \Throwable
+final class FormatException extends \RuntimeException
 {
     private function __construct(string $message)
     {
-        $this->message = $message;
+        parent::__construct($message);
     }
 
     public static function notConfigured(MimeType $mimeType): self

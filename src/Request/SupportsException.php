@@ -7,7 +7,7 @@ namespace Violines\RestBundle\Request;
 /**
  * @internal
  */
-final class SupportsException extends \LogicException implements \Throwable
+final class SupportsException extends \LogicException
 {
     public static function covered(): self
     {
