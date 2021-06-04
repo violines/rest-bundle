@@ -16,7 +16,7 @@ use Violines\RestBundle\HttpApi\HttpApi;
 use Violines\RestBundle\HttpApi\HttpApiReader;
 use Violines\RestBundle\Request\QueryStringArgumentResolver;
 use Violines\RestBundle\Request\SupportsException;
-use Violines\RestBundle\Tests\Mock\Serializer;
+use Violines\RestBundle\Tests\Mock\SymfonySerializerMock;
 use Violines\RestBundle\Validation\Validator;
 
 /**
@@ -55,7 +55,7 @@ class QueryStringArgumentResolverTest extends TestCase
 
         $this->resolver = new QueryStringArgumentResolver(
             new HttpApiReader(new AnnotationReader()),
-            new Serializer(),
+            new SymfonySerializerMock(),
             new Validator($this->validator)
         );
     }

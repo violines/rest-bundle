@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class Serializer implements DenormalizerInterface, SerializerInterface, NormalizerInterface
+class SymfonySerializerMock implements DenormalizerInterface, SerializerInterface, NormalizerInterface
 {
     private $serializer;
 

@@ -10,17 +10,16 @@ use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Violines\RestBundle\Error\ValidationException;
 use Violines\RestBundle\Error\ValidationExceptionListener;
 use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Response\ResponseBuilder;
 use Violines\RestBundle\Serialize\FormatMapper;
-use Violines\RestBundle\Serialize\SerializeEvent;
 use Violines\RestBundle\Serialize\Serializer;
+use Violines\RestBundle\Tests\Mock\ConstraintViolation;
 use Violines\RestBundle\Tests\Mock\ConstraintViolationList;
+use Violines\RestBundle\Tests\Mock\SymfonyDispatcherMock;
+use Violines\RestBundle\Tests\Mock\SymfonySerializerMock;
 use Violines\RestBundle\Tests\Stubs\Config;
 
 /**
@@ -34,13 +33,6 @@ class ValidationExceptionListenerTest extends TestCase
     /**
      * @Mock
      *
-     * @var EventDispatcherInterface
-     */
-    private \Phake_IMock $eventDispatcher;
-
-    /**
-     * @Mock
-     *
      * @var HttpKernel
      */
     private \Phake_IMock $httpKernel;
@@ -51,13 +43,6 @@ class ValidationExceptionListenerTest extends TestCase
      * @var HttpFoundationRequest
      */
     private \Phake_IMock $request;
-
-    /**
-     * @Mock
-     *
-     * @var SerializerInterface
-     */
-    private \Phake_IMock $serializer;
 
     private ValidationExceptionListener $listener;
 
@@ -74,18 +59,17 @@ class ValidationExceptionListenerTest extends TestCase
         $this->listener = new ValidationExceptionListener(
             new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
             new ResponseBuilder(),
-            new Serializer($this->eventDispatcher, $this->serializer, new FormatMapper(Config::SERIALIZE_FORMATS))
+            new Serializer(new SymfonyDispatcherMock(), new SymfonySerializerMock(), new FormatMapper(Config::SERIALIZE_FORMATS))
         );
     }
 
     public function testShouldCreateViolationResponse(): void
     {
-        $exception = ValidationException::fromViolationList(new ConstraintViolationList());
-        \Phake::when($this->serializer)->serialize->thenReturn('string');
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn(SerializeEvent::from(
-            $exception,
-            'json'
-        ));
+        $expectedEncodedError = '[{"message":"message","messageTemplate":null,"parameters":null,"plural":null,"root":null,"propertyPath":null,"invalidValue":null,"code":null}]';
+
+        $violationList = new ConstraintViolationList();
+        $violationList->add(new ConstraintViolation());
+        $exception = ValidationException::fromViolationList($violationList);
 
         $exceptionEvent = new ExceptionEvent(
             $this->httpKernel,
@@ -96,9 +80,7 @@ class ValidationExceptionListenerTest extends TestCase
 
         $this->listener->handle($exceptionEvent);
 
-        \Phake::verify($this->serializer)->serialize(\Phake::capture($data), 'json', []);
-
-        $this->assertInstanceOf(ConstraintViolationListInterface::class, $data);
+        $this->assertSame($expectedEncodedError, $exceptionEvent->getResponse()->getContent());
     }
 
     public function testShouldSkipListener(): void
