@@ -6,7 +6,7 @@ namespace Violines\RestBundle\Tests\Mock;
 
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class Dispatcher implements EventDispatcherInterface
+class SymfonyDispatcherMock implements EventDispatcherInterface
 {
     public function dispatch($event, string $eventName = null): object
     {
