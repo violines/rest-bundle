@@ -21,8 +21,8 @@ use Violines\RestBundle\Response\ErrorResponseResolver;
 use Violines\RestBundle\Response\ResponseBuilder;
 use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\Serializer;
-use Violines\RestBundle\Tests\Mock\SymfonyDispatcherMock;
-use Violines\RestBundle\Tests\Mock\SymfonySerializerMock;
+use Violines\RestBundle\Tests\Fake\SymfonyEventDispatcherFake;
+use Violines\RestBundle\Tests\Fake\SymfonySerializerFake;
 use Violines\RestBundle\Tests\Stubs\Config;
 
 /**
@@ -64,7 +64,7 @@ class ErrorListenerTest extends TestCase
             new ErrorResponseResolver(
                 new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
                 new ResponseBuilder(),
-                new Serializer(new SymfonyDispatcherMock(), new SymfonySerializerMock(), new FormatMapper(Config::SERIALIZE_FORMATS))
+                new Serializer(new SymfonyEventDispatcherFake(), new SymfonySerializerFake(), new FormatMapper(Config::SERIALIZE_FORMATS))
             )
         );
     }

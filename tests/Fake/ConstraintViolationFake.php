@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Violines\RestBundle\Tests\Mock;
+namespace Violines\RestBundle\Tests\Fake;
 
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
-class ConstraintViolation implements ConstraintViolationInterface
+class ConstraintViolationFake implements ConstraintViolationInterface
 {
     public function getMessage()
     {

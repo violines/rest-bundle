@@ -16,10 +16,10 @@ use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Response\ResponseBuilder;
 use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\Serializer;
-use Violines\RestBundle\Tests\Mock\ConstraintViolation;
-use Violines\RestBundle\Tests\Mock\ConstraintViolationList;
-use Violines\RestBundle\Tests\Mock\SymfonyDispatcherMock;
-use Violines\RestBundle\Tests\Mock\SymfonySerializerMock;
+use Violines\RestBundle\Tests\Fake\ConstraintViolationFake;
+use Violines\RestBundle\Tests\Fake\ConstraintViolationListFake;
+use Violines\RestBundle\Tests\Fake\SymfonyEventDispatcherFake;
+use Violines\RestBundle\Tests\Fake\SymfonySerializerFake;
 use Violines\RestBundle\Tests\Stubs\Config;
 
 /**
@@ -59,7 +59,7 @@ class ValidationExceptionListenerTest extends TestCase
         $this->listener = new ValidationExceptionListener(
             new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
             new ResponseBuilder(),
-            new Serializer(new SymfonyDispatcherMock(), new SymfonySerializerMock(), new FormatMapper(Config::SERIALIZE_FORMATS))
+            new Serializer(new SymfonyEventDispatcherFake(), new SymfonySerializerFake(), new FormatMapper(Config::SERIALIZE_FORMATS))
         );
     }
 
@@ -67,8 +67,8 @@ class ValidationExceptionListenerTest extends TestCase
     {
         $expectedEncodedError = '[{"message":"message","messageTemplate":null,"parameters":null,"plural":null,"root":null,"propertyPath":null,"invalidValue":null,"code":null}]';
 
-        $violationList = new ConstraintViolationList();
-        $violationList->add(new ConstraintViolation());
+        $violationList = new ConstraintViolationListFake();
+        $violationList->add(new ConstraintViolationFake());
         $exception = ValidationException::fromViolationList($violationList);
 
         $exceptionEvent = new ExceptionEvent(

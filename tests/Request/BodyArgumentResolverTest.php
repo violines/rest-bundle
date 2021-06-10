@@ -20,8 +20,8 @@ use Violines\RestBundle\Request\EmptyBodyException;
 use Violines\RestBundle\Request\SupportsException;
 use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\Serializer;
-use Violines\RestBundle\Tests\Mock\SymfonyDispatcherMock;
-use Violines\RestBundle\Tests\Mock\SymfonySerializerMock;
+use Violines\RestBundle\Tests\Fake\SymfonyEventDispatcherFake;
+use Violines\RestBundle\Tests\Fake\SymfonySerializerFake;
 use Violines\RestBundle\Tests\Stubs\Config;
 use Violines\RestBundle\Validation\Validator;
 
@@ -63,7 +63,7 @@ class BodyArgumentResolverTest extends TestCase
 
         $this->resolver = new BodyArgumentResolver(
             new HttpApiReader(new AnnotationReader()),
-            new Serializer(new SymfonyDispatcherMock(), new SymfonySerializerMock(), new FormatMapper(Config::SERIALIZE_FORMATS)),
+            new Serializer(new SymfonyEventDispatcherFake(), new SymfonySerializerFake(), new FormatMapper(Config::SERIALIZE_FORMATS)),
             new Validator($this->validator)
         );
     }
