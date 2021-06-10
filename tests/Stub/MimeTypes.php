@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Violines\RestBundle\Tests\Stubs;
+namespace Violines\RestBundle\Tests\Stub;
 
 class MimeTypes
 {

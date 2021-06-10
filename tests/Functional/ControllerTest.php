@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
-use Violines\RestBundle\Tests\Stubs\MimeTypes;
+use Violines\RestBundle\Tests\Stub\MimeTypes;
 use Violines\RestBundle\ViolinesRestBundle;
 
 /**

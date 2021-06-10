@@ -13,7 +13,7 @@ use Violines\RestBundle\Serialize\DeserializerType;
 use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\SerializeEvent;
 use Violines\RestBundle\Serialize\Serializer;
-use Violines\RestBundle\Tests\Stubs\Config;
+use Violines\RestBundle\Tests\Stub\Config;
 
 /**
  * @covers \Violines\RestBundle\Serialize\Serializer

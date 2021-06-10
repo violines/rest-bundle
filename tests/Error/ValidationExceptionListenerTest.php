@@ -20,7 +20,7 @@ use Violines\RestBundle\Tests\Fake\ConstraintViolationFake;
 use Violines\RestBundle\Tests\Fake\ConstraintViolationListFake;
 use Violines\RestBundle\Tests\Fake\SymfonyEventDispatcherFake;
 use Violines\RestBundle\Tests\Fake\SymfonySerializerFake;
-use Violines\RestBundle\Tests\Stubs\Config;
+use Violines\RestBundle\Tests\Stub\Config;
 
 /**
  * @covers \Violines\RestBundle\Error\ValidationExceptionListener

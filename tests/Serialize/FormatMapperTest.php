@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Violines\RestBundle\Negotiation\MimeType;
 use Violines\RestBundle\Serialize\FormatException;
 use Violines\RestBundle\Serialize\FormatMapper;
-use Violines\RestBundle\Tests\Stubs\MimeTypes;
+use Violines\RestBundle\Tests\Stub\MimeTypes;
 
 /**
  * @covers \Violines\RestBundle\Serialize\FormatMapper

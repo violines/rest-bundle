@@ -8,8 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Violines\RestBundle\Negotiation\ContentNegotiator;
 use Violines\RestBundle\Negotiation\NotNegotiableException;
 use Violines\RestBundle\Request\AcceptHeader;
-use Violines\RestBundle\Tests\Stubs\Config;
-use Violines\RestBundle\Tests\Stubs\MimeTypes;
+use Violines\RestBundle\Tests\Stub\Config;
+use Violines\RestBundle\Tests\Stub\MimeTypes;
 
 /**
  * @covers \Violines\RestBundle\Negotiation\ContentNegotiator

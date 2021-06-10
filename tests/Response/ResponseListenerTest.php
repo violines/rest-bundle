@@ -21,7 +21,7 @@ use Violines\RestBundle\Serialize\FormatMapper;
 use Violines\RestBundle\Serialize\Serializer;
 use Violines\RestBundle\Tests\Fake\SymfonyEventDispatcherFake;
 use Violines\RestBundle\Tests\Fake\SymfonySerializerFake;
-use Violines\RestBundle\Tests\Stubs\Config;
+use Violines\RestBundle\Tests\Stub\Config;
 
 /**
  * @covers \Violines\RestBundle\Response\ResponseListener
