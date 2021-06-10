@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Violines\RestBundle\Tests\Mock;
+namespace Violines\RestBundle\Tests\Fake;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class SymfonySerializerMock implements DenormalizerInterface, SerializerInterface, NormalizerInterface
+class SymfonySerializerFake implements DenormalizerInterface, SerializerInterface, NormalizerInterface
 {
     private $serializer;
 

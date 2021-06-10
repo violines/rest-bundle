@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Violines\RestBundle\Tests\Mock;
+namespace Violines\RestBundle\Tests\Fake;
 
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class SymfonyDispatcherMock implements EventDispatcherInterface
+class SymfonyEventDispatcherFake implements EventDispatcherInterface
 {
     public function dispatch($event, string $eventName = null): object
     {

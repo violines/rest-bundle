@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Violines\RestBundle\Tests\Mock;
+namespace Violines\RestBundle\Tests\Fake;
 
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ConstraintViolationList implements \Iterator, ConstraintViolationListInterface
+class ConstraintViolationListFake implements \Iterator, ConstraintViolationListInterface
 {
     private $count;
 
