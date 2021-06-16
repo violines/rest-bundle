@@ -6,7 +6,8 @@ namespace Violines\RestBundle\Tests\Request;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\HeaderBag;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -24,39 +25,21 @@ use Violines\RestBundle\Validation\Validator;
  */
 class QueryStringArgumentResolverTest extends TestCase
 {
-    /**
-     * @Mock
-     *
-     * @var HttpFoundationRequest
-     */
-    private \Phake_IMock $request;
-
-    /**
-     * @Mock
-     *
-     * @var ArgumentMetadata
-     */
-    private \Phake_IMock $argument;
-
-    /**
-     * @Mock
-     *
-     * @var ValidatorInterface
-     */
-    private \Phake_IMock $validator;
+    use ProphecyTrait;
 
     private QueryStringArgumentResolver $resolver;
 
     protected function setUp(): void
     {
         parent::setUp();
-        \Phake::initAnnotations($this);
-        $this->request->headers = new HeaderBag(['Content-Type' => 'application/json']);
+
+        $validator = $this->prophesize(ValidatorInterface::class);
+        $validator->validate(Argument::any())->willReturn(new ConstraintViolationList());
 
         $this->resolver = new QueryStringArgumentResolver(
             new HttpApiReader(new AnnotationReader()),
             new SymfonySerializerFake(),
-            new Validator($this->validator)
+            new Validator($validator->reveal())
         );
     }
 
@@ -65,31 +48,43 @@ class QueryStringArgumentResolverTest extends TestCase
      */
     public function testSupportsShouldReturnFalse($type, array $query, bool $isNullable): void
     {
-        \Phake::when($this->argument)->getType->thenReturn($type);
-        \Phake::when($this->argument)->isNullable->thenReturn($isNullable);
+        $request = $this->prophesize(HttpFoundationRequest::class);
+        $request->query = new ParameterBag($query);
 
-        $this->request->query = new ParameterBag($query);
+        $argument = $this->prophesize(ArgumentMetadata::class);
+        $argument->getType()->willReturn($type);
+        $argument->isNullable()->willReturn($isNullable);
 
-        $this->assertFalse($this->resolver->supports($this->request, $this->argument));
+        self::assertFalse($this->resolver->supports($request->reveal(), $argument->reveal()));
     }
 
-    public function providerSupportsShouldReturnFalse(): array
+    public function providerSupportsShouldReturnFalse(): \Generator
     {
-        return [
-            ['string', ['param1' => 'value1'], false],
-            [null, ['param1' => 'value1'], false],
-            [WithoutHttpApi::class, ['param1' => 'value1'], false],
-            [QueryStringHttpApi::class, [], true],
-        ];
+        yield ['string', ['param1' => 'value1'], false];
+        yield [null, ['param1' => 'value1'], false];
+        yield [WithoutHttpApi::class, ['param1' => 'value1'], false];
+        yield [QueryStringHttpApi::class, [], true];
     }
 
-    public function testSupportsShouldReturnTrue(): void
+    /**
+     * @dataProvider providerSupportsShouldReturnTrue
+     */
+    public function testSupportsShouldReturnTrue(array $query, bool $isNullable): void
     {
-        \Phake::when($this->argument)->getType->thenReturn(QueryStringHttpApi::class);
+        $request = $this->prophesize(HttpFoundationRequest::class);
+        $request->query = new ParameterBag($query);
 
-        $this->request->query = new ParameterBag([]);
+        $argument = $this->prophesize(ArgumentMetadata::class);
+        $argument->getType()->willReturn(QueryStringHttpApi::class);
+        $argument->isNullable()->willReturn($isNullable);
 
-        $this->assertTrue($this->resolver->supports($this->request, $this->argument));
+        self::assertTrue($this->resolver->supports($request->reveal(), $argument->reveal()));
+    }
+
+    public function providerSupportsShouldReturnTrue(): \Generator
+    {
+        yield [[], false];
+        yield [['param1' => 'value1'], true];
     }
 
     /**
@@ -99,31 +94,34 @@ class QueryStringArgumentResolverTest extends TestCase
     {
         $this->expectException(SupportsException::class);
 
-        \Phake::when($this->argument)->getType->thenReturn($type);
+        $request = $this->prophesize(HttpFoundationRequest::class);
 
-        $result = $this->resolver->resolve($this->request, $this->argument);
+        $argument = $this->prophesize(ArgumentMetadata::class);
+        $argument->getType()->willReturn($type);
+
+        $result = $this->resolver->resolve($request->reveal(), $argument->reveal());
         $result->current();
     }
 
-    public function providerResolveShouldThrowException(): array
+    public function providerResolveShouldThrowException(): \Generator
     {
-        return [
-            ['string'],
-            [null],
-        ];
+        yield ['string'];
+        yield [null];
     }
 
     public function testShouldYield(): void
     {
-        \Phake::when($this->argument)->getType->thenReturn(QueryStringHttpApi::class);
-        \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
-        $this->request->query = new ParameterBag(['priceFrom' => 1000, 'priceTo' => 9000]);
+        $request = $this->prophesize(HttpFoundationRequest::class);
+        $request->query = new ParameterBag(['priceFrom' => 1000, 'priceTo' => 9000]);
 
-        $result = $this->resolver->resolve($this->request, $this->argument);
+        $argument = $this->prophesize(ArgumentMetadata::class);
+        $argument->getType()->willReturn(QueryStringHttpApi::class);
+
+        $result = $this->resolver->resolve($request->reveal(), $argument->reveal());
         $resolved = $result->current();
 
-        $this->assertEquals(1000, $resolved->priceFrom);
-        $this->assertEquals(9000, $resolved->priceTo);
+        self::assertEquals(1000, $resolved->priceFrom);
+        self::assertEquals(9000, $resolved->priceTo);
     }
 }
 
