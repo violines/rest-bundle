@@ -6,6 +6,7 @@ namespace Violines\RestBundle\Tests\Response;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -31,31 +32,13 @@ use Violines\RestBundle\Tests\Stub\Config;
  */
 class ResponseListenerTest extends TestCase
 {
-    /**
-     * @Mock
-     *
-     * @var HttpKernel
-     */
-    private \Phake_IMock $httpKernel;
-
-    /**
-     * @Mock
-     *
-     * @var HttpFoundationRequest
-     */
-    private \Phake_IMock $request;
+    use ProphecyTrait;
 
     private ResponseListener $listener;
 
     protected function setUp(): void
     {
         parent::setUp();
-        \Phake::initAnnotations($this);
-
-        $this->request->headers = new HeaderBag([
-            'Accept' => 'application/pdf, application/json, application/xml',
-            'Content-Type' => 'application/json',
-        ]);
 
         $this->listener = new ResponseListener(
             new HttpApiReader(new AnnotationReader()),
@@ -73,8 +56,8 @@ class ResponseListenerTest extends TestCase
     public function testShouldPassControllerResultToSerializer($controllerResult, string $expected): void
     {
         $viewEvent = new ViewEvent(
-            $this->httpKernel,
-            $this->request,
+            $this->prophesize(HttpKernel::class)->reveal(),
+            $this->createMockRequestWithHeaders()->reveal(),
             HttpKernelInterface::MASTER_REQUEST,
             $controllerResult
         );
@@ -97,8 +80,8 @@ class ResponseListenerTest extends TestCase
     public function testShouldSkipListener($controllerResult): void
     {
         $viewEvent = new ViewEvent(
-            $this->httpKernel,
-            $this->request,
+            $this->prophesize(HttpKernel::class)->reveal(),
+            $this->createMockRequestWithHeaders()->reveal(),
             HttpKernelInterface::MASTER_REQUEST,
             $controllerResult
         );
@@ -116,6 +99,18 @@ class ResponseListenerTest extends TestCase
             ['key' => 'value'],
             [['key' => 'value']],
         ];
+    }
+
+    private function createMockRequestWithHeaders()
+    {
+        $request = $this->prophesize(HttpFoundationRequest::class);
+
+        $request->headers = new HeaderBag([
+            'Accept' => 'application/pdf, application/json, application/xml',
+            'Content-Type' => 'application/json',
+        ]);
+
+        return $request;
     }
 }
 

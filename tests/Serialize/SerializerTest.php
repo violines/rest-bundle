@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Violines\RestBundle\Tests\Serialize;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Violines\RestBundle\Negotiation\MimeType;
@@ -24,25 +26,7 @@ use Violines\RestBundle\Tests\Stub\Config;
  */
 class SerializerTest extends TestCase
 {
-    /**
-     * @Mock
-     *
-     * @var EventDispatcherInterface
-     */
-    private \Phake_IMock $eventDispatcher;
-
-    /**
-     * @Mock
-     *
-     * @var SerializerInterface
-     */
-    private \Phake_IMock $serializerInterface;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        \Phake::initAnnotations($this);
-    }
+    use ProphecyTrait;
 
     public function testShouldVerifyContextMergeOnSerialize(): void
     {
@@ -53,13 +37,15 @@ class SerializerTest extends TestCase
         $serializeContextEvent = SerializeEvent::from($data, 'json');
         $serializeContextEvent->mergeToContext($context);
 
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn($serializeContextEvent);
-        \Phake::when($this->serializerInterface)->serialize->thenReturn('[]');
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::type(SerializeEvent::class), SerializeEvent::NAME)->willReturn($serializeContextEvent);
 
-        $serializer = new Serializer($this->eventDispatcher, $this->serializerInterface, new FormatMapper(Config::SERIALIZE_FORMATS));
+        $symfonySerializer = $this->prophesize(SerializerInterface::class);
+        $symfonySerializer->serialize($data, 'json', $context)->willReturn('string');
+        $symfonySerializer->serialize($data, 'json', $context)->shouldBeCalled();
+
+        $serializer = new Serializer($eventDispatcher->reveal(), $symfonySerializer->reveal(), new FormatMapper(Config::SERIALIZE_FORMATS));
         $serializer->serialize($data, $mimeType);
-
-        \Phake::verify($this->serializerInterface)->serialize($data, 'json', $context);
     }
 
     public function testShouldVerifyContextMergeOnDeserialize(): void
@@ -72,13 +58,15 @@ class SerializerTest extends TestCase
         $deserializeEvent = DeserializeEvent::from($data, 'json');
         $deserializeEvent->mergeToContext($context);
 
-        \Phake::when($this->eventDispatcher)->dispatch->thenReturn($deserializeEvent);
-        \Phake::when($this->serializerInterface)->deserialize->thenReturn(new Product(100, 'Bonbon', true));
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::type(DeserializeEvent::class), DeserializeEvent::NAME)->willReturn($deserializeEvent);
 
-        $serializer = new Serializer($this->eventDispatcher, $this->serializerInterface, new FormatMapper(Config::SERIALIZE_FORMATS));
+        $symfonySerializer = $this->prophesize(SerializerInterface::class);
+        $symfonySerializer->deserialize($data, $type->toString(), 'json', $context)->willReturn(new Product(100, 'Bonbon', true));
+        $symfonySerializer->deserialize($data, $type->toString(), 'json', $context)->shouldBeCalled();
+
+        $serializer = new Serializer($eventDispatcher->reveal(), $symfonySerializer->reveal(), new FormatMapper(Config::SERIALIZE_FORMATS));
         $serializer->deserialize($data, $type, $mimeType);
-
-        \Phake::verify($this->serializerInterface)->deserialize($data, $type->toString(), 'json', $context);
     }
 }
 

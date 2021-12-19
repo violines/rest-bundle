@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Violines\RestBundle\Tests\Response;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\HeaderBag;
-use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Violines\RestBundle\Response\ContentTypeHeader;
 use Violines\RestBundle\Response\ResponseBuilder;
@@ -20,25 +18,11 @@ class ResponseBuilderTest extends TestCase
 {
     private ResponseBuilder $responseBuilder;
 
-    /**
-     * @Mock
-     *
-     * @var HttpFoundationRequest
-     */
-    private \Phake_IMock $request;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->responseBuilder = new ResponseBuilder();
-
-        \Phake::initAnnotations($this);
-
-        $this->request->headers = new HeaderBag([
-            'Accept' => 'application/json, plain/html',
-            'Content-Type' => 'application/json',
-        ]);
     }
 
     public function testShouldReturnEmptyResponse(): void

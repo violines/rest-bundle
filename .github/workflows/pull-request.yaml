@@ -12,15 +12,15 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.0
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v2
         with:
           path: vendor
-          key: ${{ runner.os }}-php7.4-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php8.0-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php7.4-
+            ${{ runner.os }}-php8.0-
       - name: Install dependencies
         run: composer update --no-interaction --no-progress --prefer-stable
       - name: Run php cs fixer
@@ -29,6 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v2
@@ -46,13 +50,13 @@ jobs:
     strategy:
       matrix:
         include:
-          - php-version: 7.4
+          - php-version: 8.0
             composer-flags: "--prefer-stable"
-            symfony-require: "4.4.*"
-          - php-version: 7.4
+            symfony-require: "5.4.*"
+          - php-version: 8.0
             composer-flags: "--prefer-stable"
             symfony-require: ""
-          - php-version: 8.0
+          - php-version: 8.1
             composer-flags: "--ignore-platform-req=php"
             symfony-require: ""
     steps:
@@ -79,12 +83,12 @@ jobs:
       - name: Run testsuites
         run: vendor/bin/phpunit --configuration=phpunit.xml.dist --coverage-clover=coverage.xml
       - name: Send code coverage report to Codecov.io
-        if: matrix.php-version == '8.0'
+        if: matrix.php-version == '8.1'
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOVIO_TOKEN }}
         run: bash <(curl -s https://codecov.io/bash)
       - name: Run infection
-        if: matrix.php-version == '8.0'
+        if: matrix.php-version == '8.1'
         env:
           INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
         run: vendor/bin/infection

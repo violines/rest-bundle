@@ -6,9 +6,6 @@ namespace Violines\RestBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @internal
- */
 final class ViolinesRestBundle extends Bundle
 {
 }

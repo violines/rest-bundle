@@ -8,43 +8,43 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class ConstraintViolationFake implements ConstraintViolationInterface
 {
-    public function getMessage()
+    public function getMessage(): string
     {
         return 'message';
     }
 
-    public function getMessageTemplate()
+    public function getMessageTemplate(): string
     {
-        // test
+        return 'message_tpl';
     }
 
-    public function getParameters()
+    public function getParameters(): array
     {
-        // test
+        return [];
     }
 
-    public function getPlural()
+    public function getPlural(): ?int
     {
-        // test
+        return null;
     }
 
-    public function getRoot()
+    public function getRoot(): mixed
     {
-        // test
+        return null;
     }
 
-    public function getPropertyPath()
+    public function getPropertyPath(): string
     {
-        // test
+        return 'path';
     }
 
-    public function getInvalidValue()
+    public function getInvalidValue(): mixed
     {
-        // test
+        return null;
     }
 
-    public function getCode()
+    public function getCode(): ?string
     {
-        // test
+        return null;
     }
 }

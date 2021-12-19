@@ -18,27 +18,27 @@ class ConstraintViolationListFake implements \Iterator, ConstraintViolationListI
         $this->violations[] = $violation;
     }
 
-    public function addAll($otherList)
+    public function addAll(ConstraintViolationListInterface $otherList)
     {
         // test
     }
 
-    public function get($offset)
+    public function get(int $offset): ConstraintViolationInterface
     {
         return $this->violations[$offset];
     }
 
-    public function has($offset)
+    public function has(int $offset): bool
     {
         return isset($this->violations[$offset]);
     }
 
-    public function set($offset, ConstraintViolationInterface $violation)
+    public function set(int $offset, ConstraintViolationInterface $violation)
     {
         $this->violations[$offset] = $violation;
     }
 
-    public function remove($offset)
+    public function remove(int $offset)
     {
         unset($this->violations[$offset]);
     }

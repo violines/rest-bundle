@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Violines\RestBundle\Tests\Error;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,49 +27,22 @@ use Violines\RestBundle\Serialize\FormatException;
  */
 class NotAcceptableListenerTest extends TestCase
 {
-    /**
-     * @Mock
-     *
-     * @var LoggerInterface
-     */
-    private \Phake_IMock $logger;
-
-    /**
-     * @Mock
-     *
-     * @var HttpKernel
-     */
-    private \Phake_IMock $httpKernel;
-
-    /**
-     * @Mock
-     *
-     * @var HttpFoundationRequest
-     */
-    private \Phake_IMock $request;
+    use ProphecyTrait;
 
     private NotAcceptableListener $notAcceptableListener;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        \Phake::initAnnotations($this);
-        $this->notAcceptableListener = new NotAcceptableListener(new ResponseBuilder(), $this->logger);
-    }
 
     /**
      * @dataProvider providerShouldReturnNotAcceptableAndLog
      */
     public function testShouldReturnNotAcceptableAndLog(\Exception $givenException, string $expectedLogMessage): void
     {
-        $exceptionEvent = new ExceptionEvent($this->httpKernel, $this->request, HttpKernelInterface::MASTER_REQUEST, $givenException);
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger->log('debug', $expectedLogMessage)->shouldBeCalled();
+        $notAcceptableListener = new NotAcceptableListener(new ResponseBuilder(), $logger->reveal());
 
-        $this->notAcceptableListener->handle($exceptionEvent);
+        $exceptionEvent = new ExceptionEvent($this->prophesize(HttpKernel::class)->reveal(), $this->prophesize(HttpFoundationRequest::class)->reveal(), HttpKernelInterface::MASTER_REQUEST, $givenException);
 
-        \Phake::verify($this->logger)->log(\Phake::capture($logLevel), \Phake::capture($logMessage));
-        $this->assertEquals('debug', $logLevel);
-        $this->assertEquals($expectedLogMessage, $logMessage);
-
+        $notAcceptableListener->handle($exceptionEvent);
         $response = $exceptionEvent->getResponse();
         $this->assertEquals(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
     }
@@ -89,7 +63,7 @@ class NotAcceptableListenerTest extends TestCase
 
     public function testShouldReturnNotAcceptableAndNullLog(): void
     {
-        $exceptionEvent = new ExceptionEvent($this->httpKernel, $this->request, HttpKernelInterface::MASTER_REQUEST, NotNegotiableException::notConfigured('application/atom+xml'));
+        $exceptionEvent = new ExceptionEvent($this->prophesize(HttpKernel::class)->reveal(), $this->prophesize(HttpFoundationRequest::class)->reveal(), HttpKernelInterface::MASTER_REQUEST, NotNegotiableException::notConfigured('application/atom+xml'));
 
         $listenerWithNullLogger = new NotAcceptableListener(new ResponseBuilder(), null);
 
@@ -103,13 +77,14 @@ class NotAcceptableListenerTest extends TestCase
         $exception = new \Exception();
 
         $exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
+            $this->prophesize(HttpKernel::class)->reveal(),
+            $this->prophesize(HttpFoundationRequest::class)->reveal(),
             HttpKernelInterface::MASTER_REQUEST,
             $exception
         );
 
-        $this->notAcceptableListener->handle($exceptionEvent);
+        $listenerWithNullLogger = new NotAcceptableListener(new ResponseBuilder(), null);
+        $listenerWithNullLogger->handle($exceptionEvent);
 
         $this->assertNull($exceptionEvent->getResponse());
     }
