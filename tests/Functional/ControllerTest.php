@@ -13,7 +13,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Violines\RestBundle\Tests\Stub\MimeTypes;
 use Violines\RestBundle\ViolinesRestBundle;
 
@@ -117,17 +117,17 @@ final class TestKernel extends Kernel
         ];
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes): void
+    protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $pathControllerMap = [
-            '/returnsOne' => HugController::class . '::returnsOne',
-            '/returnsMany' => HugController::class . '::returnsMany',
-            '/reconstitutesOne' => HugController::class . '::reconstitutesOne',
-            '/reconstitutesMany' => HugController::class . '::reconstitutesMany',
+            '/returnsOne' => [HugController::class, 'returnsOne'],
+            '/returnsMany' => [HugController::class, 'returnsMany'],
+            '/reconstitutesOne' => [HugController::class, 'reconstitutesOne'],
+            '/reconstitutesMany' => [HugController::class, 'reconstitutesMany'],
         ];
 
         foreach ($pathControllerMap as $path => $controller) {
-            $routes->add($path, $controller);
+            $routes->add($path, $path)->controller($controller);
         }
     }
 

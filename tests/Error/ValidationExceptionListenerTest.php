@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Violines\RestBundle\Tests\Error;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -30,31 +31,13 @@ use Violines\RestBundle\Tests\Stub\Config;
  */
 class ValidationExceptionListenerTest extends TestCase
 {
-    /**
-     * @Mock
-     *
-     * @var HttpKernel
-     */
-    private \Phake_IMock $httpKernel;
-
-    /**
-     * @Mock
-     *
-     * @var HttpFoundationRequest
-     */
-    private \Phake_IMock $request;
+    use ProphecyTrait;
 
     private ValidationExceptionListener $listener;
 
     protected function setUp(): void
     {
         parent::setUp();
-        \Phake::initAnnotations($this);
-
-        $this->request->headers = new HeaderBag([
-            'Accept' => 'application/pdf, application/json, application/xml',
-            'Content-Type' => 'application/json',
-        ]);
 
         $this->listener = new ValidationExceptionListener(
             new ContentNegotiator(Config::SERIALIZE_FORMATS, Config::SERIALIZE_FORMAT_DEFAULT),
@@ -65,15 +48,15 @@ class ValidationExceptionListenerTest extends TestCase
 
     public function testShouldCreateViolationResponse(): void
     {
-        $expectedEncodedError = '[{"message":"message","messageTemplate":null,"parameters":null,"plural":null,"root":null,"propertyPath":null,"invalidValue":null,"code":null}]';
+        $expectedEncodedError = '[{"message":"message","messageTemplate":"message_tpl","parameters":[],"plural":null,"root":null,"propertyPath":"path","invalidValue":null,"code":null}]';
 
         $violationList = new ConstraintViolationListFake();
         $violationList->add(new ConstraintViolationFake());
         $exception = ValidationException::fromViolationList($violationList);
 
         $exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
+            $this->prophesize(HttpKernel::class)->reveal(),
+            $this->createMockRequestWithHeaders()->reveal(),
             HttpKernelInterface::MASTER_REQUEST,
             $exception
         );
@@ -88,8 +71,8 @@ class ValidationExceptionListenerTest extends TestCase
         $exception = new \Exception();
 
         $exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
+            $this->prophesize(HttpKernel::class)->reveal(),
+            $this->createMockRequestWithHeaders()->reveal(),
             HttpKernelInterface::MASTER_REQUEST,
             $exception
         );
@@ -97,5 +80,17 @@ class ValidationExceptionListenerTest extends TestCase
         $this->listener->handle($exceptionEvent);
 
         $this->assertNull($exceptionEvent->getResponse());
+    }
+
+    private function createMockRequestWithHeaders()
+    {
+        $request = $this->prophesize(HttpFoundationRequest::class);
+
+        $request->headers = new HeaderBag([
+            'Accept' => 'application/pdf, application/json, application/xml',
+            'Content-Type' => 'application/json',
+        ]);
+
+        return $request;
     }
 }

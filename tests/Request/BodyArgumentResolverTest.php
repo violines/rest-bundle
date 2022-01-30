@@ -6,6 +6,7 @@ namespace Violines\RestBundle\Tests\Request;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -32,40 +33,13 @@ use Violines\RestBundle\Validation\Validator;
  */
 class BodyArgumentResolverTest extends TestCase
 {
-    /**
-     * @Mock
-     *
-     * @var HttpFoundationRequest
-     */
-    private \Phake_IMock $request;
-
-    /**
-     * @Mock
-     *
-     * @var ArgumentMetadata
-     */
-    private \Phake_IMock $argument;
-
-    /**
-     * @Mock
-     *
-     * @var ValidatorInterface
-     */
-    private \Phake_IMock $validator;
+    use ProphecyTrait;
 
     private BodyArgumentResolver $resolver;
 
     protected function setUp(): void
     {
-        parent::setUp();
-        \Phake::initAnnotations($this);
-        $this->request->headers = new HeaderBag(['Content-Type' => 'application/json']);
-
-        $this->resolver = new BodyArgumentResolver(
-            new HttpApiReader(new AnnotationReader()),
-            new Serializer(new SymfonyEventDispatcherFake(), new SymfonySerializerFake(), new FormatMapper(Config::SERIALIZE_FORMATS)),
-            new Validator($this->validator)
-        );
+        $this->resolver = $this->createResolver($this->prophesize(ValidatorInterface::class)->reveal());
     }
 
     /**
@@ -73,11 +47,14 @@ class BodyArgumentResolverTest extends TestCase
      */
     public function testSupportsShouldReturnFalse($type, $content, $isNullable): void
     {
-        \Phake::when($this->argument)->getType->thenReturn($type);
-        \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isNullable->thenReturn($isNullable);
+        $argument = $this->prophesize(ArgumentMetadata::class);
+        $argument->getType()->willReturn($type);
+        $argument->isNullable()->willReturn($isNullable);
 
-        $this->assertFalse($this->resolver->supports($this->request, $this->argument));
+        $request = $this->createMockRequestWithHeaders();
+        $request->getContent()->willReturn($content);
+
+        self::assertFalse($this->resolver->supports($request->reveal(), $argument->reveal()));
     }
 
     public function providerSupportsShouldReturnFalse(): array
@@ -94,9 +71,13 @@ class BodyArgumentResolverTest extends TestCase
 
     public function testSupportsShouldReturnTrue(): void
     {
-        \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
+        $argument = $this->prophesize(ArgumentMetadata::class);
+        $argument->getType()->willReturn(DefaultHttpApi::class);
+        $argument->isNullable()->willReturn(false);
 
-        $this->assertTrue($this->resolver->supports($this->request, $this->argument));
+        $request = $this->createMockRequestWithHeaders();
+
+        self::assertTrue($this->resolver->supports($request->reveal(), $argument->reveal()));
     }
 
     /**
@@ -106,11 +87,14 @@ class BodyArgumentResolverTest extends TestCase
     {
         $this->expectException(SupportsException::class);
 
-        \Phake::when($this->argument)->getType->thenReturn($type);
-        \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isNullable->thenReturn($isNullable);
+        $argument = $this->prophesize(ArgumentMetadata::class);
+        $argument->getType()->willReturn($type);
+        $argument->isNullable()->willReturn($isNullable);
 
-        $result = $this->resolver->resolve($this->request, $this->argument);
+        $request = $this->createMockRequestWithHeaders();
+        $request->getContent()->willReturn($content);
+
+        $result = $this->resolver->resolve($request->reveal(), $argument->reveal());
         $result->current();
     }
 
@@ -134,15 +118,22 @@ class BodyArgumentResolverTest extends TestCase
 
         $content = \json_encode($expected);
 
-        \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isVariadic->thenReturn(\is_array($expected));
-        \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
+        $argument = $this->prophesize(ArgumentMetadata::class);
+        $argument->getType()->willReturn(DefaultHttpApi::class);
+        $argument->isVariadic()->willReturn(\is_array($expected));
+
+        $request = $this->createMockRequestWithHeaders();
+        $request->getContent()->willReturn($content);
 
         $violationList = new ConstraintViolationList();
         $violationList->add(new ConstraintViolation('test', null, [], null, null, null));
-        \Phake::when($this->validator)->validate->thenReturn($violationList);
 
-        $result = $this->resolver->resolve($this->request, $this->argument);
+        $validator = $this->prophesize(ValidatorInterface::class);
+        $validator->validate($expected)->willReturn($violationList);
+
+        $resolver = $this->createResolver($validator->reveal());
+
+        $result = $resolver->resolve($request->reveal(), $argument->reveal());
         $result->current();
     }
 
@@ -165,12 +156,20 @@ class BodyArgumentResolverTest extends TestCase
     {
         $content = \json_encode($expected);
 
-        \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isVariadic->thenReturn(\is_array($expected));
-        \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
-        \Phake::when($this->validator)->validate->thenReturn(new ConstraintViolationList());
+        $argument = $this->prophesize(ArgumentMetadata::class);
+        $argument->getType()->willReturn(DefaultHttpApi::class);
+        $argument->isVariadic()->willReturn(\is_array($expected));
 
-        $result = $this->resolver->resolve($this->request, $this->argument);
+        $request = $this->createMockRequestWithHeaders();
+        $request->getContent()->willReturn($content);
+
+        $violationList = new ConstraintViolationList();
+        $validator = $this->prophesize(ValidatorInterface::class);
+        $validator->validate($expected)->willReturn($violationList);
+
+        $resolver = $this->createResolver($validator->reveal());
+        $result = $resolver->resolve($request->reveal(), $argument->reveal());
+
         $this->assertInstanceOf(DefaultHttpApi::class, $result->current());
     }
 
@@ -193,11 +192,14 @@ class BodyArgumentResolverTest extends TestCase
     {
         $this->expectException(EmptyBodyException::class);
 
-        \Phake::when($this->argument)->getType->thenReturn(DefaultHttpApi::class);
-        \Phake::when($this->request)->getContent->thenReturn($content);
-        \Phake::when($this->argument)->isNullable->thenReturn(false);
+        $argument = $this->prophesize(ArgumentMetadata::class);
+        $argument->getType()->willReturn(DefaultHttpApi::class);
+        $argument->isNullable()->willReturn(false);
 
-        $this->resolver->resolve($this->request, $this->argument)->current();
+        $request = $this->createMockRequestWithHeaders();
+        $request->getContent()->willReturn($content);
+
+        $this->resolver->resolve($request->reveal(), $argument->reveal())->current();
     }
 
     public function providerResolveShouldThrowEmptyBodyException(): array
@@ -207,6 +209,24 @@ class BodyArgumentResolverTest extends TestCase
             [null],
             [''],
         ];
+    }
+
+    private function createResolver(ValidatorInterface $validator): BodyArgumentResolver
+    {
+        return new BodyArgumentResolver(
+            new HttpApiReader(new AnnotationReader()),
+            new Serializer(new SymfonyEventDispatcherFake(), new SymfonySerializerFake(), new FormatMapper(Config::SERIALIZE_FORMATS)),
+            new Validator($validator)
+        );
+    }
+
+    private function createMockRequestWithHeaders()
+    {
+        $request = $this->prophesize(HttpFoundationRequest::class);
+
+        $request->headers = new HeaderBag(['Content-Type' => 'application/json']);
+
+        return $request;
     }
 }
 

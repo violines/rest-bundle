@@ -4,37 +4,33 @@
     "description": "violines/rest-bundle is a Symfony Bundle to create REST APIs. It focusses on HTTP standards and integrates the symfony/serializer and symfony/validator.",
     "license": "MIT",
     "require": {
-        "php": ">=7.4",
+        "php": "^8.0",
         "psr/log": "^1.1",
-        "symfony/config": "^4.4 || ^5.0",
-        "symfony/contracts": "^1.1 || ^2.0",
-        "symfony/dependency-injection": "^4.4 || ^5.0",
-        "symfony/http-kernel": "^4.4 || ^5.0",
-        "symfony/http-foundation": "^4.4 || ^5.0",
-        "symfony/serializer": "^4.4 || ^5.0",
-        "symfony/validator": "^4.4 || ^5.0"
+        "symfony/config": "^5.4 || ^6.0",
+        "symfony/contracts": "^2.5 || ^3.0",
+        "symfony/dependency-injection": "^5.4 || ^6.0",
+        "symfony/http-kernel": "^5.4 || ^6.0",
+        "symfony/http-foundation": "^5.4 || ^6.0",
+        "symfony/serializer": "^5.4 || ^6.0",
+        "symfony/validator": "^5.4 || ^6.0"
     },
     "require-dev": {
         "doctrine/annotations": "^1.11",
         "friendsofphp/php-cs-fixer": "^2.16",
-        "infection/infection": "^0.20.0",
+        "infection/infection": "^0.25.6",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
-        "phake/phake": "^3.1",
         "phpunit/phpunit": "^9.3.0",
-        "rector/rector": "^0.8.6",
-        "symfony/property-access": "^4.4 || ^5.0",
+        "rector/rector": "^0.12.13",
+        "symfony/property-access": "^5.4 || ^6.0",
         "vimeo/psalm": "^4.0",
-        "symfony/framework-bundle": "^4.4 || ^5.2",
-        "symfony/filesystem": "^4.4 || ^5.2",
+        "symfony/framework-bundle": "^5.4 || ^6.0",
+        "symfony/filesystem": "^5.4 || ^6.0",
         "mikey179/vfsstream": "^1.6",
         "phpspec/prophecy-phpunit": "^2.0"
     },
-    "conflict": {
-        "symfony/event-dispatcher": "<4.4"
-    },
     "suggest": {
         "doctrine/annotations": "^1.11",
-        "symfony/property-access": "^4.4 || ^5.0"
+        "symfony/property-access": "^5.4 || ^6.0"
     },
     "autoload": {
         "psr-4": {

@@ -6,6 +6,7 @@ namespace Violines\RestBundle\Tests\Error;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -33,31 +34,13 @@ use Violines\RestBundle\Tests\Stub\Config;
  */
 class ErrorListenerTest extends TestCase
 {
-    /**
-     * @Mock
-     *
-     * @var HttpKernel
-     */
-    private \Phake_IMock $httpKernel;
-
-    /**
-     * @Mock
-     *
-     * @var HttpFoundationRequest
-     */
-    private \Phake_IMock $request;
+    use ProphecyTrait;
 
     private ErrorListener $errorListener;
 
     protected function setUp(): void
     {
         parent::setUp();
-        \Phake::initAnnotations($this);
-
-        $this->request->headers = new HeaderBag([
-            'Accept' => 'application/pdf, application/json, application/xml',
-            'Content-Type' => 'application/json',
-        ]);
 
         $this->errorListener = new ErrorListener(
             new HttpApiReader(new AnnotationReader()),
@@ -76,8 +59,8 @@ class ErrorListenerTest extends TestCase
         $exception->setContent(new Error('Test 400'));
 
         $exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
+            $this->prophesize(HttpKernel::class)->reveal(),
+            $this->createMockRequestWithHeaders()->reveal(),
             HttpKernelInterface::MASTER_REQUEST,
             $exception
         );
@@ -95,8 +78,8 @@ class ErrorListenerTest extends TestCase
         $exception = new \Exception();
 
         $exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
+            $this->prophesize(HttpKernel::class)->reveal(),
+            $this->createMockRequestWithHeaders()->reveal(),
             HttpKernelInterface::MASTER_REQUEST,
             $exception
         );
@@ -114,13 +97,25 @@ class ErrorListenerTest extends TestCase
         $exception->setContent(new Gum());
 
         $exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
+            $this->prophesize(HttpKernel::class)->reveal(),
+            $this->createMockRequestWithHeaders()->reveal(),
             HttpKernelInterface::MASTER_REQUEST,
             $exception
         );
 
         $this->errorListener->handle($exceptionEvent);
+    }
+
+    private function createMockRequestWithHeaders()
+    {
+        $request = $this->prophesize(HttpFoundationRequest::class);
+
+        $request->headers = new HeaderBag([
+            'Accept' => 'application/pdf, application/json, application/xml',
+            'Content-Type' => 'application/json',
+        ]);
+
+        return $request;
     }
 }
 

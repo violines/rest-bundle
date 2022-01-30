@@ -49,11 +49,9 @@ final class QueryStringArgumentResolver implements ArgumentValueResolverInterfac
     }
 
     /**
-     * @return \Generator
-     *
      * @throws SupportsException when $this->supports should have returned false
      */
-    public function resolve(Request $request, ArgumentMetadata $argument)
+    public function resolve(Request $request, ArgumentMetadata $argument): \Generator
     {
         $className = $argument->getType();
         if (null === $className || !\class_exists($className)) {

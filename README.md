@@ -19,8 +19,8 @@ violines/rest-bundle is a Symfony Bundle to create REST APIs. It focusses on HTT
 * Optional Logging
 
 ### Compatible with...
-* Symfony 4.4 + 5
-* PHP 7.4 + 8
+* Symfony 5.4 + 6
+* PHP 8 + 8.1
 
 ### Designed for...
 modern architectures that apply Domain Driven Design principles, hexagonal architecture or similar concepts.
